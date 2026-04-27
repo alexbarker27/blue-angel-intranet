@@ -44,25 +44,9 @@
     border-radius: 20px;
     padding: 6px 14px;
     white-space: nowrap;
+    text-decoration: none;
   }
-
-  .tab-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .tab-btn {
-    font-size: 13px;
-    font-weight: 600;
-    padding: 8px 18px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    background: #fff;
-    color: #666;
-    transition: all 0.15s;
-  }
-  .tab-btn:hover { background: #e8edf5; color: #111; }
-  .tab-btn.active { background: #111; color: #fff; }
-
-  .panel { display: none; }
-  .panel.active { display: block; }
+  .source-pill:hover { background: #eef3fb; }
 
   .card {
     background: #fff;
@@ -70,8 +54,7 @@
     padding: 28px 32px;
     margin-bottom: 16px;
   }
-  .card-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px; }
-  .card-sub { font-size: 12px; color: #888; margin-bottom: 20px; }
+  .card-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 16px; }
 
   .cat-label {
     font-size: 11px;
@@ -83,19 +66,15 @@
     border-bottom: 1px solid #eee;
     margin: 20px 0 4px;
   }
+  .cat-label:first-of-type { margin-top: 0; }
 
   .kit-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 9px 0;
     border-bottom: 1px solid #f5f5f5;
-    gap: 12px;
   }
   .kit-item:last-child { border-bottom: none; }
   .item-name { font-size: 14px; font-weight: 500; color: #111; }
   .item-qty { font-size: 12px; color: #999; margin-top: 1px; }
-  .item-price { font-size: 13px; font-weight: 600; color: #444; white-space: nowrap; }
 
   .rx-note { font-size: 12px; color: #888; font-style: italic; margin-bottom: 12px; }
   .rx-item {
@@ -110,97 +89,10 @@
   .rx-name { font-size: 14px; font-weight: 500; color: #111; }
   .rx-detail { font-size: 12px; color: #888; margin-top: 1px; }
 
-  .totals-block { border-top: 1px solid #eee; margin-top: 16px; padding-top: 14px; }
-  .subtotal-row { display: flex; justify-content: space-between; font-size: 13px; color: #888; padding: 3px 0; }
-  .subtotal-row.kit { color: #111; font-weight: 600; }
-  .total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1.5px solid #111;
-    margin-top: 10px;
-    padding-top: 12px;
-  }
-  .total-label { font-size: 14px; font-weight: 700; color: #111; }
-  .total-amt { font-size: 22px; font-weight: 700; color: #111; }
-
-  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
-  .stat-card { background: #fff; border-radius: 14px; padding: 20px 24px; border-left: 4px solid transparent; }
-  .stat-card.red { border-left-color: #e03c3c; }
-  .stat-card.orange { border-left-color: #e08a2a; }
-  .stat-card.green { border-left-color: #2aad5e; }
-  .stat-num { font-size: 28px; font-weight: 700; margin-bottom: 2px; }
-  .stat-card.red .stat-num { color: #e03c3c; }
-  .stat-card.orange .stat-num { color: #e08a2a; }
-  .stat-card.green .stat-num { color: #2aad5e; }
-  .stat-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: #999; }
-
-  .var-table { width: 100%; border-collapse: collapse; }
-  .var-table th {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
-    text-transform: uppercase; color: #999; text-align: left;
-    padding: 8px 12px; border-bottom: 1px solid #eee;
-  }
-  .var-table td {
-    font-size: 13px; padding: 11px 12px; border-bottom: 1px solid #f5f5f5;
-    vertical-align: top; line-height: 1.5; color: #333;
-  }
-  .var-table tr:last-child td { border-bottom: none; }
-  .var-table td:first-child { font-weight: 600; color: #111; white-space: nowrap; }
-  .mono-pill {
-    display: inline-block; font-size: 11px; font-weight: 500;
-    background: #eef3fb; color: #3b7dd8; border-radius: 5px;
-    padding: 2px 8px; font-family: 'SF Mono', 'Menlo', monospace;
-  }
-
-  .scenario-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-top: 16px; }
-  .scenario-card { background: #fff; border-radius: 14px; overflow: hidden; }
-  .scenario-head { padding: 16px 20px; border-bottom: 1px solid #f0f0f0; }
-  .scenario-num { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: #3b7dd8; margin-bottom: 2px; }
-  .scenario-title { font-size: 15px; font-weight: 700; color: #111; }
-  .scenario-dest { font-size: 11px; color: #999; margin-top: 3px; line-height: 1.4; }
-  .scenario-body { padding: 12px 20px; }
-  .s-rx { display: flex; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; line-height: 1.4; }
-  .s-rx:last-child { border-bottom: none; }
-  .s-arrow { color: #3b7dd8; font-weight: 700; flex-shrink: 0; }
-  .s-rx strong { font-weight: 600; color: #111; }
-  .s-rx small { display: block; font-size: 11px; color: #999; margin-top: 1px; }
-
-  .dest-card { background: #fff; border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
-  .dest-head {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 18px 24px; cursor: pointer; user-select: none; transition: background 0.12s;
-  }
-  .dest-head:hover { background: #fafafa; }
-  .dest-name { font-size: 16px; font-weight: 700; color: #111; }
-  .dest-meta { font-size: 12px; color: #999; margin-top: 2px; }
-  .dest-badge { font-size: 12px; font-weight: 600; background: #fff0f0; color: #e03c3c; border-radius: 20px; padding: 5px 14px; white-space: nowrap; }
-  .dest-badge.mod { background: #fff6ed; color: #e08a2a; }
-  .dest-chevron { font-size: 14px; color: #ccc; margin-left: 12px; transition: transform 0.2s; }
-  .dest-chevron.open { transform: rotate(180deg); }
-  .dest-body { display: none; padding: 0 24px 20px; }
-  .dest-body.open { display: block; }
-  .dest-section {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
-    text-transform: uppercase; color: #999;
-    margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 1px solid #eee;
-  }
-  .dest-item { font-size: 13px; color: #333; padding: 6px 0; border-bottom: 1px solid #f8f8f8; line-height: 1.5; }
-  .dest-item:last-child { border-bottom: none; }
-  .dest-item strong { font-weight: 600; color: #111; }
-  .dest-item.muted { color: #999; }
-  .alert-box {
-    background: #fff9f0; border: 1px solid #f5d89a; border-radius: 8px;
-    padding: 12px 14px; font-size: 12px; color: #7a5a1a; line-height: 1.6; margin-bottom: 4px;
-  }
-  .alert-box strong { font-weight: 600; color: #e08a2a; }
-
   @media (max-width: 640px) {
     body { padding: 16px 12px; }
     .page-header { padding: 20px; flex-direction: column; gap: 12px; }
-    .stat-row { grid-template-columns: 1fr; }
     .card { padding: 20px; }
-    .scenario-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -212,200 +104,60 @@
       <div class="page-eyebrow">Concierge Travel Medicine</div>
       <div class="page-title">Travel Medicine Kit</div>
     </div>
-    <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill" style="text-decoration:none;">CDC Yellow Book 2026 ↗</a>
+    <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill">CDC Yellow Book 2026 ↗</a>
   </div>
 
-  <div class="tab-row">
-    <button class="tab-btn active" onclick="showTab('basic', this)">Basic Kit</button>
-    <button class="tab-btn" onclick="showTab('variables', this)">Common Variables</button>
-    <button class="tab-btn" onclick="showTab('destinations', this)">Destination Examples</button>
+  <div class="card">
+    <div class="card-title">Generic over the counter</div>
+
+    <div class="cat-label">Pain & fever</div>
+    <div class="kit-item"><div class="item-name">Tylenol</div><div class="item-qty">24 tabs</div></div>
+    <div class="kit-item"><div class="item-name">Advil</div><div class="item-qty">24 tabs</div></div>
+
+    <div class="cat-label">Gastrointestinal</div>
+    <div class="kit-item"><div class="item-name">Imodium</div><div class="item-qty">12 caps</div></div>
+    <div class="kit-item"><div class="item-name">Pepcid</div><div class="item-qty">10 tabs</div></div>
+    <div class="kit-item"><div class="item-name">Oral rehydration salts</div><div class="item-qty">4 packets</div></div>
+
+    <div class="cat-label">Allergy & respiratory</div>
+    <div class="kit-item"><div class="item-name">Zyrtec</div><div class="item-qty">14 tabs</div></div>
+    <div class="kit-item"><div class="item-name">Sudafed</div><div class="item-qty">10 tabs</div></div>
+
+    <div class="cat-label">Wound care & topicals</div>
+    <div class="kit-item"><div class="item-name">Antiseptic wipes</div><div class="item-qty">10 individually wrapped</div></div>
+    <div class="kit-item"><div class="item-name">Adhesive bandages</div><div class="item-qty">15 assorted incl. waterproof</div></div>
+    <div class="kit-item"><div class="item-name">Neosporin</div><div class="item-qty">Small tube</div></div>
+    <div class="kit-item"><div class="item-name">Cortaid</div><div class="item-qty">Small tube</div></div>
+
+    <div class="cat-label">Diagnostics</div>
+    <div class="kit-item"><div class="item-name">Digital thermometer</div><div class="item-qty">Compact</div></div>
   </div>
 
-  <!-- BASIC KIT -->
-  <div id="basic" class="panel active">
-    <div class="stat-row">
-      <div class="stat-card red"><div class="stat-num">12</div><div class="stat-label">OTC Items</div></div>
-      <div class="stat-card orange"><div class="stat-num">3</div><div class="stat-label">Light Prescriptions</div></div>
-      <div class="stat-card green"><div class="stat-num">$66–$77</div><div class="stat-label">Total Kit Cost</div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Generic over the counter</div>
-      <div class="card-sub">All prices per kit quantity. Generic brands throughout.</div>
-
-      <div class="cat-label">Pain & fever</div>
-      <div class="kit-item"><div><div class="item-name">Tylenol</div><div class="item-qty">24 tabs</div></div><span class="item-price">$3–$4</span></div>
-      <div class="kit-item"><div><div class="item-name">Advil</div><div class="item-qty">24 tabs</div></div><span class="item-price">$3–$4</span></div>
-
-      <div class="cat-label">Gastrointestinal</div>
-      <div class="kit-item"><div><div class="item-name">Imodium</div><div class="item-qty">12 caps</div></div><span class="item-price">$4–$5</span></div>
-      <div class="kit-item"><div><div class="item-name">Pepcid</div><div class="item-qty">10 tabs</div></div><span class="item-price">$4–$5</span></div>
-      <div class="kit-item"><div><div class="item-name">Oral rehydration salts</div><div class="item-qty">4 packets</div></div><span class="item-price">$5–$7</span></div>
-
-      <div class="cat-label">Allergy & respiratory</div>
-      <div class="kit-item"><div><div class="item-name">Zyrtec</div><div class="item-qty">14 tabs</div></div><span class="item-price">$3–$4</span></div>
-      <div class="kit-item"><div><div class="item-name">Sudafed</div><div class="item-qty">10 tabs</div></div><span class="item-price">$5–$7</span></div>
-
-      <div class="cat-label">Wound care & topicals</div>
-      <div class="kit-item"><div><div class="item-name">Antiseptic wipes</div><div class="item-qty">10 individually wrapped</div></div><span class="item-price">$2–$3</span></div>
-      <div class="kit-item"><div><div class="item-name">Adhesive bandages</div><div class="item-qty">15 assorted incl. waterproof</div></div><span class="item-price">$4–$5</span></div>
-      <div class="kit-item"><div><div class="item-name">Neosporin</div><div class="item-qty">Small tube</div></div><span class="item-price">$4–$5</span></div>
-      <div class="kit-item"><div><div class="item-name">Cortaid</div><div class="item-qty">Small tube</div></div><span class="item-price">$3–$4</span></div>
-
-      <div class="cat-label">Diagnostics</div>
-      <div class="kit-item"><div><div class="item-name">Digital thermometer</div><div class="item-qty">Compact</div></div><span class="item-price">$8–$10</span></div>
-
-      <div class="totals-block">
-        <div class="subtotal-row"><span>OTC subtotal</span><span>~$46–$57</span></div>
+  <div class="card">
+    <div class="card-title">Light prescription</div>
+    <div class="rx-item">
+      <div class="rx-dot"></div>
+      <div>
+        <div class="rx-name">Zofran <span style="font-weight:400;color:#999;font-size:12px;">(ondansetron)</span></div>
+        <div class="rx-detail">6 dissolving tabs — anti-nausea, works when you can't keep anything down</div>
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-title">Light prescription</div>
-      <div class="rx-note">Pharmacy-sourced via GoodRx. Kit quantity. Prices vary by insurance.</div>
-      <div class="rx-item"><div class="rx-dot"></div><div><div class="rx-name">Zofran <span style="font-weight:400;color:#999;font-size:12px;">(ondansetron)</span></div><div class="rx-detail">6 dissolving tabs — anti-nausea, works when you can't keep anything down</div></div></div>
-      <div class="rx-item"><div class="rx-dot"></div><div><div class="rx-name">Zithromax <span style="font-weight:400;color:#999;font-size:12px;">(azithromycin)</span></div><div class="rx-detail">6 tabs — first-line antibiotic for travelers' diarrhea and respiratory infections</div></div></div>
-      <div class="rx-item"><div class="rx-dot"></div><div><div class="rx-name">Cipro <span style="font-weight:400;color:#999;font-size:12px;">(ciprofloxacin)</span></div><div class="rx-detail">6 tabs — antibiotic backup for UTIs and gram-negative infections</div></div></div>
-      <div class="totals-block">
-        <div class="subtotal-row kit"><span>Dopp kit / case</span><span>$20</span></div>
-        <div class="total-row">
-          <span class="total-label">Basic kit total</span>
-          <span class="total-amt">~$66–$77</span>
-        </div>
+    <div class="rx-item">
+      <div class="rx-dot"></div>
+      <div>
+        <div class="rx-name">Zithromax <span style="font-weight:400;color:#999;font-size:12px;">(azithromycin)</span></div>
+        <div class="rx-detail">6 tabs — first-line antibiotic for travelers' diarrhea and respiratory infections</div>
+      </div>
+    </div>
+    <div class="rx-item">
+      <div class="rx-dot"></div>
+      <div>
+        <div class="rx-name">Cipro <span style="font-weight:400;color:#999;font-size:12px;">(ciprofloxacin)</span></div>
+        <div class="rx-detail">6 tabs — antibiotic backup for UTIs and gram-negative infections</div>
       </div>
     </div>
   </div>
 
-  <!-- VARIABLES -->
-  <div id="variables" class="panel">
-    <div class="card">
-      <div class="card-title">Prescription step-ups by situation</div>
-      <div class="card-sub">The basic kit is the foundation. These are layered on top based on destination risk profile.</div>
-      <table class="var-table">
-        <thead><tr><th>Situation</th><th>Step-up prescription</th><th>Why basic kit falls short</th></tr></thead>
-        <tbody>
-          <tr><td>Malaria-endemic</td><td><span class="mono-pill">Malarone or Doxy or Mefloquine</span></td><td>No prophylaxis in basic kit</td></tr>
-          <tr><td>High altitude</td><td><span class="mono-pill">Diamox + Dexamethasone</span></td><td>No altitude coverage</td></tr>
-          <tr><td>SE Asia / South Asia</td><td><span class="mono-pill">Azithromycin upgrade + Rifaximin</span></td><td>Cipro resistance-compromised — essentially useless for TD here</td></tr>
-          <tr><td>Jungle / remote</td><td><span class="mono-pill">Coartem + Tinidazole</span></td><td>No breakthrough malaria Rx or protozoa coverage</td></tr>
-          <tr><td>6+ week trip</td><td><span class="mono-pill">Mefloquine + Fluconazole</span></td><td>Daily adherence fails; extended Doxy causes yeast</td></tr>
-          <tr><td>Freshwater exposure</td><td><span class="mono-pill">Praziquantel (post-trip)</span></td><td>No schistosomiasis coverage at all in basic kit</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="scenario-grid">
-      <div class="scenario-card"><div class="scenario-head"><div class="scenario-num">Scenario 01</div><div class="scenario-title">Malaria-endemic</div><div class="scenario-dest">Sub-Saharan Africa · SE Asia rural · South Asia · Central America rural · Amazon · Papua New Guinea</div></div><div class="scenario-body"><div class="s-rx"><span class="s-arrow">→</span><div><strong>Malarone</strong> (atovaquone-proguanil)<small>Daily. Start 1–2 days before, stop 7 days after. First-line default per CDC Yellow Book.</small></div></div><div class="s-rx"><span class="s-arrow">→</span><div><strong>Doxycycline 100mg</strong><small>Daily. Budget alternative. Stop 4 weeks after. Also covers rickettsial and leptospirosis.</small></div></div><div class="s-rx"><span class="s-arrow">→</span><div><strong>Mefloquine 250mg</strong><small>Weekly. For 4+ week trips. Neuropsychiatric screen required.</small></div></div></div></div>
-
-      <div class="scenario-card"><div class="scenario-head"><div class="scenario-num">Scenario 02</div><div class="scenario-title">High altitude</div><div class="scenario-dest">Cusco · La Paz · Kilimanjaro · Mt Kenya · Ethiopian highlands · Himalayan treks · Tibet · Ladakh</div></div><div class="scenario-body"><div class="s-rx"><span class="s-arrow">→</span><div><strong>Diamox (acetazolamide) 125mg</strong><small>Twice daily. Start day before ascent. Reduces AMS risk ~48% per CDC Yellow Book.</small></div></div><div class="s-rx"><span class="s-arrow">→</span><div><strong>Dexamethasone 4mg</strong><small>Emergency backup only — not prophylaxis. For severe AMS/HACE if descent not possible.</small></div></div></div></div>
-
-      <div class="scenario-card"><div class="scenario-head"><div class="scenario-num">Scenario 03</div><div class="scenario-title">SE Asia / South Asia</div><div class="scenario-dest">India · Nepal · Bangladesh · Thailand · Cambodia · Vietnam · Laos · Myanmar · Indonesia · Pakistan</div></div><div class="scenario-body"><div class="s-rx"><span class="s-arrow">→</span><div><strong>Azithromycin 500mg upgrade</strong><small>Cipro is unreliable here — high fluoroquinolone resistance. Azithromycin becomes primary TD antibiotic.</small></div></div><div class="s-rx"><span class="s-arrow">→</span><div><strong>Rifaximin</strong><small>Non-absorbed. Minimal side effects. Add-on for prophylaxis in high street food exposure situations.</small></div></div></div></div>
-
-      <div class="scenario-card"><div class="scenario-head"><div class="scenario-num">Scenario 04</div><div class="scenario-title">Jungle / remote</div><div class="scenario-dest">Congo Basin · Amazon · Rural Papua New Guinea · Remote SE Asia jungle · Sub-Saharan bush</div></div><div class="scenario-body"><div class="s-rx"><span class="s-arrow">→</span><div><strong>Coartem (artemether-lumefantrine)</strong><small>Standby breakthrough malaria treatment when local care unavailable. Distinct from prophylaxis.</small></div></div><div class="s-rx"><span class="s-arrow">→</span><div><strong>Doxycycline 100mg</strong><small>Leptospirosis prophylaxis at 200mg weekly in flood/jungle environments.</small></div></div><div class="s-rx"><span class="s-arrow">→</span><div><strong>Tinidazole or Flagyl</strong><small>Giardia and protozoa prevalent in jungle water. Not covered by basic kit.</small></div></div></div></div>
-
-      <div class="scenario-card"><div class="scenario-head"><div class="scenario-num">Scenario 05</div><div class="scenario-title">Extended trip (6+ weeks)</div><div class="scenario-dest">Any malaria-endemic region · Long-term expat travel</div></div><div class="scenario-body"><div class="s-rx"><span class="s-arrow">→</span><div><strong>Mefloquine</strong><small>Displaces Malarone/Doxy for long-haul. Weekly dosing makes 3+ month adherence realistic.</small></div></div><div class="s-rx"><span class="s-arrow">→</span><div><strong>Fluconazole</strong><small>Months of Doxy significantly raises yeast infection risk. Single-dose rescue.</small></div></div></div></div>
-
-      <div class="scenario-card"><div class="scenario-head"><div class="scenario-num">Scenario 06</div><div class="scenario-title">Freshwater exposure</div><div class="scenario-dest">Lake Malawi · Lake Tanganyika · Lake Victoria · Nile · Mekong · Amazon tributaries · Sub-Saharan rivers</div></div><div class="scenario-body"><div class="s-rx"><span class="s-arrow">→</span><div><strong>Praziquantel (post-exposure)</strong><small>Not pre-travel — held for 6–8 weeks after freshwater exposure. Nearly all sub-Saharan freshwater is endemic.</small></div></div></div></div>
-    </div>
-  </div>
-
-  <!-- DESTINATIONS -->
-  <div id="destinations" class="panel">
-    <div class="card" style="margin-bottom:16px;">
-      <div class="card-title">Destination Protocols</div>
-      <div class="card-sub">Add-ons on top of the basic kit. Sourced from CDC Yellow Book 2026 and current CDC Travel Health Notices at time of query.</div>
-    </div>
-
-    <div class="dest-card">
-      <div class="dest-head" onclick="toggleDest(this)">
-        <div><div class="dest-name">Zimbabwe</div><div class="dest-meta">1 week · Sub-Saharan Africa</div></div>
-        <div style="display:flex;align-items:center;gap:10px;"><span class="dest-badge">High risk</span><span class="dest-chevron">▾</span></div>
-      </div>
-      <div class="dest-body">
-        <div class="alert-box"><strong>Active alerts:</strong> Malaria outbreak — 111,998 cases and 310 deaths as of June 2025 (up from 29,031 in 2024). East African sleeping sickness safari alert December 2024. Cholera active transmission. Falsified rabies vaccine circulating in country. Global measles alert May 2025.</div>
-        <div class="dest-section">Additional items</div>
-        <div class="dest-item"><strong>Malaria rapid test</strong> — fever within 1 year of visit requires immediate testing</div>
-        <div class="dest-item"><strong>Permethrin spray + treated bed net</strong> — treat all clothing before departure</div>
-        <div class="dest-item"><strong>Water purification tablets</strong> — tap water unsafe outside Harare</div>
-        <div class="dest-item"><strong>Medical evacuation insurance</strong> — strongly recommended given limited rural infrastructure</div>
-        <div class="dest-section">Advanced prescriptions</div>
-        <div class="dest-item"><strong>Malarone, 9 tabs</strong> — start 1–2 days before, daily, stop 7 days after. First choice for 1-week trip. ~$43–$70</div>
-        <div class="dest-item"><strong>Doxycycline 100mg</strong> — tick-borne illness treatment and leptospirosis. ~$11–$20</div>
-        <div class="dest-item"><strong>Flagyl (metronidazole)</strong> — Giardia and protozoa risk throughout the country. ~$10–$18</div>
-        <div class="dest-section">Vaccine program</div>
-        <div class="dest-item"><strong>8+ weeks before:</strong> Hepatitis A dose 1 · Hepatitis B dose 1 · Rabies pre-exposure dose 1 — strongly recommended due to counterfeit vaccine alert in country</div>
-        <div class="dest-item"><strong>4–6 weeks before:</strong> Hep B dose 2 · Rabies dose 2 · Typhoid injectable · Meningococcal MenACWY · Cholera (Vaxchora)</div>
-        <div class="dest-item"><strong>2–4 weeks before:</strong> Rabies dose 3 · Hep B dose 3 · Confirm MMR · Confirm Tdap · Polio booster</div>
-        <div class="dest-item"><strong>1–2 weeks before:</strong> Start Malarone · Annual flu shot · Yellow fever if routing through endemic country</div>
-        <div class="dest-item muted"><strong>Not needed:</strong> Japanese Encephalitis · TBE · Altitude medications (unless Eastern Highlands trek above 2,500m)</div>
-      </div>
-    </div>
-
-    <div class="dest-card">
-      <div class="dest-head" onclick="toggleDest(this)">
-        <div><div class="dest-name">Jamaica</div><div class="dest-meta">1 week · Caribbean</div></div>
-        <div style="display:flex;align-items:center;gap:10px;"><span class="dest-badge mod">Moderate risk</span><span class="dest-chevron">▾</span></div>
-      </div>
-      <div class="dest-body">
-        <div class="alert-box"><strong>Active alerts:</strong> Dengue endemic — 452 cases and 2 deaths in 2025. Leptospirosis outbreak December 2025 linked to freshwater exposure. Chikungunya and Zika both endemic. Global measles alert May 2025. No malaria — eliminated 2012.</div>
-        <div class="dest-section">Additional items</div>
-        <div class="dest-item"><strong>Dengue rapid test</strong> — fever with headache or rash within 2 weeks of return requires immediate testing</div>
-        <div class="dest-item"><strong>Extra waterproof bandages</strong> — all open wounds must be covered before any freshwater exposure (leptospirosis risk)</div>
-        <div class="dest-item"><strong>Condoms</strong> — HIV prevalence 1.3% general population, 30% MSM; high STI rates throughout</div>
-        <div class="dest-section">Advanced prescriptions</div>
-        <div class="dest-item"><strong>Doxycycline 100mg</strong> — leptospirosis prophylaxis at 200mg weekly per CDC Yellow Book for freshwater exposure</div>
-        <div class="dest-item"><strong>Tamiflu (oseltamivir)</strong> — if traveling October–May; flu peaks December–March in Jamaica</div>
-        <div class="dest-section">Vaccine program</div>
-        <div class="dest-item"><strong>4–6 weeks before:</strong> Hepatitis A dose 1 · Hepatitis B dose 1</div>
-        <div class="dest-item"><strong>2–4 weeks before:</strong> Hep B dose 2 · Confirm MMR · Confirm Tdap · Polio booster</div>
-        <div class="dest-item"><strong>1–2 weeks before:</strong> Hep B dose 3 · Annual flu shot</div>
-        <div class="dest-item muted"><strong>Not needed:</strong> Malaria prophylaxis · Cholera · Rabies (unless animal contact) · JE · TBE · Meningococcal · Yellow fever (unless routing through endemic country)</div>
-      </div>
-    </div>
-
-    <div class="dest-card">
-      <div class="dest-head" onclick="toggleDest(this)">
-        <div><div class="dest-name">Botswana</div><div class="dest-meta">8 days · Southern Africa</div></div>
-        <div style="display:flex;align-items:center;gap:10px;"><span class="dest-badge">High risk</span><span class="dest-chevron">▾</span></div>
-      </div>
-      <div class="dest-body">
-        <div class="alert-box"><strong>Active alerts:</strong> Malaria outbreak March 2025 — started in Okavango Delta, spread to non-endemic areas including Gaborone. Schistosomiasis in all freshwater. African tick-bite fever elevated in bush/safari areas. Polio cases confirmed. Global measles alert May 2025.</div>
-        <div class="dest-section">Additional items</div>
-        <div class="dest-item"><strong>Malaria rapid test</strong> — fever within 1 year of northern Botswana visit requires immediate testing</div>
-        <div class="dest-item"><strong>Permethrin spray + treated bed net</strong> — essential for Chobe and Okavango overnight stays</div>
-        <div class="dest-item"><strong>Dedicated tick removal tool</strong> — African tick-bite fever is common in game areas</div>
-        <div class="dest-item"><strong>Water purification tablets</strong> — rural and bush camp water not reliably safe</div>
-        <div class="dest-item"><strong>Medical evacuation insurance</strong> — Chobe and Okavango are remote with very limited hospital capacity</div>
-        <div class="dest-section">Advanced prescriptions</div>
-        <div class="dest-item"><strong>Malarone, 10 tabs</strong> — first choice for 8-day trip. Start 1–2 days before entering northern Botswana. ~$43–$70</div>
-        <div class="dest-item"><strong>Doxycycline 100mg</strong> — malaria alternative and tick-bite fever treatment. ~$11–$20</div>
-        <div class="dest-item"><strong>Flagyl (metronidazole)</strong> — protozoa risk outside hotels and lodges. ~$10–$18</div>
-        <div class="dest-section">Vaccine program</div>
-        <div class="dest-item"><strong>8+ weeks before:</strong> Hepatitis A dose 1 · Hepatitis B dose 1 · Rabies pre-exposure dose 1 — recommended for safari and bush travel</div>
-        <div class="dest-item"><strong>4–6 weeks before:</strong> Hep B dose 2 · Rabies dose 2 · Typhoid injectable · Meningococcal MenACWY</div>
-        <div class="dest-item"><strong>2–4 weeks before:</strong> Rabies dose 3 · Hep B dose 3 · Confirm MMR · Confirm Tdap · Polio booster</div>
-        <div class="dest-item"><strong>1–2 weeks before:</strong> Start Malarone · Annual flu shot · Yellow fever if routing through endemic country</div>
-        <div class="dest-item muted"><strong>Not needed:</strong> Japanese Encephalitis · TBE · Cholera · Dengue vaccine · Altitude medications</div>
-      </div>
-    </div>
-
-  </div>
 </div>
-
-<script>
-  function showTab(id, btn) {
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
-  }
-  function toggleDest(header) {
-    const body = header.nextElementSibling;
-    const chevron = header.querySelector('.dest-chevron');
-    const isOpen = body.classList.contains('open');
-    body.classList.toggle('open', !isOpen);
-    chevron.classList.toggle('open', !isOpen);
-  }
-</script>
 </body>
 </html>
