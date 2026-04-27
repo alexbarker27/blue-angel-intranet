@@ -938,11 +938,25 @@
   }
 
   function skipSignIn() {
-    currentRole     = 'physician';
-    currentPractice = 'sujansky';
-    currentEmail    = 'demo@blueangelclinical.com';
-    populateDashboard();
-    showView('dashboard');
+    const err = document.getElementById('login-error');
+    if (currentRole === 'physician') {
+      const practice = document.getElementById('f-practice').value;
+      if (!practice) {
+        err.textContent = 'Please select a practice before skipping sign in.';
+        err.classList.add('show');
+        return;
+      }
+      err.classList.remove('show');
+      currentPractice = practice;
+      currentEmail    = 'demo@blueangelclinical.com';
+      populateDashboard();
+      showView('dashboard');
+    } else {
+      err.classList.remove('show');
+      currentEmail = 'demo@blueangelclinical.com';
+      populatePicker();
+      showView('picker');
+    }
   }
 
   /* ─── Practice picker ─── */
