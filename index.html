@@ -847,18 +847,44 @@
   let currentEmail     = '';
   let staffPractices   = [];   // practices checked on staff login
 
+  const SHARED_LINKS = [
+    {
+      title: 'Waitlist Tracker', sub: 'Combined patient waitlist',
+      url: 'https://docs.google.com/spreadsheets/d/17hdBYeBme5X_PePvZC0FHjlGGbOVeMQwWpFmFFaMJyE/edit?gid=206672164#gid=206672164',
+      embedUrl: 'https://docs.google.com/spreadsheets/d/17hdBYeBme5X_PePvZC0FHjlGGbOVeMQwWpFmFFaMJyE/htmlview',
+      iconBg: '#F0FDF4', iconStroke: '#16A34A',
+      iconPath: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
+    },
+    {
+      title: 'Prospective Sales Guide', sub: 'Patient acquisition guide',
+      url: 'https://docs.google.com/document/d/1IY1B19XMNZEdSTMnc0jHieSw3iEKhSKC/edit',
+      embedUrl: 'https://docs.google.com/document/d/1IY1B19XMNZEdSTMnc0jHieSw3iEKhSKC/preview',
+      iconBg: '#EEF4FF', iconStroke: 'var(--blue)',
+      iconPath: '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>',
+    },
+    {
+      title: 'Annual Physical Booking', sub: 'Scheduling tracker',
+      url: 'https://docs.google.com/spreadsheets/d/1J2zYr_RX1x7UFFUx7IHI9Qpn8xfHc4-U/edit?gid=1918363126#gid=1918363126',
+      embedUrl: 'https://docs.google.com/spreadsheets/d/1J2zYr_RX1x7UFFUx7IHI9Qpn8xfHc4-U/htmlview',
+      iconBg: '#F0FDF4', iconStroke: '#16A34A',
+      iconPath: '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+    },
+  ];
+
   const practiceData = {
     sujansky: {
       name: 'Sujansky Concierge Medicine', physician: 'Dr. Ulrike Sujansky, M.D.',
       website: 'https://justintella.github.io/sujansky-website',
       intakeForm: 'https://docs.google.com/forms/d/1CjDjCbpK6AecdjbDdutRAC8AzS55gnCRkfhyyx1YU8I/viewform',
       intakeFormEmbed: 'https://docs.google.com/forms/d/1CjDjCbpK6AecdjbDdutRAC8AzS55gnCRkfhyyx1YU8I/viewform?embedded=true',
+      sharedLinks: SHARED_LINKS,
     },
     daniher: {
       name: 'Daniher Concierge Medicine', physician: 'Dr. Amy Daniher, M.D.',
       website: 'https://justintella.github.io/amy-daniher-website',
       intakeForm: 'https://forms.gle/q84xUoohi6vbAKqZA',
       intakeFormEmbed: 'https://forms.gle/q84xUoohi6vbAKqZA',
+      sharedLinks: SHARED_LINKS,
     },
     other: {
       name: 'Your Practice', physician: 'Physician',
@@ -1078,6 +1104,23 @@
             <a class="qa-btn secondary" href="${pd.intakeForm}" target="_blank">New Tab ↗</a>
           </div>
         </div>
+
+        ${(pd.sharedLinks || []).map(sl => `
+        <div class="qa-card">
+          <div class="qa-card-top">
+            <div class="qa-icon" style="background:${sl.iconBg}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${sl.iconStroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${sl.iconPath}</svg>
+            </div>
+            <div class="qa-text">
+              <div class="qa-title">${sl.title}</div>
+              <div class="qa-sub">${sl.sub}</div>
+            </div>
+          </div>
+          <div class="qa-actions">
+            <button class="qa-btn primary" onclick="openEmbed('${sl.embedUrl}','${sl.title}')">Open in Site</button>
+            <a class="qa-btn secondary" href="${sl.url}" target="_blank">New Tab ↗</a>
+          </div>
+        </div>`).join('')}
 
       </div>
 
