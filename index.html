@@ -859,12 +859,12 @@
             </div>
             <div class="qa-text">
               <div class="qa-title">Practice Website</div>
-              <div class="qa-sub">Sujansky Concierge Medicine</div>
+              <div class="qa-sub" id="website-sub">—</div>
             </div>
           </div>
           <div class="qa-actions">
-            <button id="btn-website-embed" class="qa-btn primary" onclick="openEmbed('https://justintella.github.io/sujansky-website','Practice Website')">Open in Site</button>
-            <a id="link-website-tab" class="qa-btn secondary" href="https://justintella.github.io/sujansky-website" target="_blank">New Tab ↗</a>
+            <button id="btn-website-embed" class="qa-btn primary">Open in Site</button>
+            <a id="link-website-tab" class="qa-btn secondary" href="#" target="_blank">New Tab ↗</a>
           </div>
         </div>
 
@@ -914,8 +914,8 @@
             </div>
           </div>
           <div class="qa-actions">
-            <button id="btn-form-embed" class="qa-btn primary" onclick="openEmbed('https://docs.google.com/forms/d/1CjDjCbpK6AecdjbDdutRAC8AzS55gnCRkfhyyx1YU8I/viewform?embedded=true','Patient Intake Form')">Open in Site</button>
-            <a id="link-form-tab" class="qa-btn secondary" href="https://docs.google.com/forms/d/1CjDjCbpK6AecdjbDdutRAC8AzS55gnCRkfhyyx1YU8I/viewform" target="_blank">New Tab ↗</a>
+            <button id="btn-form-embed" class="qa-btn primary">Open in Site</button>
+            <a id="link-form-tab" class="qa-btn secondary" href="#" target="_blank">New Tab ↗</a>
           </div>
         </div>
 
@@ -1084,15 +1084,20 @@
   /* ─── Terminal population ─── */
   function populateTerminal() {
     const pd = practiceData[currentPractice] || practiceData.other;
+
+    // Header
     document.getElementById('term-nav-practice').textContent = pd.name;
     document.getElementById('pb-name').textContent           = pd.name;
     document.getElementById('pb-sub').textContent            = pd.physician + ' · San Mateo, CA';
 
-    // Practice-specific URLs
-    document.getElementById('btn-website-embed').onclick = () => openEmbed(pd.website, 'Practice Website');
-    document.getElementById('link-website-tab').href     = pd.website;
-    document.getElementById('btn-form-embed').onclick    = () => openEmbed(pd.intakeFormEmbed, 'Patient Intake Form');
-    document.getElementById('link-form-tab').href        = pd.intakeForm;
+    // Practice Website card
+    document.getElementById('website-sub').textContent       = pd.name;
+    document.getElementById('btn-website-embed').onclick     = () => openEmbed(pd.website, 'Practice Website');
+    document.getElementById('link-website-tab').href         = pd.website;
+
+    // Patient Intake Form card
+    document.getElementById('btn-form-embed').onclick        = () => openEmbed(pd.intakeFormEmbed, 'Patient Intake Form');
+    document.getElementById('link-form-tab').href            = pd.intakeForm;
 
     // reset embed on each visit
     closeEmbed();
