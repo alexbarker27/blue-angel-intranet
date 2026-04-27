@@ -835,105 +835,8 @@
   </nav>
 
   <div class="terminal-body">
-    <!-- Content -->
-    <div class="term-content">
-
-      <!-- Practice header -->
-      <div class="practice-banner">
-        <div class="pb-left">
-          <p class="pb-eyebrow">Blue Angel Clinical Partners</p>
-          <h2 class="pb-name" id="pb-name">—</h2>
-          <p class="pb-sub" id="pb-sub">—</p>
-        </div>
-      </div>
-
-      <!-- Quick access grid -->
-      <p class="qa-label">Quick Access</p>
-      <div class="qa-grid">
-
-        <!-- Practice Website -->
-        <div class="qa-card">
-          <div class="qa-card-top">
-            <div class="qa-icon" style="background:#EEF4FF">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
-            </div>
-            <div class="qa-text">
-              <div class="qa-title">Practice Website</div>
-              <div class="qa-sub" id="website-sub">—</div>
-            </div>
-          </div>
-          <div class="qa-actions">
-            <button id="btn-website-embed" class="qa-btn primary">Open in Site</button>
-            <a id="link-website-tab" class="qa-btn secondary" href="#" target="_blank">New Tab ↗</a>
-          </div>
-        </div>
-
-        <!-- Workflow -->
-        <div class="qa-card">
-          <div class="qa-card-top">
-            <div class="qa-icon" style="background:#EEF4FF">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
-            </div>
-            <div class="qa-text">
-              <div class="qa-title">Workflow</div>
-              <div class="qa-sub">Travel medicine steps</div>
-            </div>
-          </div>
-          <div class="qa-actions">
-            <button class="qa-btn primary" onclick="openEmbed('https://justintella.github.io/travel-medicine-workflow/','Workflow')">Open in Site</button>
-            <a class="qa-btn secondary" href="https://justintella.github.io/travel-medicine-workflow/" target="_blank">New Tab ↗</a>
-          </div>
-        </div>
-
-        <!-- Travel Medicine Kit -->
-        <div class="qa-card">
-          <div class="qa-card-top">
-            <div class="qa-icon" style="background:#F0F9FF">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M3 6a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M12 14v4M10 16h4"/></svg>
-            </div>
-            <div class="qa-text">
-              <div class="qa-title">Travel Medicine Kit</div>
-              <div class="qa-sub">CDC Yellow Book protocols</div>
-            </div>
-          </div>
-          <div class="qa-actions">
-            <button class="qa-btn primary" onclick="openEmbed('travel_kit.html','Travel Medicine Kit')">Open in Site</button>
-            <a class="qa-btn secondary" href="travel_kit.html" target="_blank">New Tab ↗</a>
-          </div>
-        </div>
-
-        <!-- Patient Intake Form -->
-        <div class="qa-card">
-          <div class="qa-card-top">
-            <div class="qa-icon" style="background:#FFF7ED">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>
-            </div>
-            <div class="qa-text">
-              <div class="qa-title">Patient Intake Form</div>
-              <div class="qa-sub">Travel medicine questionnaire</div>
-            </div>
-          </div>
-          <div class="qa-actions">
-            <button id="btn-form-embed" class="qa-btn primary">Open in Site</button>
-            <a id="link-form-tab" class="qa-btn secondary" href="#" target="_blank">New Tab ↗</a>
-          </div>
-        </div>
-
-      </div><!-- /qa-grid -->
-
-      <!-- Embedded view (shown on demand) -->
-      <div id="embed-section" style="display:none; margin-top:28px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-          <span id="embed-title" style="font-size:14px;font-weight:600;color:var(--text)">—</span>
-          <button onclick="closeEmbed()" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:5px">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            Close
-          </button>
-        </div>
-        <iframe id="wf-iframe" class="wf-frame" src="" title="Embedded view"></iframe>
-      </div>
-
-    </div><!-- /term-content -->
+    <!-- Content — fully generated by populateTerminal() -->
+    <div class="term-content" id="term-content"></div>
   </div><!-- /terminal-body -->
 </div>
 
@@ -1084,23 +987,97 @@
   /* ─── Terminal population ─── */
   function populateTerminal() {
     const pd = practiceData[currentPractice] || practiceData.other;
-
-    // Header
     document.getElementById('term-nav-practice').textContent = pd.name;
-    document.getElementById('pb-name').textContent           = pd.name;
-    document.getElementById('pb-sub').textContent            = pd.physician + ' · San Mateo, CA';
 
-    // Practice Website card
-    document.getElementById('website-sub').textContent       = pd.name;
-    document.getElementById('btn-website-embed').onclick     = () => openEmbed(pd.website, 'Practice Website');
-    document.getElementById('link-website-tab').href         = pd.website;
+    document.getElementById('term-content').innerHTML = `
+      <div class="practice-banner">
+        <div class="pb-left">
+          <p class="pb-eyebrow">Blue Angel Clinical Partners</p>
+          <h2 class="pb-name">${pd.name}</h2>
+          <p class="pb-sub">${pd.physician} &middot; San Mateo, CA</p>
+        </div>
+      </div>
 
-    // Patient Intake Form card
-    document.getElementById('btn-form-embed').onclick        = () => openEmbed(pd.intakeFormEmbed, 'Patient Intake Form');
-    document.getElementById('link-form-tab').href            = pd.intakeForm;
+      <p class="qa-label">Quick Access</p>
+      <div class="qa-grid">
 
-    // reset embed on each visit
-    closeEmbed();
+        <div class="qa-card">
+          <div class="qa-card-top">
+            <div class="qa-icon" style="background:#EEF4FF">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+            </div>
+            <div class="qa-text">
+              <div class="qa-title">Practice Website</div>
+              <div class="qa-sub">${pd.name}</div>
+            </div>
+          </div>
+          <div class="qa-actions">
+            <button class="qa-btn primary" onclick="openEmbed('${pd.website}','Practice Website')">Open in Site</button>
+            <a class="qa-btn secondary" href="${pd.website}" target="_blank">New Tab ↗</a>
+          </div>
+        </div>
+
+        <div class="qa-card">
+          <div class="qa-card-top">
+            <div class="qa-icon" style="background:#EEF4FF">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+            </div>
+            <div class="qa-text">
+              <div class="qa-title">Workflow</div>
+              <div class="qa-sub">Travel medicine steps</div>
+            </div>
+          </div>
+          <div class="qa-actions">
+            <button class="qa-btn primary" onclick="openEmbed('https://justintella.github.io/travel-medicine-workflow/','Workflow')">Open in Site</button>
+            <a class="qa-btn secondary" href="https://justintella.github.io/travel-medicine-workflow/" target="_blank">New Tab ↗</a>
+          </div>
+        </div>
+
+        <div class="qa-card">
+          <div class="qa-card-top">
+            <div class="qa-icon" style="background:#F0F9FF">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M3 6a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M12 14v4M10 16h4"/></svg>
+            </div>
+            <div class="qa-text">
+              <div class="qa-title">Travel Medicine Kit</div>
+              <div class="qa-sub">CDC Yellow Book protocols</div>
+            </div>
+          </div>
+          <div class="qa-actions">
+            <button class="qa-btn primary" onclick="openEmbed('travel_kit.html','Travel Medicine Kit')">Open in Site</button>
+            <a class="qa-btn secondary" href="travel_kit.html" target="_blank">New Tab ↗</a>
+          </div>
+        </div>
+
+        <div class="qa-card">
+          <div class="qa-card-top">
+            <div class="qa-icon" style="background:#FFF7ED">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>
+            </div>
+            <div class="qa-text">
+              <div class="qa-title">Patient Intake Form</div>
+              <div class="qa-sub">Travel medicine questionnaire</div>
+            </div>
+          </div>
+          <div class="qa-actions">
+            <button class="qa-btn primary" onclick="openEmbed('${pd.intakeFormEmbed}','Patient Intake Form')">Open in Site</button>
+            <a class="qa-btn secondary" href="${pd.intakeForm}" target="_blank">New Tab ↗</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="embed-section" style="display:none;margin-top:28px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <span id="embed-title" style="font-size:14px;font-weight:600;color:var(--text)">—</span>
+          <button onclick="closeEmbed()" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:5px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            Close
+          </button>
+        </div>
+        <iframe id="wf-iframe" class="wf-frame" src="" title="Embedded view"></iframe>
+      </div>
+    `;
   }
 
   /* Override dashboard → terminal nav to populate first */
