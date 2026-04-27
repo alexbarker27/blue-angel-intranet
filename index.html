@@ -1044,9 +1044,8 @@
         </div>
       </div>
 
-      <p class="qa-label">Quick Access</p>
-      <div class="qa-grid">
-
+      <p class="qa-label">Practice</p>
+      <div class="qa-grid" style="margin-bottom:20px">
         <div class="qa-card">
           <div class="qa-card-top">
             <div class="qa-icon" style="background:#EEF4FF">
@@ -1062,7 +1061,10 @@
             <a class="qa-btn-tab" href="${pd.website}" target="_blank">New Tab ↗</a>
           </div>
         </div>
+      </div>
 
+      <p class="qa-label">Travel Medicine</p>
+      <div class="qa-grid" style="margin-bottom:20px">
         <div class="qa-card">
           <div class="qa-card-top">
             <div class="qa-icon" style="background:#F0FDF4">
@@ -1110,8 +1112,12 @@
             <a class="qa-btn-tab" href="${pd.intakeForm}" target="_blank">New Tab ↗</a>
           </div>
         </div>
+      </div>
 
-        ${(pd.sharedLinks || []).map(sl => `
+      ${(pd.sharedLinks || []).length ? `
+      <p class="qa-label">Financials &amp; Operations</p>
+      <div class="qa-grid" style="margin-bottom:20px">
+        ${pd.sharedLinks.map(sl => `
         <div class="qa-card">
           <div class="qa-card-top">
             <div class="qa-icon" style="background:${sl.iconBg}">
@@ -1127,8 +1133,7 @@
             <a class="qa-btn-tab" href="${sl.url}" target="_blank">New Tab ↗</a>
           </div>
         </div>`).join('')}
-
-      </div>
+      </div>` : ''}
 
       <div id="embed-section" style="display:none;margin-top:28px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
