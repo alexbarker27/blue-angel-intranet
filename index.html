@@ -1015,7 +1015,7 @@
       iconStroke: '#E11D48',
       iconPath: '<path d="M3 9h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path d="M3 9l2-4h14l2 4"/><path d="M12 13v4M10 15h4"/>',
     },
-    ...SHARED_LINKS.map(link => ({ ...link, section: 'Financials & Operations', scope: 'both' })),
+    ...SHARED_LINKS.map(link => ({ ...link, section: 'Clinic Operations', scope: 'both' })),
   ];
 
   /* ─── View switching ─── */
@@ -1251,7 +1251,7 @@
       </div>
 
       ${(pd.sharedLinks || []).length ? `
-      <p class="qa-label">Financials &amp; Operations</p>
+      <p class="qa-label">Clinic Operations</p>
       <div class="qa-grid" style="margin-bottom:20px">
         ${pd.sharedLinks.map(sl => `
         <div class="qa-card">
