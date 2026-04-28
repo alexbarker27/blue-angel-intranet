@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blue Angel Clinical Partners — Portal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0A2558;
+      --blue:    #1565C0;
+      --blue-lt: #1E88E5;
+      --gold:    #C9A84C;
+      --gold-lt: #E8C96A;
+      --bg:      #EEF4FF;
+      --white:   #FFFFFF;
+      --text:    #0D1B3E;
+      --muted:   #6B7A99;
+      --border:  #CDDAF5;
+      --shadow:  0 20px 60px rgba(10,37,88,0.18);
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* subtle grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(135deg, #0A2558 0%, #0E3A7A 50%, #1565C0 100%);
+      z-index: -1;
+    }
+
+    /* floating particles effect */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.07;
+      background: white;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 0.07; }
+      90%  { opacity: 0.07; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* card */
+    .card {
+      display: flex;
+      width: 900px;
+      max-width: 95vw;
+      min-height: 560px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    /* ── LEFT PANEL ── */
+    .brand-panel {
+      width: 42%;
+      background:
+        radial-gradient(circle at top left, rgba(21,101,192,0.08), transparent 30%),
+        linear-gradient(180deg, #FFFFFF 0%, #F4F8FF 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-panel::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      border: 1px solid rgba(21,101,192,0.10);
+      top: -60px;
+      right: -80px;
+    }
+    .brand-panel::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 1px solid rgba(21,101,192,0.08);
+      bottom: -40px;
+      left: -40px;
+    }
+
+    .logo-wrap {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 28px;
+    }
+
+    .logo-wrap {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 28px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .logo-wrap img {
+      width: 320px;
+      max-width: 100%;
+      height: auto;
+      filter: none;
+    }
+
+    .brand-name {
+      position: relative;
+      z-index: 1;
+      color: var(--white);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .brand-name span {
+      display: block;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      margin-top: 6px;
+    }
+
+    .brand-divider {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(21,101,192,0.4), transparent);
+      margin: 24px auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-tagline {
+      position: relative;
+      z-index: 1;
+      color: #49617F;
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 250px;
+    }
+
+    .brand-footer {
+      position: relative;
+      z-index: 1;
+      margin-top: auto;
+      padding-top: 32px;
+      font-size: 11px;
+      color: rgba(10,37,88,0.42);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── RIGHT PANEL ── */
+    .form-panel {
+      flex: 1;
+      background: linear-gradient(160deg, #0B2B66 0%, #0A2558 52%, #1358B6 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 52px 48px;
+    }
+
+    .form-header {
+      margin-bottom: 32px;
+    }
+    .form-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+    .form-header p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.72);
+    }
+
+    /* role tabs */
+    .role-tabs {
+      display: flex;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 28px;
+      gap: 4px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .role-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.72);
+      transition: all 0.2s;
+      border: none;
+      background: transparent;
+      user-select: none;
+    }
+    .role-tab svg { flex-shrink: 0; }
+    .role-tab.active {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 2px 8px rgba(10,37,88,0.12);
+    }
+
+    /* form fields */
+    .field {
+      margin-bottom: 18px;
+    }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.82);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+    .field select,
+    .field input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--white);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      appearance: none;
+    }
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A99' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(21,101,192,0.12);
+    }
+
+    .field-row { display: flex; gap: 12px; }
+    .field-row .field { flex: 1; }
+
+    /* password wrapper */
+    .pw-wrap { position: relative; }
+    .pw-wrap input { padding-right: 44px; }
+    .pw-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 2px;
+      line-height: 0;
+    }
+
+    .forgot {
+      display: block;
+      text-align: right;
+      font-size: 12px;
+      color: #F3D37A;
+      text-decoration: none;
+      margin-top: -10px;
+      margin-bottom: 24px;
+    }
+    .forgot:hover { text-decoration: underline; }
+
+    .btn-signin {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #E7C86D 0%, #C9A84C 100%);
+      color: #0A2558;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: opacity 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-signin::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .btn-signin:hover { opacity: 0.92; transform: translateY(-1px); }
+    .btn-signin:active { transform: translateY(0); }
+    .btn-skip {
+      width: 100%;
+      padding: 12px 14px;
+      margin-top: 10px;
+      background: rgba(255,255,255,0.08);
+      color: #FFFFFF;
+      border: 1.5px dashed rgba(255,255,255,0.24);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-skip:hover { border-color: rgba(255,255,255,0.48); background: rgba(255,255,255,0.14); }
+
+    .signin-note {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.72);
+    }
+
+    /* error / feedback */
+    .alert {
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 18px;
+      display: none;
+    }
+    .alert.error { background: #FEE2E2; color: #991B1B; border-left: 3px solid #EF4444; }
+    .alert.show { display: block; }
+
+    @media (max-width: 660px) {
+      .brand-panel { display: none; }
+      .form-panel { padding: 36px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="card">
+  <!-- ── LEFT: Brand Panel ── -->
+  <div class="brand-panel">
+    <div class="logo-wrap">
+      <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel Clinical Partners logo" />
+    </div>
+
+    <div class="brand-divider"></div>
+
+    <p class="brand-tagline">
+      Empowering concierge physicians to deliver exceptional care — together.
+    </p>
+
+    <div class="brand-footer">
+      Physician Portal &nbsp;·&nbsp; Secure Access
+    </div>
+  </div>
+
+  <!-- ── RIGHT: Form Panel ── -->
+  <div class="form-panel">
+    <div class="form-header">
+      <h2>Welcome back</h2>
+      <p>Sign in to access your practice portal</p>
+    </div>
+
+    <!-- Role Selector -->
+    <div class="role-tabs" role="tablist">
+      <button class="role-tab active" id="tab-physician" onclick="setRole('physician')" role="tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2v4M16 2v4M3 10h18M3 6a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <circle cx="12" cy="16" r="2"/>
+          <path d="M12 14v-2"/>
+        </svg>
+        Physician
+      </button>
+      <button class="role-tab" id="tab-staff" onclick="setRole('staff')" role="tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+        Staff
+      </button>
+    </div>
+
+    <div class="alert error" id="error-msg">
+      Please fill in all fields to continue.
+    </div>
+
+    <form id="login-form" onsubmit="handleLogin(event)" novalidate>
+      <!-- Practice Name -->
+      <div class="field">
+        <label for="practice">Practice</label>
+        <select id="practice" name="practice" required>
+          <option value="" disabled selected>Select your practice</option>
+          <option value="sujansky">Sujansky Concierge Medicine — San Mateo, CA</option>
+          <option value="daniher">Daniher Concierge Medicine — San Mateo, CA</option>
+          <option value="other">Other Practice</option>
+        </select>
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="you@practice.com" autocomplete="email" required />
+      </div>
+
+      <!-- Password -->
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+          <button type="button" class="pw-toggle" onclick="togglePw()" title="Show/hide password">
+            <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <a href="#" class="forgot">Forgot password?</a>
+
+      <button type="submit" class="btn-signin" id="signin-btn">Sign In</button>
+      <button type="button" class="btn-skip" onclick="skipSignIn()">Temporary: Skip Sign In</button>
+    </form>
+
+    <p class="signin-note">
+      Need access? Contact <a href="mailto:joseph@blueangelclinical.com" style="color:var(--blue)">joseph@blueangelclinical.com</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  // ── Floating particles
+  (function() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 60 + 20;
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        animation-duration:${Math.random()*20+15}s;
+        animation-delay:${Math.random()*-30}s;
+      `;
+      container.appendChild(p);
+    }
+  })();
+
+  // ── Role tab switching
+  let currentRole = 'physician';
+  function setRole(role) {
+    currentRole = role;
+    document.getElementById('tab-physician').classList.toggle('active', role === 'physician');
+    document.getElementById('tab-staff').classList.toggle('active', role === 'staff');
+  }
+
+  // ── Password toggle
+  function togglePw() {
+    const input = document.getElementById('password');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  // ── Login handler
+  function handleLogin(e) {
+    e.preventDefault();
+    const practice = document.getElementById('practice').value;
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const errEl    = document.getElementById('error-msg');
+
+    if (!practice || !email || !password) {
+      errEl.textContent = 'Please fill in all fields to continue.';
+      errEl.classList.add('show');
+      return;
+    }
+    errEl.classList.remove('show');
+
+    const btn = document.getElementById('signin-btn');
+    btn.textContent = 'Signing in…';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      // Pass context to dashboard
+      const params = new URLSearchParams({ practice, role: currentRole, email });
+      window.location.href = `dashboard.html?${params}`;
+    }, 900);
+  }
+
+  function skipSignIn() {
+    const params = new URLSearchParams({
+      practice: 'sujansky',
+      role: 'physician',
+      email: 'demo@blueangelclinical.com'
+    });
+    window.location.href = `dashboard.html?${params}`;
+  }
+</script>
+</body>
+</html>

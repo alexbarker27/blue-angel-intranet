@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Practice Terminal — Blue Angel Clinical Partners</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0A2558;
+      --blue:   #1565C0;
+      --gold:   #C9A84C;
+      --gold-lt:#E8C96A;
+      --bg:     #F0F4FF;
+      --white:  #FFFFFF;
+      --text:   #0D1B3E;
+      --muted:  #6B7A99;
+      --border: #D4E1F7;
+      --green:  #16A34A;
+      --green-bg: #DCFCE7;
+      --amber:  #D97706;
+      --amber-bg: #FEF3C7;
+      --red:    #DC2626;
+      --red-bg: #FEE2E2;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: linear-gradient(135deg, #061A42 0%, #0A2558 60%, #0E3A7A 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 60px;
+      box-shadow: 0 2px 16px rgba(10,37,88,0.28);
+    }
+    .nav-left { display: flex; align-items: center; gap: 16px; }
+    .nav-back {
+      display: flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.65); font-size: 13px;
+      text-decoration: none; padding: 6px 10px;
+      border-radius: 7px; transition: all 0.2s;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .nav-back:hover { background: rgba(255,255,255,0.08); color: white; }
+    .nav-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.15); }
+    .nav-title {
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-title .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #22C55E;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+      50%      { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+    }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-practice-badge {
+      background: rgba(201,168,76,0.18);
+      border: 1px solid rgba(201,168,76,0.32);
+      border-radius: 20px;
+      padding: 4px 13px;
+      font-size: 12px; font-weight: 600;
+      color: var(--gold-lt);
+    }
+    .nav-signout {
+      background: none; border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.65); padding: 5px 12px;
+      border-radius: 6px; font-size: 12px; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-signout:hover { background: rgba(255,255,255,0.08); color: white; }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: 240px;
+      background: var(--white);
+      border-right: 1.5px solid var(--border);
+      padding: 24px 0;
+      flex-shrink: 0;
+    }
+    .sidebar-section {
+      padding: 0 16px;
+      margin-bottom: 28px;
+    }
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .sidebar-item:hover { background: var(--bg); color: var(--text); }
+    .sidebar-item.active { background: #EEF4FF; color: var(--navy); font-weight: 600; }
+    .sidebar-item.active svg { color: var(--blue); }
+    .sidebar-badge {
+      margin-left: auto;
+      background: var(--blue);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px 36px 60px;
+    }
+
+    /* Practice header */
+    .practice-header {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      border-radius: 16px;
+      padding: 28px 32px;
+      color: white;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .practice-header::after {
+      content: '';
+      position: absolute; right: -40px; top: -40px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .ph-left { position: relative; z-index: 1; }
+    .ph-practice { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 6px; }
+    .ph-name { font-size: 24px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; }
+    .ph-location { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .ph-stats {
+      position: relative; z-index: 1;
+      display: flex; gap: 24px;
+    }
+    .ph-stat { text-align: center; }
+    .ph-stat-num { font-size: 22px; font-weight: 700; color: var(--gold-lt); }
+    .ph-stat-lbl { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+    /* tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    .tab-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 18px;
+      border-radius: 7px;
+      border: none;
+      background: transparent;
+      font-size: 13px; font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab-btn.active {
+      background: var(--navy);
+      color: white;
+    }
+
+    /* panel */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── WORKFLOW PANEL ── */
+    .workflow-intro {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .wi-left { flex: 1; }
+    .wi-tag {
+      display: inline-block;
+      background: rgba(21,101,192,0.1);
+      color: var(--blue);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 8px;
+    }
+    .wi-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .wi-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .btn-sheets {
+      display: flex; align-items: center; gap: 8px;
+      background: #1565C0; color: white;
+      padding: 11px 20px; border-radius: 9px;
+      font-size: 13px; font-weight: 600;
+      text-decoration: none; flex-shrink: 0;
+      transition: opacity 0.2s;
+    }
+    .btn-sheets:hover { opacity: 0.88; }
+
+    /* workflow steps */
+    .workflow-steps { display: flex; flex-direction: column; gap: 14px; }
+    .step-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .step-header:hover { background: var(--bg); }
+    .step-num {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: white; font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-num.done { background: linear-gradient(135deg, #15803D, #22C55E); }
+    .step-title-wrap { flex: 1; }
+    .step-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .step-subtitle { font-size: 12px; color: var(--muted); }
+    .step-status {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 11px; border-radius: 20px;
+    }
+    .step-status.active  { background: rgba(21,101,192,0.1); color: var(--blue); }
+    .step-status.pending { background: var(--amber-bg); color: var(--amber); }
+    .step-status.done    { background: var(--green-bg); color: var(--green); }
+    .step-chevron {
+      color: var(--muted); transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .step-card.open .step-chevron { transform: rotate(180deg); }
+
+    .step-body {
+      display: none;
+      padding: 0 22px 20px 72px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+    .step-card.open .step-body { display: block; }
+
+    .step-body p {
+      font-size: 13px; color: var(--muted); line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .step-body ul, .step-body ol {
+      padding-left: 18px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .step-body li { font-size: 13px; color: var(--text); line-height: 1.5; }
+    .step-body li span { color: var(--muted); }
+
+    .checklist-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 13px; color: var(--text);
+      padding: 5px 0; border-bottom: 1px solid var(--border);
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .ci-check {
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 1.5px solid var(--border);
+      background: var(--white); flex-shrink: 0; margin-top: 1px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .ci-check.checked { background: var(--green); border-color: var(--green); }
+    .ci-check.checked::after {
+      content: '✓';
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: white; height: 100%; width: 100%;
+    }
+
+    /* meds table */
+    .med-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+    .med-table th {
+      background: var(--bg); font-weight: 700; font-size: 11px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); padding: 8px 12px; text-align: left;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .med-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text); }
+    .med-table tr:last-child td { border-bottom: none; }
+    .med-table tr:hover td { background: var(--bg); }
+
+    /* notes panel */
+    .notes-area {
+      width: 100%;
+      min-height: 120px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px; font-family: inherit;
+      color: var(--text); resize: vertical;
+      outline: none; background: var(--white);
+    }
+    .notes-area:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(21,101,192,0.1); }
+
+    /* ── OVERVIEW PANEL ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-box {
+      background: var(--white); border: 1.5px solid var(--border); border-radius: 13px; padding: 20px;
+    }
+    .stat-box-num { font-size: 28px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .stat-box-lbl { font-size: 12px; color: var(--muted); }
+    .stat-box-delta { font-size: 12px; color: var(--green); font-weight: 600; margin-top: 4px; }
+
+    .info-card {
+      background: var(--white); border: 1.5px solid var(--border); border-radius: 13px;
+      padding: 24px; margin-bottom: 16px;
+    }
+    .info-card h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .info-row { display: flex; align-items: flex-start; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--bg); font-size: 13px; }
+    .info-row:last-child { border-bottom: none; }
+    .info-row-key { color: var(--muted); font-weight: 500; }
+    .info-row-val { color: var(--text); font-weight: 600; text-align: right; }
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge.green { background: var(--green-bg); color: var(--green); }
+    .badge.blue  { background: rgba(21,101,192,0.1); color: var(--blue); }
+    .badge.gold  { background: rgba(201,168,76,0.15); color: #92670A; }
+
+    @media (max-width: 900px) {
+      .layout { flex-direction: column; }
+      aside { width: 100%; border-right: none; border-bottom: 1.5px solid var(--border); padding: 12px 0; }
+      .ph-stats { display: none; }
+      .stat-grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="javascript:goBack()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+      Dashboard
+    </a>
+    <span class="nav-divider"></span>
+    <span class="nav-title">
+      <span class="dot"></span>
+      Practice Terminal
+    </span>
+  </div>
+  <div class="nav-right">
+    <span class="nav-practice-badge" id="nav-practice">—</span>
+    <button class="nav-signout" onclick="window.location.href='login.html'">Sign Out</button>
+  </div>
+</nav>
+
+<!-- ── LAYOUT ── -->
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside>
+    <div class="sidebar-section">
+      <p class="sidebar-label">Terminal</p>
+      <a class="sidebar-item active" onclick="showTab('workflow')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+          <path d="M9 12h6M9 16h4"/>
+        </svg>
+        Workflow
+        <span class="sidebar-badge">Live</span>
+      </a>
+      <a class="sidebar-item" onclick="showTab('overview')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+        Overview
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Quick Actions</p>
+      <a class="sidebar-item" href="https://justintella.github.io/travel-medicine-workflow/" target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+          <path d="M15 3h6v6M10 14L21 3"/>
+        </svg>
+        Live Workflow
+      </a>
+      <a class="sidebar-item" href="https://justintella.github.io/sujansky-website" target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
+        </svg>
+        Practice Website
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Contact</p>
+      <div style="padding:8px 12px;font-size:12px;color:var(--muted);line-height:1.6">
+        <div style="font-weight:600;color:var(--text);margin-bottom:4px">Blue Angel Support</div>
+        <a href="mailto:joseph@blueangelclinical.com" style="color:var(--blue);text-decoration:none">joseph@blueangelclinical.com</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── CONTENT ── -->
+  <div class="content">
+
+    <!-- Practice Header -->
+    <div class="practice-header">
+      <div class="ph-left">
+        <p class="ph-practice" id="ph-practice">Practice</p>
+        <h2 class="ph-name" id="ph-name">Loading…</h2>
+        <p class="ph-location" id="ph-location">San Mateo, CA</p>
+      </div>
+      <div class="ph-stats" id="ph-stats"></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-workflow" onclick="showTab('workflow')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+        </svg>
+        Travel Medicine Workflow
+      </button>
+      <button class="tab-btn" id="tab-overview" onclick="showTab('overview')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+        Practice Overview
+      </button>
+    </div>
+
+    <!-- ═══ WORKFLOW PANEL ═══ -->
+    <div class="panel active" id="panel-workflow">
+
+      <div class="workflow-intro">
+        <div class="wi-left">
+          <span class="wi-tag">Concierge Travel Medicine</span>
+          <h3 class="wi-title">Patient Workflow Dashboard</h3>
+          <p class="wi-desc">Step-by-step intake and consultation protocol for travel medicine appointments. Click any step to expand its checklist and notes.</p>
+        </div>
+        <a class="btn-sheets" href="https://justintella.github.io/travel-medicine-workflow/" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+            <path d="M15 3h6v6M10 14L21 3"/>
+          </svg>
+          Open Live Workflow
+        </a>
+      </div>
+
+      <div class="workflow-steps">
+
+        <!-- Step 1: Initial Inquiry -->
+        <div class="step-card" id="step-1">
+          <div class="step-header" onclick="toggleStep('step-1')">
+            <div class="step-num">1</div>
+            <div class="step-title-wrap">
+              <div class="step-title">Initial Patient Inquiry</div>
+              <div class="step-subtitle">Scheduling & pre-screening</div>
+            </div>
+            <span class="step-status active">Active</span>
+            <svg class="step-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="step-body">
+            <p>Patient contacts practice requesting a travel medicine consultation. Confirm membership status and collect initial travel details before scheduling.</p>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Verify patient membership status in EHR</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Collect travel destination(s) and departure date</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Note trip duration and type (leisure / business / expedition)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Schedule appointment ≥ 4–6 weeks before departure if possible</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Send intake form link to patient (pre-travel health questionnaire)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Document inquiry in travel medicine tracker spreadsheet</span></div>
+            <br/>
+            <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">APPOINTMENT NOTES</label>
+            <textarea class="notes-area" placeholder="Add notes for this inquiry…"></textarea>
+          </div>
+        </div>
+
+        <!-- Step 2: Pre-Visit Assessment -->
+        <div class="step-card" id="step-2">
+          <div class="step-header" onclick="toggleStep('step-2')">
+            <div class="step-num">2</div>
+            <div class="step-title-wrap">
+              <div class="step-title">Pre-Visit Health Assessment</div>
+              <div class="step-subtitle">Review intake form & medical history</div>
+            </div>
+            <span class="step-status active">Active</span>
+            <svg class="step-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="step-body">
+            <p>Before the appointment, the physician reviews the patient's submitted intake form and existing medical records to prepare a personalized consultation plan.</p>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Review completed pre-travel health questionnaire</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Check current medications for potential travel drug interactions</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Note chronic conditions requiring special travel considerations</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Review past vaccination records (identify gaps)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Research destination-specific health risks (CDC Travelers' Health)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Identify required vs. recommended vaccines for destination</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Check if Yellow Fever certificate required (e.g., Sub-Saharan Africa, Amazon)</span></div>
+          </div>
+        </div>
+
+        <!-- Step 3: Vaccine Assessment -->
+        <div class="step-card" id="step-3">
+          <div class="step-header" onclick="toggleStep('step-3')">
+            <div class="step-num">3</div>
+            <div class="step-title-wrap">
+              <div class="step-title">Vaccine &amp; Immunization Planning</div>
+              <div class="step-subtitle">Required & recommended vaccines by destination</div>
+            </div>
+            <span class="step-status pending">In Progress</span>
+            <svg class="step-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="step-body">
+            <p>Develop a personalized immunization plan based on destination, duration, and patient immune history. Administer vaccines in-office or coordinate referral for Yellow Fever.</p>
+
+            <table class="med-table">
+              <thead>
+                <tr>
+                  <th>Vaccine</th>
+                  <th>Indication</th>
+                  <th>Schedule</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Hepatitis A</td>
+                  <td>All international travel</td>
+                  <td>2-dose series</td>
+                  <td><span class="badge green">Review</span></td>
+                </tr>
+                <tr>
+                  <td>Typhoid</td>
+                  <td>South Asia, Africa, Latin America</td>
+                  <td>Oral or IM, 2 yr booster</td>
+                  <td><span class="badge blue">Order</span></td>
+                </tr>
+                <tr>
+                  <td>Yellow Fever</td>
+                  <td>Required: Sub-Saharan Africa, Amazon</td>
+                  <td>Single dose (10-yr validity)</td>
+                  <td><span class="badge gold">Coordinate</span></td>
+                </tr>
+                <tr>
+                  <td>Malaria Prophylaxis</td>
+                  <td>Malaria-endemic regions</td>
+                  <td>See Step 4 medications</td>
+                  <td><span class="badge blue">Rx</span></td>
+                </tr>
+                <tr>
+                  <td>Rabies (Pre-Exposure)</td>
+                  <td>Remote areas, outdoor activities</td>
+                  <td>3-dose series over 21 days</td>
+                  <td><span class="badge blue">Assess</span></td>
+                </tr>
+                <tr>
+                  <td>Japanese Encephalitis</td>
+                  <td>Rural Asia, extended stays</td>
+                  <td>2-dose (Ixiaro)</td>
+                  <td><span class="badge blue">Assess</span></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <br/>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Document all vaccines administered with lot #, site, and date</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Issue International Certificate of Vaccination (Yellow Card) if applicable</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Update EHR immunization record</span></div>
+          </div>
+        </div>
+
+        <!-- Step 4: Prescription Medications -->
+        <div class="step-card" id="step-4">
+          <div class="step-header" onclick="toggleStep('step-4')">
+            <div class="step-num">4</div>
+            <div class="step-title-wrap">
+              <div class="step-title">Prescription Medications</div>
+              <div class="step-subtitle">Malaria prophylaxis, altitude sickness, traveler's diarrhea</div>
+            </div>
+            <span class="step-status pending">In Progress</span>
+            <svg class="step-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="step-body">
+            <p>Prescribe travel-specific medications based on destination risks, trip type, and patient's medical history. Provide patient education on each medication.</p>
+
+            <table class="med-table">
+              <thead>
+                <tr><th>Medication</th><th>Indication</th><th>Dosing</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Atovaquone/Proguanil<br/><small style="color:var(--muted)">(Malarone)</small></td>
+                  <td>Malaria prophylaxis</td>
+                  <td>1 tab daily; start 1-2 days before, 7 days after</td>
+                  <td>First-line; fewest SE</td>
+                </tr>
+                <tr>
+                  <td>Doxycycline</td>
+                  <td>Malaria prophylaxis (alt)</td>
+                  <td>100 mg daily; start 2 days before, 4 wks after</td>
+                  <td>Cheap; photosensitivity</td>
+                </tr>
+                <tr>
+                  <td>Acetazolamide<br/><small style="color:var(--muted)">(Diamox)</small></td>
+                  <td>Altitude sickness</td>
+                  <td>125-250 mg BID; start 24h before ascent</td>
+                  <td>Sulfa allergy CI</td>
+                </tr>
+                <tr>
+                  <td>Ciprofloxacin</td>
+                  <td>Traveler's diarrhea (Rx)</td>
+                  <td>500 mg BID x 3 days PRN</td>
+                  <td>Self-treatment standby</td>
+                </tr>
+                <tr>
+                  <td>Azithromycin</td>
+                  <td>Traveler's diarrhea (alt)</td>
+                  <td>500 mg daily x 3 days PRN</td>
+                  <td>SE Asia fluoroquinolone resistance</td>
+                </tr>
+                <tr>
+                  <td>Ondansetron (Zofran)</td>
+                  <td>Nausea / motion sickness</td>
+                  <td>4-8 mg ODT PRN</td>
+                  <td>Standby</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <br/>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Prescriptions sent to patient's preferred pharmacy</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Patient counseled on each medication (indications, SE, interactions)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Medications documented in EHR visit note</span></div>
+          </div>
+        </div>
+
+        <!-- Step 5: In-Visit Consultation -->
+        <div class="step-card" id="step-5">
+          <div class="step-header" onclick="toggleStep('step-5')">
+            <div class="step-num">5</div>
+            <div class="step-title-wrap">
+              <div class="step-title">Consultation &amp; Counseling</div>
+              <div class="step-subtitle">In-office or telemedicine visit</div>
+            </div>
+            <span class="step-status pending">Pending</span>
+            <svg class="step-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="step-body">
+            <p>Comprehensive travel health consultation covering safety, food/water precautions, insect protection, environmental risks, and emergency action plan.</p>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Food & water safety counseling (boil, bottled, avoid raw)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Mosquito/insect protection (DEET 30%+, permethrin, bed nets)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Sun exposure & heat illness prevention</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Altitude acclimatization guidance (if applicable)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Sexual health & STI prevention (if relevant destination)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Emergency travel insurance & evacuation coverage discussed</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Nearest US Embassy / emergency contacts provided</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Provider's emergency contact shared with patient</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Patient Travel Health Summary letter issued (for customs/border)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Complete visit note in EHR</span></div>
+          </div>
+        </div>
+
+        <!-- Step 6: Post-Visit Documentation -->
+        <div class="step-card" id="step-6">
+          <div class="step-header" onclick="toggleStep('step-6')">
+            <div class="step-num done">6</div>
+            <div class="step-title-wrap">
+              <div class="step-title">Documentation &amp; Follow-Up</div>
+              <div class="step-subtitle">EHR, tracker, post-return check-in</div>
+            </div>
+            <span class="step-status pending">Pending</span>
+            <svg class="step-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="step-body">
+            <p>After the visit, complete all documentation and set a follow-up reminder for post-return screening. Log the encounter in the shared travel medicine tracker.</p>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Finalize and sign EHR visit note</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Update shared Travel Medicine Tracker (patient, destination, vaccines, RX)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Schedule post-return follow-up (2–4 weeks after return)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Send patient post-trip resources (symptom awareness guide)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Flag any vaccine series requiring booster (calendar reminder)</span></div>
+            <div class="checklist-item"><div class="ci-check" onclick="toggleCheck(this)"></div><span>Log encounter metrics in Blue Angel network report</span></div>
+          </div>
+        </div>
+
+      </div><!-- /steps -->
+    </div><!-- /workflow panel -->
+
+    <!-- ═══ OVERVIEW PANEL ═══ -->
+    <div class="panel" id="panel-overview">
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-box-num">847</div>
+          <div class="stat-box-lbl">Active Patients</div>
+          <div class="stat-box-delta">↑ 4.2% this quarter</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-num">32</div>
+          <div class="stat-box-lbl">Travel Consults (YTD)</div>
+          <div class="stat-box-delta">↑ 8 from last year</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-num">98%</div>
+          <div class="stat-box-lbl">Patient Satisfaction</div>
+          <div class="stat-box-delta">Above network avg</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>Practice Information</h3>
+        <div class="info-row">
+          <span class="info-row-key">Practice</span>
+          <span class="info-row-val" id="ov-practice">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-key">Physician</span>
+          <span class="info-row-val" id="ov-physician">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-key">Location</span>
+          <span class="info-row-val">San Mateo, CA</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-key">Network</span>
+          <span class="info-row-val"><span class="badge blue">Blue Angel Clinical Partners</span></span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-key">Status</span>
+          <span class="info-row-val"><span class="badge green">Active</span></span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-key">Model</span>
+          <span class="info-row-val"><span class="badge gold">Concierge Medicine</span></span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>Shared Services (Blue Angel Network)</h3>
+        <div class="info-row">
+          <span class="info-row-key">Billing &amp; Revenue Cycle</span>
+          <span class="info-row-val"><span class="badge gold">Q3 Launch</span></span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-key">HR &amp; Payroll</span>
+          <span class="info-row-val"><span class="badge gold">Q3 Launch</span></span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-key">Malpractice Coverage</span>
+          <span class="info-row-val"><span class="badge green">Active</span></span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-key">EHR Platform</span>
+          <span class="info-row-val">Practice-managed</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-key">Network Contact</span>
+          <span class="info-row-val"><a href="mailto:joseph@blueangelclinical.com" style="color:var(--blue)">joseph@blueangelclinical.com</a></span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<script>
+  // URL params
+  const params = new URLSearchParams(window.location.search);
+  const practice = params.get('practice') || 'sujansky';
+  const role     = params.get('role')     || 'physician';
+  const email    = params.get('email')    || '';
+
+  const practiceData = {
+    sujansky: {
+      name: 'Sujansky Concierge Medicine',
+      physician: 'Dr. Ulrike Sujansky, M.D.',
+      location: 'San Mateo, CA',
+      stats: [
+        { num: '847', lbl: 'Patients' },
+        { num: '32',  lbl: 'Travel Consults' },
+        { num: '8+',  lbl: 'Years Practice' },
+      ],
+    },
+    daniher: {
+      name: 'Daniher Concierge Medicine',
+      physician: 'Dr. Amy Daniher, M.D.',
+      location: 'San Mateo, CA',
+      stats: [
+        { num: '620', lbl: 'Patients' },
+        { num: '18',  lbl: 'Travel Consults' },
+        { num: '5+',  lbl: 'Years Practice' },
+      ],
+    },
+    other: {
+      name: 'Your Practice',
+      physician: 'Physician',
+      location: 'Bay Area, CA',
+      stats: [],
+    },
+  };
+
+  const pd = practiceData[practice] || practiceData.sujansky;
+
+  // Nav
+  document.getElementById('nav-practice').textContent = pd.name;
+
+  // Practice header
+  document.getElementById('ph-practice').textContent  = 'Blue Angel Clinical Partners';
+  document.getElementById('ph-name').textContent      = pd.name;
+  document.getElementById('ph-location').textContent  = pd.physician + ' · ' + pd.location;
+
+  const statsEl = document.getElementById('ph-stats');
+  pd.stats.forEach(s => {
+    statsEl.innerHTML += `<div class="ph-stat"><div class="ph-stat-num">${s.num}</div><div class="ph-stat-lbl">${s.lbl}</div></div>`;
+  });
+
+  // Overview
+  document.getElementById('ov-practice').textContent  = pd.name;
+  document.getElementById('ov-physician').textContent = pd.physician;
+
+  // Back nav
+  function goBack() {
+    const p = new URLSearchParams({ practice, role, email });
+    window.location.href = `dashboard.html?${p}`;
+  }
+
+  // Tab switching
+  function showTab(name) {
+    ['workflow','overview'].forEach(t => {
+      document.getElementById('panel-'+t).classList.toggle('active', t === name);
+      document.getElementById('tab-'+t).classList.toggle('active', t === name);
+    });
+    // sidebar
+    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+  }
+
+  // Step accordion
+  function toggleStep(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+
+  // Checklist checks
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+  }
+</script>
+</body>
+</html>
