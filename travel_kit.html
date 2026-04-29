@@ -5,159 +5,1127 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Travel Medicine Kit</title>
 <style>
+  :root {
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #12202f;
+    --muted: #667788;
+    --line: #e6edf3;
+    --accent: #3b7dd8;
+    --accent-soft: #edf4ff;
+    --accent-deep: #275da5;
+    --green-bg: #f2fbf6;
+    --green-line: #cdebd8;
+    --green-text: #227a4f;
+    --green-hover: #e6f7ee;
+    --red-bg: #fff5f4;
+    --red-line: #f1d0cb;
+    --red-text: #b5473c;
+    --red-hover: #fdebea;
+    --sand-bg: #fbfaf6;
+    --sand-line: #e7dfcd;
+    --sand-text: #6e5a34;
+    --sand-hover: #f7f1e7;
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: #f0f4f8;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: #1a1a1a;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 15px;
     min-height: 100vh;
-    padding: 32px 24px;
+    padding: 24px 20px 36px;
   }
 
-  .page-wrap { max-width: 960px; margin: 0 auto; }
+  button, summary { font: inherit; }
+
+  .page-wrap {
+    margin: 0 auto;
+    max-width: 1280px;
+  }
+
+  .page-header,
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
 
   .page-header {
-    background: #fff;
-    border-radius: 14px;
-    padding: 28px 32px;
-    margin-bottom: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    position: relative;
+    margin-bottom: 18px;
+    padding: 24px 26px;
   }
+
+  .header-main {
+    max-width: 100%;
+    padding-right: 250px;
+  }
+
   .page-eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .page-title {
+    color: #111827;
+    font-size: 30px;
+    font-weight: 760;
+    letter-spacing: -0.03em;
+  }
+
+  .source-pill {
+    position: absolute;
+    right: 26px;
+    top: 24px;
+    border: 1.5px solid var(--accent);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 650;
+    padding: 8px 14px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .source-pill:hover { background: var(--accent-soft); }
+
+  .header-meta {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .header-topline {
+    align-items: stretch;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 185px 185px minmax(0, 1fr);
+  }
+
+  .context-card {
+    align-items: flex-start;
+    background: #f7faff;
+    border: 1px solid #d6e5f8;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 58px;
+    padding: 7px 11px;
+  }
+
+  .context-label {
+    color: #4b73d2;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+  }
+
+  .context-value {
+    color: #142334;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.2;
+  }
+
+  .view-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .header-approval {
+    align-items: center;
+    align-self: stretch;
+    background: #f7faff;
+    border: 1px solid #d6e5f8;
+    border-radius: 12px;
+    display: flex;
+    min-height: 58px;
+    padding: 7px 11px;
+  }
+
+  .approval-row {
+    align-items: center;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: auto auto minmax(8px, 1fr) 1px auto;
+    width: 100%;
+  }
+
+  .approval-head {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .approval-title {
+    color: #12202f;
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .approval-inline {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .approval-spacer {
+    min-width: 8px;
+  }
+
+  .approval-divider {
+    align-self: center;
+    border-left: 1px solid #c7d9f2;
+    height: 22px;
+    margin: 0;
+  }
+
+  .view-pill {
+    background: #f7fafc;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: #526170;
     font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #3b7dd8;
-    margin-bottom: 6px;
-  }
-  .page-title { font-size: 28px; font-weight: 700; color: #111; letter-spacing: -0.02em; }
-  .source-pill {
-    font-size: 12px;
-    font-weight: 500;
-    color: #3b7dd8;
-    border: 1.5px solid #3b7dd8;
-    border-radius: 20px;
-    padding: 6px 14px;
-    white-space: nowrap;
+    padding: 8px 12px;
     text-decoration: none;
   }
-  .source-pill:hover { background: #eef3fb; }
+
+  .view-pill.active {
+    background: var(--accent-soft);
+    border-color: #cadef8;
+    color: var(--accent-deep);
+  }
+
+  @media (max-width: 980px) {
+    .header-topline {
+      grid-template-columns: 1fr;
+    }
+
+    .header-main {
+      padding-right: 0;
+    }
+
+    .source-pill {
+      margin-top: 14px;
+      position: static;
+    }
+  }
+
+  .workspace {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(380px, 0.9fr);
+  }
 
   .card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 28px 32px;
-    margin-bottom: 16px;
+    padding: 22px 24px;
   }
-  .card-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 16px; }
 
-  .cat-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: #888;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #eee;
-    margin: 20px 0 4px;
+  .card-title {
+    color: #111827;
+    font-size: 18px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
   }
-  .cat-label:first-of-type { margin-top: 0; }
 
-  .kit-item {
-    padding: 9px 0;
-    border-bottom: 1px solid #f5f5f5;
+  .card-copy {
+    color: #3d4e60;
+    font-size: 13px;
+    line-height: 1.45;
   }
-  .kit-item:last-child { border-bottom: none; }
-  .item-name { font-size: 14px; font-weight: 500; color: #111; }
-  .item-qty { font-size: 12px; color: #999; margin-top: 1px; }
 
-  .rx-note { font-size: 12px; color: #888; font-style: italic; margin-bottom: 12px; }
-  .rx-item {
-    display: flex;
+  .workflow-panel {
+    background: #f8fbff;
+    border: 1px solid #deebfb;
+    border-radius: 12px;
+    margin-top: 16px;
+    padding: 14px 15px;
+  }
+
+  .workflow-title {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .workflow-head {
     align-items: flex-start;
+    display: flex;
     gap: 10px;
-    padding: 9px 0;
-    border-bottom: 1px solid #f5f5f5;
+    justify-content: space-between;
   }
-  .rx-item:last-child { border-bottom: none; }
-  .rx-dot { width: 6px; height: 6px; border-radius: 50%; background: #3b7dd8; flex-shrink: 0; margin-top: 6px; }
-  .rx-name { font-size: 14px; font-weight: 500; color: #111; }
-  .rx-detail { font-size: 12px; color: #888; margin-top: 1px; }
 
-  @media (max-width: 640px) {
-    body { padding: 16px 12px; }
-    .page-header { padding: 20px; flex-direction: column; gap: 12px; }
-    .card { padding: 20px; }
+  .workflow-copy {
+    color: #3f5164;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .status-pill {
+    border-radius: 999px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-top: 0;
+    padding: 4px 7px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .status-pill.approved {
+    background: var(--green-bg);
+    border: 1px solid var(--green-line);
+    color: var(--green-text);
+  }
+
+  .status-pill.pending {
+    background: var(--red-bg);
+    border: 1px solid var(--red-line);
+    color: var(--red-text);
+  }
+
+  .workflow-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .starter-button,
+  .action-button,
+  .remove-button,
+  .clear-button,
+  .print-button,
+  .approve-button {
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(18, 32, 47, 0.06);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.015em;
+    padding: 6px 11px;
+    transition: 140ms ease;
+  }
+
+  .starter-button {
+    background: #f4f8ff;
+    border-color: #9fc2ef;
+    color: #255ea8;
+  }
+
+  .starter-button:hover {
+    background: #e9f2ff;
+    border-color: #83afe8;
+    box-shadow: 0 2px 6px rgba(59, 125, 216, 0.16);
+  }
+
+  .action-button,
+  .approve-button {
+    background: #e8f7ee;
+    border-color: #8dcc9f;
+    color: #145c39;
+  }
+
+  .action-button:hover,
+  .approve-button:hover {
+    background: #d5efdf;
+    border-color: #71bb89;
+    box-shadow: 0 2px 6px rgba(34, 122, 79, 0.18);
+    color: #114e30;
+  }
+
+  .remove-button,
+  .clear-button {
+    background: #feeeee;
+    border-color: #e6a79f;
+    color: #9b362c;
+  }
+
+  .remove-button:hover,
+  .clear-button:hover {
+    background: #fbdedb;
+    border-color: #db8e84;
+    box-shadow: 0 2px 6px rgba(181, 71, 60, 0.18);
+    color: #872d25;
+  }
+
+  .print-button {
+    background: #fbf7ef;
+    border-color: #d9c79f;
+    color: #70572e;
+  }
+
+  .print-button:hover {
+    background: #f6efdf;
+    border-color: #ccb47d;
+    box-shadow: 0 2px 6px rgba(110, 90, 52, 0.14);
+    color: #5d4825;
+  }
+
+  .undo-button {
+    background: #fbfcfe;
+    border: 1.5px solid #cfd9e4;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(18, 32, 47, 0.05);
+    color: #55616f;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 6px 11px;
+    transition: 140ms ease;
+  }
+
+  .undo-button:hover {
+    background: #f4f7fa;
+    border-color: #b9c8d7;
+    box-shadow: 0 2px 6px rgba(107, 114, 128, 0.14);
+    color: #44505d;
+  }
+
+  .starter-button:focus-visible,
+  .action-button:focus-visible,
+  .remove-button:focus-visible,
+  .clear-button:focus-visible,
+  .print-button:focus-visible,
+  .approve-button:focus-visible,
+  .undo-button:focus-visible {
+    outline: 2px solid rgba(59, 125, 216, 0.24);
+    outline-offset: 2px;
+  }
+
+  .toolbar {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  .toolbar-copy {
+    color: #3d4e60;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .accordion {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .accordion-section {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .accordion-summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 14px 16px;
+    transition: background 120ms ease;
+  }
+
+  .accordion-summary::-webkit-details-marker { display: none; }
+  .accordion-summary:hover { background: #f8fbff; }
+
+  .accordion-head {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+  }
+
+  .accordion-icon {
+    align-items: center;
+    border: 1px solid #d7e4f5;
+    border-radius: 999px;
+    color: var(--accent-deep);
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 24px;
+    justify-content: center;
+    width: 24px;
+  }
+
+  .accordion-section[open] .accordion-icon {
+    background: var(--accent-soft);
+  }
+
+  .accordion-arrow {
+    border-bottom: 2px solid var(--accent-deep);
+    border-right: 2px solid var(--accent-deep);
+    display: block;
+    height: 7px;
+    transform: rotate(45deg);
+    transition: transform 120ms ease;
+    width: 7px;
+  }
+
+  .accordion-section[open] .accordion-arrow {
+    margin-top: 4px;
+    transform: rotate(225deg);
+  }
+
+  .accordion-title {
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .accordion-count {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .accordion-body {
+    border-top: 1px solid var(--line);
+    padding: 8px 12px 12px;
+  }
+
+  .item-list,
+  .kit-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .item-row,
+  .kit-row {
+    align-items: start;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    display: grid;
+    gap: 14px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 12px;
+  }
+
+  .item-name,
+  .kit-name {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 720;
+    margin-bottom: 6px;
+  }
+
+  .item-detail,
+  .kit-detail {
+    color: #2f4255;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .item-qty,
+  .kit-qty {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+
+  .kit-shell {
+    position: sticky;
+    top: 18px;
+  }
+
+  .kit-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .kit-intro {
+    background: #f8fbff;
+    border: 1px solid #dfebfa;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    padding: 14px 15px;
+  }
+
+  .kit-intro-label {
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+
+  .kit-intro-copy {
+    color: #34485c;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .section-block {
+    margin-top: 22px;
+  }
+
+  .section-block:first-child { margin-top: 0; }
+
+  .section-head {
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  .section-title {
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 730;
+  }
+
+  .section-count {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .empty-state {
+    background: #fafcff;
+    border: 1px dashed #ccd9e7;
+    border-radius: 12px;
+    color: #425568;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 18px;
+    text-align: center;
+  }
+
+  @media (max-width: 1040px) {
+    .workspace { grid-template-columns: 1fr; }
+    .kit-shell { position: static; }
+  }
+
+  @media (max-width: 720px) {
+    body { padding: 16px 12px 28px; }
+    .page-header, .card { padding: 20px; }
+    .page-header { flex-direction: column; }
+    .item-row, .kit-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 <div class="page-wrap">
-
   <div class="page-header">
-    <div>
+    <div class="header-main">
       <div class="page-eyebrow">Concierge Travel Medicine</div>
       <div class="page-title">Travel Medicine Kit</div>
-    </div>
-    <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill">CDC Yellow Book 2026 ↗</a>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Generic over the counter</div>
-
-    <div class="cat-label">Pain & fever</div>
-    <div class="kit-item"><div class="item-name">Tylenol</div><div class="item-qty">24 tabs</div></div>
-    <div class="kit-item"><div class="item-name">Advil</div><div class="item-qty">24 tabs</div></div>
-
-    <div class="cat-label">Gastrointestinal</div>
-    <div class="kit-item"><div class="item-name">Imodium</div><div class="item-qty">12 caps</div></div>
-    <div class="kit-item"><div class="item-name">Pepcid</div><div class="item-qty">10 tabs</div></div>
-    <div class="kit-item"><div class="item-name">Oral rehydration salts</div><div class="item-qty">4 packets</div></div>
-
-    <div class="cat-label">Allergy & respiratory</div>
-    <div class="kit-item"><div class="item-name">Zyrtec</div><div class="item-qty">14 tabs</div></div>
-    <div class="kit-item"><div class="item-name">Sudafed</div><div class="item-qty">10 tabs</div></div>
-
-    <div class="cat-label">Wound care & topicals</div>
-    <div class="kit-item"><div class="item-name">Antiseptic wipes</div><div class="item-qty">10 individually wrapped</div></div>
-    <div class="kit-item"><div class="item-name">Adhesive bandages</div><div class="item-qty">15 assorted incl. waterproof</div></div>
-    <div class="kit-item"><div class="item-name">Neosporin</div><div class="item-qty">Small tube</div></div>
-    <div class="kit-item"><div class="item-name">Cortaid</div><div class="item-qty">Small tube</div></div>
-
-    <div class="cat-label">Diagnostics</div>
-    <div class="kit-item"><div class="item-name">Digital thermometer</div><div class="item-qty">Compact</div></div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Light prescription</div>
-    <div class="rx-item">
-      <div class="rx-dot"></div>
-      <div>
-        <div class="rx-name">Zofran <span style="font-weight:400;color:#999;font-size:12px;">(ondansetron)</span></div>
-        <div class="rx-detail">6 dissolving tabs — anti-nausea, works when you can't keep anything down</div>
+      <div class="header-meta">
+        <div class="header-topline">
+          <div class="context-card">
+            <div class="context-label">Patient</div>
+            <div class="context-value" id="patientName"></div>
+          </div>
+          <div class="context-card">
+            <div class="context-label">Travel Location</div>
+            <div class="context-value" id="travelLocations"></div>
+          </div>
+          <div class="header-approval" id="headerApproval"></div>
+        </div>
+        <div class="view-switcher" id="viewSwitcher"></div>
       </div>
     </div>
-    <div class="rx-item">
-      <div class="rx-dot"></div>
-      <div>
-        <div class="rx-name">Zithromax <span style="font-weight:400;color:#999;font-size:12px;">(azithromycin)</span></div>
-        <div class="rx-detail">6 tabs — first-line antibiotic for travelers' diarrhea and respiratory infections</div>
-      </div>
-    </div>
-    <div class="rx-item">
-      <div class="rx-dot"></div>
-      <div>
-        <div class="rx-name">Cipro <span style="font-weight:400;color:#999;font-size:12px;">(ciprofloxacin)</span></div>
-        <div class="rx-detail">6 tabs — antibiotic backup for UTIs and gram-negative infections</div>
-      </div>
-    </div>
+    <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill">CDC Yellow Book 2026 -></a>
   </div>
 
+  <div class="workspace">
+    <div class="card">
+      <div class="card-title" id="leftCardTitle"></div>
+      <div class="card-copy" id="masterListCopy"></div>
+      <div class="toolbar">
+        <div class="toolbar-copy" id="toolbarCopy"></div>
+        <button class="starter-button" id="starterKitButton" type="button">Basic Kit</button>
+      </div>
+      <div class="accordion" id="itemsList"></div>
+    </div>
+
+    <div class="card kit-shell">
+      <div class="kit-header">
+        <div>
+          <div class="card-title" id="kitPanelTitle">Kit Being Built</div>
+          <div class="card-copy" id="kitCopy"></div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="print-button" id="printKitButton" type="button">Print</button>
+          <button class="clear-button" id="clearKitButton" type="button">Clear Kit</button>
+        </div>
+      </div>
+      <div class="kit-intro">
+        <div class="kit-intro-label">Build</div>
+        <div class="kit-intro-copy" id="buildSummary"></div>
+      </div>
+      <div id="kitList"></div>
+    </div>
+  </div>
 </div>
+
+<script>
+  const catalog = [
+    { id: "wound-care", category: "Wound Care & Bandages", items: [
+      { id: "adhesive-bandages", name: "Adhesive Bandages, assorted (incl. waterproof)", qty: "15-20", instructions: "Clean the area, apply bandage, change daily or when wet." },
+      { id: "gauze-pads", name: "Gauze Pads (2x2 and 4x4 inch)", qty: "4-6 pads", instructions: "Cover larger wounds. Add a thin layer of antibiotic ointment first to prevent sticking. Secure with tape." },
+      { id: "elastic-bandage", name: "Elastic Bandage (2-inch and 4-inch)", qty: "1 of each", instructions: "Wrap snugly around a sprain - firm, but not tight enough to cause tingling or numbness." },
+      { id: "closure-strips", name: "Wound Closure Strips", qty: "8-10 strips", instructions: "Clean the wound first. Pinch skin edges together and apply strips across the cut. Do not use on dirty or infected wounds." },
+      { id: "medical-tape", name: "Medical Adhesive Tape", qty: "1 small roll", instructions: "Use to hold gauze or dressings in place." },
+      { id: "blister-gel-pads", name: "Blister Gel Pads", qty: "6-8 pads", instructions: "Do not pop the blister. Place the pad around it to offload pressure. Change daily." },
+      { id: "bandage-scissors", name: "Bandage Scissors", qty: "1", instructions: "For cutting tape and bandages. Allowed in carry-on if blade is under 4 inches." }
+    ]},
+    { id: "otc-medications", category: "OTC Medications", items: [
+      { id: "acetaminophen", name: "Acetaminophen (Tylenol) 500mg", qty: "24 tablets", instructions: "Take 1-2 tablets every 6-8 hours for pain or fever. Do not exceed 6 tablets per day. Avoid alcohol." },
+      { id: "ibuprofen", name: "Ibuprofen (Advil) 200mg", qty: "24 tablets", instructions: "Take 1-2 tablets every 6-8 hours with food for pain, fever, or swelling. Avoid if you have stomach ulcers or kidney problems." },
+      { id: "loperamide", name: "Loperamide (Imodium) 2mg", qty: "12 capsules", instructions: "Take 2 capsules after the first loose stool, then 1 after each one that follows. Max 8 per day. Stop and use your antibiotic instead if you have bloody diarrhea or fever." },
+      { id: "famotidine", name: "Famotidine (Pepcid) 20mg", qty: "10 tablets", instructions: "Take 1 tablet for heartburn or stomach upset. Can take twice daily if needed." },
+      { id: "ors", name: "Oral Rehydration Salts (ORS)", qty: "4-6 packets", instructions: "Mix 1 packet into 1 liter of clean water. Sip slowly over several hours. Use anytime you have significant diarrhea, vomiting, or feel dehydrated." },
+      { id: "cetirizine", name: "Cetirizine (Zyrtec) 10mg", qty: "14 tablets", instructions: "Take 1 tablet once daily for allergies or hives. Take at night if it makes you drowsy." },
+      { id: "pseudoephedrine", name: "Pseudoephedrine (Sudafed) 30mg", qty: "10 tablets", instructions: "Take 1-2 tablets every 4-6 hours for a stuffy nose or ear pressure on flights. Do not take if you have high blood pressure or heart disease." },
+      { id: "diphenhydramine", name: "Diphenhydramine (Benadryl) 25mg", qty: "12 tablets", instructions: "Take 25-50mg for allergic reactions, hives, or as a sleep aid. Causes drowsiness - do not drive after taking." },
+      { id: "meclizine", name: "Meclizine (Bonine) 25mg", qty: "8 tablets", instructions: "Take 1 tablet 1 hour before travel for motion sickness. May cause some drowsiness." },
+      { id: "bismuth", name: "Bismuth Subsalicylate (Pepto-Bismol) 262mg", qty: "24 tablets", instructions: "Take 2 tablets every 30-60 minutes for mild stomach upset or diarrhea, up to 8 doses per day. Turns stool and tongue black - this is normal. Do not take if allergic to aspirin." }
+    ]},
+    { id: "topicals", category: "Topicals", items: [
+      { id: "neosporin", name: "Antimicrobial Ointment (Neosporin)", qty: "1 small tube", instructions: "Apply a thin layer to minor cuts or scrapes to prevent infection and keep the bandage from sticking." },
+      { id: "hydrocortisone", name: "Hydrocortisone 1% Cream (Cortaid)", qty: "1 small tube", instructions: "Apply a small amount to itchy or irritated skin up to 3 times daily. Do not use on infected or broken skin." },
+      { id: "antifungal", name: "Antifungal Cream (Clotrimazole or Miconazole)", qty: "1 small tube", instructions: "Apply to the affected area twice daily for 1-2 weeks for athlete's foot, jock itch, or ringworm. Keep the area dry." },
+      { id: "aloe-vera", name: "Aloe Vera Gel", qty: "1 small tube", instructions: "Apply generously to sunburned or mildly burned skin. Reapply as needed." },
+      { id: "antiseptic-wipes", name: "Antiseptic Wipes", qty: "10 individually wrapped", instructions: "Use to clean a wound when soap and water aren't available. Single use only." }
+    ]},
+    { id: "instruments", category: "Instruments", items: [
+      { id: "thermometer", name: "Digital Thermometer", qty: "1", instructions: "Place under tongue, mouth closed, for 60 seconds. Fever is 100.4°F (38°C) or higher." },
+      { id: "tweezers", name: "Tweezers", qty: "1", instructions: "For splinters or ticks. For ticks: grab as close to the skin as possible and pull straight out - do not twist." },
+      { id: "pulse-oximeter", name: "Pulse Oximeter (fingertip)", qty: "1", instructions: "Clip to fingertip for 30 seconds. Normal reading is 95-100%. Below 90% at altitude - descend immediately. Below 90% at sea level - seek emergency care." }
+    ]},
+    { id: "prescriptions", category: "Prescription Medications", items: [
+      { id: "azithromycin", name: "Azithromycin (Zithromax) 500mg", qty: "5 tablets", instructions: "Traveler's diarrhea: take 500mg once daily for 3 days, or a single 1000mg dose if directed. Use when diarrhea is preventing normal activity, or if you have fever or blood in stool. If no improvement after 48 hours, seek care. Respiratory infection: take 500mg on day 1, then 250mg once daily on days 2-5. Complete the full course." },
+      { id: "ciprofloxacin", name: "Ciprofloxacin (Cipro) 500mg", qty: "14 tablets", instructions: "Traveler's diarrhea backup: take 500mg twice daily for 1-3 days only if azithromycin is unavailable. UTI: take 500mg twice daily for 3-7 days. Avoid dairy and antacids within 2 hours. Stop and call your doctor if you develop joint or tendon pain." },
+      { id: "ondansetron", name: "Ondansetron (Zofran) 4mg ODT", qty: "6 tablets", instructions: "Let the tablet dissolve on your tongue - do not swallow whole. Take for nausea or vomiting that is stopping you from eating or drinking. Can take every 8 hours as needed. Always drink fluids alongside it." },
+      { id: "acetazolamide", name: "Acetazolamide (Diamox) 250mg", qty: "20 tablets", instructions: "Prevention: start 1-2 days before going above 8,000 feet. Take 125-250mg twice daily while ascending and for 2 days at the highest point. Treatment: take 250mg twice daily and stop ascending. Descend if symptoms are not improving within 12-24 hours." },
+      { id: "dexamethasone", name: "Dexamethasone 4mg", qty: "8 tablets", instructions: "Emergency use for severe altitude sickness only. Take 8mg first, then 4mg every 6 hours. Descend as soon as you take this." },
+      { id: "doxycycline", name: "Doxycycline 100mg", qty: "trip duration + 28 days", instructions: "Malaria prevention: start 1-2 days before entering a malaria area. Take 1 tablet daily with food or milk. Continue for 4 full weeks after leaving. Stay upright for 30 minutes after each dose. Use strong sunscreen every day." },
+      { id: "malarone", name: "Atovaquone-Proguanil (Malarone)", qty: "trip duration + 7 days", instructions: "Malaria prevention: start 1-2 days before entering a malaria area. Take 1 tablet daily with food. Continue for 7 days after leaving. Emergency malaria treatment: take 4 tablets once daily for 3 days with a full meal and seek care as soon as possible." },
+      { id: "metronidazole", name: "Metronidazole (Flagyl) 500mg", qty: "14 tablets", instructions: "For persistent diarrhea lasting more than 1-2 weeks, especially with bloating. Take 500mg twice daily for 5-7 days with food. No alcohol during treatment or for 48 hours after the last dose." },
+      { id: "fluconazole", name: "Fluconazole (Diflucan) 150mg", qty: "1 tablet", instructions: "Take 1 tablet as a single dose for a yeast infection. See a doctor if symptoms don't resolve within 3 days." },
+      { id: "bactrim", name: "Trimethoprim-Sulfamethoxazole (Bactrim DS)", qty: "14 tablets", instructions: "UTI: take 1 tablet twice daily for 3 days. Skin infection: take 1 tablet twice daily for 5-7 days. Drink plenty of water. Do not take if you have a sulfa allergy." },
+      { id: "cephalexin", name: "Cephalexin (Keflex) 500mg", qty: "28 tablets", instructions: "For an infected skin wound. Take 500mg four times daily for 5-7 days. Finish the full course. Seek urgent care if redness is spreading, fever develops, or red streaks appear." },
+      { id: "cipro-eye-drops", name: "Ciprofloxacin Eye Drops 0.3%", qty: "1 bottle (5mL)", instructions: "For pink eye with yellow or green discharge. Put 1-2 drops in the affected eye every 2 hours while awake for 2 days, then every 4 hours for 5 more days." },
+      { id: "ofloxacin-ear-drops", name: "Ofloxacin Ear Drops", qty: "1 bottle (5mL)", instructions: "For swimmer's ear. Put 5-10 drops into the affected ear twice daily for 7 days. Lie on your side for 5 minutes after." },
+      { id: "epipen", name: "Epinephrine Auto-Injector (EpiPen)", qty: "2", instructions: "For a severe allergic reaction - throat tightening, difficulty breathing, or collapse. Inject into the outer thigh and hold for 10 seconds. Call 911 immediately after." },
+      { id: "albuterol", name: "Albuterol Inhaler", qty: "1 inhaler", instructions: "Shake well. Take 2 puffs every 4-6 hours for wheezing or shortness of breath. See a doctor if you need it more than 4 times in a day." },
+      { id: "prednisone", name: "Prednisone 20mg", qty: "10 tablets", instructions: "For a severe allergic reaction or asthma flare not controlled by your inhaler. Take with food. Follow your doctor's prescribed schedule." },
+      { id: "scopolamine", name: "Scopolamine Patch (Transderm Scop)", qty: "2 patches", instructions: "Stick the patch behind one ear at least 4 hours before travel. Each patch lasts 3 days. Wash hands after handling. Do not touch your eyes." },
+      { id: "naloxone", name: "Naloxone (Narcan) 4mg", qty: "2 doses", instructions: "For an opioid overdose - unresponsive, very slow or stopped breathing. Spray one full dose into one nostril. Repeat in the other after 2-3 minutes if no response. Call 911 immediately." }
+    ]}
+  ];
+
+  const basicKitItems = [
+    "acetaminophen", "ibuprofen", "loperamide", "famotidine", "ors", "cetirizine", "pseudoephedrine",
+    "adhesive-bandages", "antiseptic-wipes", "neosporin", "hydrocortisone", "thermometer",
+    "ondansetron", "azithromycin", "ciprofloxacin"
+  ];
+
+  const url = new URL(window.location.href);
+  const params = url.searchParams;
+  const currentView = params.get("view") === "doctor" ? "doctor" : "staff";
+  const patientNameValue = params.get("patient") || "Maya Chen";
+  const patientIdValue = params.get("patientId") || patientNameValue.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const practiceValue = params.get("practice") || params.get("source") || "general";
+  const travelLocationsValue = params.get("locations") || params.get("location") || "Peru";
+  const storageKey = "travel-kit-workflow-records-v3";
+  const recordKey = practiceValue + "::" + patientIdValue + "::" + travelLocationsValue;
+
+  const itemsList = document.getElementById("itemsList");
+  const kitList = document.getElementById("kitList");
+  const buildSummary = document.getElementById("buildSummary");
+  const clearKitButton = document.getElementById("clearKitButton");
+  const starterKitButton = document.getElementById("starterKitButton");
+  const printKitButton = document.getElementById("printKitButton");
+  const patientName = document.getElementById("patientName");
+  const travelLocations = document.getElementById("travelLocations");
+  const headerApproval = document.getElementById("headerApproval");
+  const viewSwitcher = document.getElementById("viewSwitcher");
+  const kitPanelTitle = document.getElementById("kitPanelTitle");
+  const masterListCopy = document.getElementById("masterListCopy");
+  const toolbarCopy = document.getElementById("toolbarCopy");
+  const kitCopy = document.getElementById("kitCopy");
+  const leftCardTitle = document.getElementById("leftCardTitle");
+  let openSections = new Set();
+
+  function loadRecords() {
+    try {
+      return JSON.parse(window.localStorage.getItem(storageKey) || "{}");
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function buildInitialRecord() {
+    return {
+      sharedKit: [...basicKitItems],
+      approved: false,
+      approvedAt: "",
+      lastUpdatedBy: "staff"
+    };
+  }
+
+  const records = loadRecords();
+  if (!records[recordKey]) {
+    records[recordKey] = buildInitialRecord();
+  }
+
+  function currentRecord() {
+    return records[recordKey];
+  }
+
+  function saveRecords() {
+    window.localStorage.setItem(storageKey, JSON.stringify(records));
+  }
+
+  function getEditableIds() {
+    return currentRecord().sharedKit;
+  }
+
+  function setEditableIds(nextIds, changedBy) {
+    const record = currentRecord();
+    record.sharedKit = [...nextIds];
+    record.lastUpdatedBy = changedBy;
+    record.approved = false;
+    record.approvedAt = "";
+    saveRecords();
+  }
+
+  function getEditableSet() {
+    return new Set(getEditableIds());
+  }
+
+  function buildViewUrl(view) {
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set("view", view);
+    nextUrl.searchParams.set("patientId", patientIdValue);
+    nextUrl.searchParams.set("patient", patientNameValue);
+    nextUrl.searchParams.set("practice", practiceValue);
+    nextUrl.searchParams.set("locations", travelLocationsValue);
+    return nextUrl.toString();
+  }
+
+  function captureOpenSections() {
+    const nextOpen = new Set();
+    itemsList.querySelectorAll("details[data-section-id]").forEach((details) => {
+      if (details.open) nextOpen.add(details.dataset.sectionId);
+    });
+    openSections = nextOpen;
+  }
+
+  function renderHeaderContext() {
+    const record = currentRecord();
+    patientName.textContent = patientNameValue;
+    travelLocations.textContent = travelLocationsValue;
+    viewSwitcher.innerHTML = "";
+    headerApproval.style.display = "block";
+
+    ["staff", "doctor"].forEach((view) => {
+      const link = document.createElement("a");
+      link.className = "view-pill" + (view === currentView ? " active" : "");
+      link.href = buildViewUrl(view);
+      link.textContent = view === "staff" ? "Open Staff View" : "Open Doctor View";
+      viewSwitcher.appendChild(link);
+    });
+
+    if (currentView === "doctor") {
+      leftCardTitle.textContent = "Doctor Review";
+      kitPanelTitle.textContent = "Kit Created";
+      masterListCopy.textContent = "Review the patient kit, make any edits you want, and approve it when it is correct.";
+      toolbarCopy.textContent = "Doctor edits update the same patient-specific kit shown in staff view.";
+      starterKitButton.textContent = "Basic Kit";
+      clearKitButton.textContent = "Clear Kit";
+      kitCopy.textContent = "Review the current kit items, amounts, and instructions.";
+    } else {
+      leftCardTitle.textContent = "Master Item List";
+      kitPanelTitle.textContent = "Kit Being Built";
+      masterListCopy.textContent = "Open a section to add items that are not already in the patient kit.";
+      toolbarCopy.textContent = "Staff edits uncheck approval until the doctor approves again.";
+      starterKitButton.textContent = "Basic Kit";
+      clearKitButton.textContent = "Clear Kit";
+      kitCopy.textContent = "This is the staff view of the kit.";
+    }
+
+    if (currentView === "doctor") {
+      headerApproval.innerHTML = `
+        <div class="approval-row">
+          <div class="approval-head">
+            <div class="approval-title">Doctor Approval</div>
+            <div class="workflow-actions">
+            ${record.approved ? `
+              <button class="undo-button" id="headerUndoApprovalButton" type="button">Undo Approval</button>
+            ` : `
+              <button class="approve-button" id="headerApproveKitButton" type="button">Approve Kit</button>
+            `}
+            </div>
+          </div>
+          <div class="approval-spacer"></div>
+          <div class="approval-divider"></div>
+          <div class="approval-inline">
+            <div class="status-pill ${record.approved ? "approved" : "pending"}" style="margin-top:0;">${record.approved ? "Approved" : "Not Approved"}</div>
+          </div>
+        </div>
+      `;
+
+      const approveButton = document.getElementById("headerApproveKitButton");
+      if (approveButton) {
+        approveButton.addEventListener("click", () => {
+          record.approved = true;
+          record.approvedAt = new Date().toLocaleString();
+          record.lastUpdatedBy = "doctor";
+          saveRecords();
+          render();
+        });
+      }
+
+      const undoButton = document.getElementById("headerUndoApprovalButton");
+      if (undoButton) {
+        undoButton.addEventListener("click", () => {
+          record.approved = false;
+          record.approvedAt = "";
+          record.lastUpdatedBy = "doctor";
+          saveRecords();
+          render();
+        });
+      }
+    } else {
+      headerApproval.innerHTML = `
+        <div class="approval-row">
+          <div class="approval-head">
+            <div class="approval-title">Staff View</div>
+          </div>
+          <div class="approval-spacer"></div>
+          <div class="approval-divider"></div>
+          <div class="approval-inline">
+            <div class="status-pill ${record.approved ? "approved" : "pending"}" style="margin-top:0;">${record.approved ? "Approved" : "Needs Doctor Approval"}</div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  function renderItemsList() {
+    captureOpenSections();
+    itemsList.innerHTML = "";
+    const selected = getEditableSet();
+
+    catalog.forEach((section) => {
+      const remaining = section.items.filter((item) => !selected.has(item.id));
+
+      const details = document.createElement("details");
+      details.className = "accordion-section";
+      details.dataset.sectionId = section.id;
+      if (openSections.has(section.id)) details.open = true;
+
+      const summary = document.createElement("summary");
+      summary.className = "accordion-summary";
+      summary.innerHTML =
+        "<div class='accordion-head'><span class='accordion-icon'><span class='accordion-arrow'></span></span><div class='accordion-title'>" + section.category + "</div></div>" +
+        "<div class='accordion-count'>" + remaining.length + " available</div>";
+      details.appendChild(summary);
+
+      const body = document.createElement("div");
+      body.className = "accordion-body";
+
+      if (!remaining.length) {
+        body.innerHTML = "<div class='empty-state'>Everything from this section is already in this kit.</div>";
+      } else {
+        const list = document.createElement("div");
+        list.className = "item-list";
+
+        remaining.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "item-row";
+
+          const left = document.createElement("div");
+          left.innerHTML =
+            "<div class='item-name'>" + item.name + "</div>" +
+            "<div class='item-detail'>" + item.instructions + "</div>" +
+            "<div class='item-qty'>" + item.qty + "</div>";
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "action-button";
+          button.textContent = currentView === "doctor" ? "Add" : "Add to kit";
+          button.addEventListener("click", () => {
+            const nextIds = [...getEditableSet(), item.id];
+            setEditableIds(nextIds, currentView);
+            render();
+          });
+
+          row.appendChild(left);
+          row.appendChild(button);
+          list.appendChild(row);
+        });
+
+        body.appendChild(list);
+      }
+
+      details.appendChild(body);
+      itemsList.appendChild(details);
+    });
+  }
+
+  function renderKitList() {
+    kitList.innerHTML = "";
+    const selected = getEditableSet();
+
+    let total = 0;
+    let usedSections = 0;
+
+    catalog.forEach((section) => {
+      const chosen = section.items.filter((item) => selected.has(item.id));
+      if (!chosen.length) return;
+
+      total += chosen.length;
+      usedSections += 1;
+
+      const wrap = document.createElement("div");
+      wrap.className = "section-block";
+
+      const head = document.createElement("div");
+      head.className = "section-head";
+      head.innerHTML =
+        "<div class='section-title'>" + section.category + "</div>" +
+        "<div class='section-count'>" + chosen.length + " selected</div>";
+      wrap.appendChild(head);
+
+      const list = document.createElement("div");
+      list.className = "kit-list";
+
+      chosen.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "kit-row";
+
+        const left = document.createElement("div");
+        left.innerHTML =
+          "<div class='kit-name'>" + item.name + "</div>" +
+          "<div class='kit-detail'>" + item.instructions + "</div>" +
+          "<div class='kit-qty'>" + item.qty + "</div>";
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "remove-button";
+        button.textContent = "Remove";
+        button.addEventListener("click", () => {
+          const nextIds = getEditableIds().filter((id) => id !== item.id);
+          setEditableIds(nextIds, currentView);
+          render();
+        });
+
+        row.appendChild(left);
+        row.appendChild(button);
+        list.appendChild(row);
+      });
+
+      wrap.appendChild(list);
+      kitList.appendChild(wrap);
+    });
+
+    if (!total) {
+      kitList.innerHTML = "<div class='empty-state'>Nothing is in the kit yet.</div>";
+      buildSummary.textContent = "No items added yet.";
+    } else {
+      const record = currentRecord();
+      const suffix = record.approved
+        ? " Approved by doctor."
+        : " Awaiting doctor approval.";
+      buildSummary.textContent = total + " items across " + usedSections + " sections." + suffix;
+    }
+  }
+
+  function render() {
+    renderHeaderContext();
+    renderItemsList();
+    renderKitList();
+  }
+
+  starterKitButton.addEventListener("click", () => {
+    setEditableIds(basicKitItems, currentView);
+    render();
+  });
+
+  clearKitButton.addEventListener("click", () => {
+    setEditableIds([], currentView);
+    render();
+  });
+
+  printKitButton.addEventListener("click", () => {
+    const chosenIds = getEditableIds();
+    const selectedItems = catalog.flatMap((section) =>
+      section.items
+        .filter((item) => chosenIds.includes(item.id))
+        .map((item) => ({ section: section.category, ...item }))
+    );
+
+    const sections = catalog.map((section) => {
+      const items = selectedItems.filter((item) => item.section === section.category);
+      if (!items.length) return "";
+      return `
+        <section style="margin-bottom:24px;">
+          <h2 style="font-size:18px;margin:0 0 10px;color:#111827;">${section.category}</h2>
+          ${items.map((item) => `
+            <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #e5e7eb;">
+              <div style="font-weight:700;color:#111827;">${item.name}</div>
+              <div style="font-size:13px;color:#374151;margin-top:4px;">Amount: ${item.qty}</div>
+              <div style="font-size:13px;color:#4b5563;line-height:1.55;margin-top:6px;">${item.instructions}</div>
+            </div>
+          `).join("")}
+        </section>
+      `;
+    }).join("");
+
+    const printWindow = window.open("", "_blank", "width=900,height=700");
+    if (!printWindow) return;
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Travel Medicine Kit Item List and Instructions</title>
+      </head>
+      <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:32px;color:#111827;">
+        <h1 style="margin:0 0 8px;">Travel Medicine Kit</h1>
+        <p style="margin:0 0 12px;color:#4b5563;">${patientNameValue}</p>
+        <p style="margin:0 0 24px;color:#4b5563;">${travelLocationsValue}</p>
+        <p style="margin:0 0 24px;color:#4b5563;">Item list and instructions.</p>
+        ${sections || "<p>No items in the kit.</p>"}
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  });
+
+  render();
+</script>
 </body>
 </html>
