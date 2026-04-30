@@ -941,7 +941,8 @@
       section: 'Practice Websites',
       title: 'Sujansky Website',
       sub: 'Sujansky Concierge Medicine',
-      scope: 'both',
+      scope: 'sujansky',
+      staffVisible: true,
       url: practiceData.sujansky.website,
       embedUrl: practiceData.sujansky.website,
       iconBg: '#EEF4FF',
@@ -952,7 +953,8 @@
       section: 'Practice Websites',
       title: 'Daniher Website',
       sub: 'Daniher Concierge Medicine',
-      scope: 'both',
+      scope: 'daniher',
+      staffVisible: true,
       url: practiceData.daniher.website,
       embedUrl: practiceData.daniher.website,
       iconBg: '#EEF4FF',
@@ -1405,7 +1407,7 @@
     const pd = practiceData[currentPractice] || practiceData.other;
     const visibleLinks = TERMINAL_LINKS.filter(link => {
       if (link.staffOnly && currentRole !== 'staff') return false;
-      if (currentRole === 'staff') return link.scope === 'both';
+      if (currentRole === 'staff') return link.scope === 'both' || link.staffVisible;
       return link.scope === 'both' || link.scope === currentPractice;
     });
     const sections = [...new Set(visibleLinks.map(link => link.section))];
