@@ -1515,7 +1515,11 @@
       ${sections.map(section => `
         <p class="qa-label">${section}</p>
         <div class="qa-grid" style="margin-bottom:20px">
-          ${visibleLinks.filter(link => link.section === section).map(link => `
+          ${visibleLinks.filter(link => link.section === section).map(link => {
+            const roleParam = currentRole === 'staff' ? 'staff' : 'doctor';
+            const resolvedUrl = link.url.includes('travel_kit') ? link.url + '?view=' + roleParam : link.url;
+            const resolvedEmbed = link.embedUrl.includes('travel_kit') ? link.embedUrl + '?view=' + roleParam : link.embedUrl;
+            return `
             <div class="qa-card">
               <div class="qa-card-top">
                 <div class="qa-icon" style="background:${link.iconBg}">
@@ -1527,11 +1531,11 @@
                 </div>
               </div>
               <div class="qa-actions">
-                <button class="qa-btn-embed" onclick="openEmbed('${link.embedUrl}','${link.title}')">Open in Site</button>
-                <a class="qa-btn-tab" href="${link.url}" target="_blank">New Tab ↗</a>
+                <button class="qa-btn-embed" onclick="openEmbed('${resolvedEmbed}','${link.title}')">Open in Site</button>
+                <a class="qa-btn-tab" href="${resolvedUrl}" target="_blank">New Tab ↗</a>
               </div>
-            </div>
-          `).join('')}
+            </div>`;
+          }).join('')}
         </div>
       `).join('')}
 

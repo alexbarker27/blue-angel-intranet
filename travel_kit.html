@@ -905,13 +905,7 @@
     viewSwitcher.innerHTML = "";
     headerApproval.style.display = "block";
 
-    ["staff", "doctor"].forEach((view) => {
-      const link = document.createElement("a");
-      link.className = "view-pill" + (view === currentView ? " active" : "");
-      link.href = buildViewUrl(view);
-      link.textContent = view === "staff" ? "Open Staff View" : "Open Doctor View";
-      viewSwitcher.appendChild(link);
-    });
+    // No view switcher — each role enters through their own workflow link
 
     if (currentView === "doctor") {
       leftCardTitle.textContent = "Doctor Review";
