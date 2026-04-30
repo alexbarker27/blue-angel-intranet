@@ -1403,11 +1403,10 @@
 
   function populateTerminal() {
     const pd = practiceData[currentPractice] || practiceData.other;
-    const activeFilter = currentRole === 'staff' ? currentTerminalFilter : currentPractice;
     const visibleLinks = TERMINAL_LINKS.filter(link => {
       if (link.staffOnly && currentRole !== 'staff') return false;
-      if (currentRole === 'staff' && link.title === 'Sujansky Workflow') return false;
-      return activeFilter === 'both' ? true : link.scope === 'both' || link.scope === activeFilter;
+      if (currentRole === 'staff') return link.scope === 'both';
+      return link.scope === 'both' || link.scope === currentPractice;
     });
     const sections = [...new Set(visibleLinks.map(link => link.section))];
 
@@ -1420,15 +1419,6 @@
           <h2 class="pb-name">${pd.name}</h2>
           <p class="pb-sub">${pd.physician} &middot; San Mateo, CA</p>
         </div>
-        ${currentRole === 'staff' ? `
-          <div class="pb-right">
-            <div class="term-filter">
-              <button class="term-filter-btn ${activeFilter === 'both' ? 'active' : ''}" onclick="setTerminalFilter('both')">Both</button>
-              <button class="term-filter-btn ${activeFilter === 'sujansky' ? 'active' : ''}" onclick="setTerminalFilter('sujansky')">Sujansky</button>
-              <button class="term-filter-btn ${activeFilter === 'daniher' ? 'active' : ''}" onclick="setTerminalFilter('daniher')">Daniher</button>
-            </div>
-          </div>
-        ` : ''}
       </div>
 
       ${sections.map(section => `
