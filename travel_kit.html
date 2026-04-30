@@ -1253,7 +1253,8 @@
     }
 
     window._hubRecords = allRecords;
-    renderHubList(isStaff ? "all" : (pracFilter || "all"));
+    window._hubIsStaff = isStaff;
+    renderHubList(isStaff ? "all" : pracFilter);
   }
 
   function setHubFilter(filter, btn) {
@@ -1264,7 +1265,10 @@
 
   function renderHubList(filter) {
     const allRecords = window._hubRecords;
+    const isStaff = window._hubIsStaff;
+    const showBadge = isStaff && filter === "all";
     const hubList = document.getElementById("hub-list");
+    const knownPractices = ["sujansky", "daniher"];
 
     const patients = Object.entries(allRecords).map(([key, rec]) => {
       const parts = key.split("::");
@@ -1272,6 +1276,7 @@
       const prac = parts[0];
       const pid  = parts[1];
       const locs = parts.slice(2).join("::");
+      if (!knownPractices.includes(prac)) return null; // skip general/test records
       const name = rec.patientName ||
         pid.replace(/^(sujansky|daniher)-sheet-/, "")
            .replace(/-\d+$/, "")
@@ -1280,7 +1285,7 @@
     }).filter(p => p && (filter === "all" || p.prac === filter));
 
     if (!patients.length) {
-      hubList.innerHTML = `<div class="hub-empty">No patient kits found for this practice.<br>Kits are created through the practice workflow.</div>`;
+      hubList.innerHTML = `<div class="hub-empty">No patient kits found.<br>Kits are created through the practice workflow.</div>`;
       return;
     }
 
@@ -1289,13 +1294,13 @@
     hubList.innerHTML = patients.map(p => {
       const kitUrl = `travel_kit.html?view=${currentView}&patientId=${encodeURIComponent(p.pid)}&patient=${encodeURIComponent(p.name)}&practice=${p.prac}&locations=${encodeURIComponent(p.locs)}`;
       const approved = p.rec.approved;
-      const pracLabel = p.prac === "sujansky" ? "Sujansky" : p.prac === "daniher" ? "Daniher" : p.prac;
+      const pracLabel = p.prac === "sujansky" ? "Sujansky" : "Daniher";
       return `<a href="${kitUrl}" class="hub-row" style="text-decoration:none">
         <div class="hub-row-left">
           <div class="hub-name">${p.name}</div>
           <div class="hub-dest">${p.locs || "No destination"}</div>
         </div>
-        <span class="hub-badge hub-badge-${p.prac}">${pracLabel}</span>
+        ${showBadge ? `<span class="hub-badge hub-badge-${p.prac}">${pracLabel}</span>` : ""}
         <span class="hub-status hub-status-${approved ? "approved" : "pending"}">${approved ? "Approved" : "Pending"}</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>`;
