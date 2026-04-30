@@ -715,7 +715,10 @@
         <div class="view-switcher" id="viewSwitcher"></div>
       </div>
     </div>
-    <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill">CDC Yellow Book 2026 -></a>
+    <div style="position:absolute;right:26px;top:24px;display:flex;gap:8px;align-items:center">
+      <a id="hub-back-link" href="#" class="source-pill" style="position:static">← All Patients</a>
+      <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill" style="position:static">CDC Yellow Book ↗</a>
+    </div>
   </div>
 
   <div class="workspace">
@@ -822,6 +825,14 @@
   const storageKey = "travel-kit-workflow-records-v3";
   const recordKey = practiceValue + "::" + patientIdValue + "::" + travelLocationsValue;
   const isHubMode = !params.get("patientId") && !params.get("patient");
+
+  const hubBackLink = document.getElementById("hub-back-link");
+  if (hubBackLink) {
+    const hubParams = currentView === "doctor" && practiceValue && practiceValue !== "general"
+      ? `?view=doctor&practice=${practiceValue}`
+      : `?view=staff`;
+    hubBackLink.href = `travel_kit.html${hubParams}`;
+  }
 
   if (isHubMode) {
     document.getElementById("hub-view").style.display = "";
