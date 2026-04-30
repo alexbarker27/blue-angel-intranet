@@ -688,6 +688,7 @@
         <div class="page-eyebrow">Concierge Travel Medicine</div>
         <div class="page-title">Patient Travel Kits</div>
       </div>
+      <img id="hub-practice-logo" src="" alt="" style="display:none;position:absolute;right:26px;bottom:22px;width:140px;height:auto">
       <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill">CDC Yellow Book 2026 ↗</a>
     </div>
     <div id="hub-filters"></div>
@@ -832,6 +833,18 @@
       ? `?view=doctor&practice=${practiceValue}`
       : `?view=staff`;
     hubBackLink.href = `travel_kit.html${hubParams}`;
+  }
+
+  const practiceLogoUrls = {
+    sujansky: "https://justintella.github.io/sujansky-workflow/practice-logo.png",
+    daniher:  "https://justintella.github.io/daniher-travel-workflow/practice-logo.png",
+  };
+
+  const hubLogo = document.getElementById("hub-practice-logo");
+  if (hubLogo && practiceLogoUrls[practiceValue]) {
+    hubLogo.src = practiceLogoUrls[practiceValue];
+    hubLogo.alt = practiceValue === "sujansky" ? "Ulrike Sujansky, M.D." : "Amy Daniher, M.D.";
+    hubLogo.style.display = "";
   }
 
   if (isHubMode) {
