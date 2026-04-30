@@ -758,81 +758,6 @@
 </div>
 
 <!-- ════════════════════════════════════════
-     VIEW 1c: STAFF DASHBOARD
-════════════════════════════════════════ -->
-<div class="view" id="view-staff">
-  <nav class="top-nav">
-    <div class="nav-left">
-      <button class="nav-brand">
-        <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel" style="height:36px;filter:brightness(0) invert(1);" />
-      </button>
-    </div>
-    <div class="nav-right">
-      <span class="nav-badge practice" id="staff-nav-practice">Blue Angel Clinical Partners</span>
-      <span class="nav-badge role">Staff</span>
-      <button class="nav-signout" onclick="showView('login')">Sign Out</button>
-    </div>
-  </nav>
-  <div class="hero">
-    <div class="hero-inner">
-      <p class="hero-eyebrow">Staff Portal</p>
-      <h1 class="hero-title" id="staff-dash-title">Welcome back</h1>
-      <p class="hero-sub">Combined Blue Angel workspace — Select a module to get started</p>
-    </div>
-  </div>
-  <div class="dash-main">
-    <p class="section-label">Portal Modules</p>
-    <div class="grid">
-      <div class="module-card active" onclick="showView('terminal')">
-        <div class="card-icon blue">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4M6 8l3 3-3 3M11 14h4"/></svg>
-        </div>
-        <div class="card-title">Staff Terminal</div>
-        <p class="card-desc">Access shared workflows, patient intake tools, travel medicine protocols, and operational dashboards across all practices.</p>
-        <div class="card-footer">
-          <button class="card-cta">Open Terminal <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-          <span class="status-dot"></span>
-        </div>
-      </div>
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-        <div class="card-title">Clinic Map</div>
-        <p class="card-desc">Interactive map of all Blue Angel network practices, patient zones, and nearby specialist locations across the Bay Area.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
-      </div>
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg></div>
-        <div class="card-title">Specialist Network</div>
-        <p class="card-desc">Directory of vetted specialist partners across cardiology, dermatology, orthopedics, and other key referral categories.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
-      </div>
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v4l3 3"/><path d="M3.6 9h16.8M3.6 15h16.8"/></svg></div>
-        <div class="card-title">Ancillary Services</div>
-        <p class="card-desc">Lab coordination, imaging referrals, infusion therapy, specialty partnerships, and ancillary revenue tracking across the network.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
-      </div>
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-4M10 16h4"/></svg></div>
-        <div class="card-title">Coverage Requests</div>
-        <p class="card-desc">Submit and manage cross-practice coverage requests, on-call coordination, and physician availability across the network.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
-      </div>
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-        <div class="card-title">Staff Directory</div>
-        <p class="card-desc">Contact information, schedules, and role assignments for all Blue Angel staff members across the network.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
-      </div>
-    </div>
-  </div>
-  <footer class="dash-footer">
-    &copy; 2024 Blue Angel Clinical Partners &nbsp;·&nbsp;
-    <a href="mailto:joseph@blueangelclinical.com" style="color:inherit">joseph@blueangelclinical.com</a>
-  </footer>
-</div>
-
-<!-- ════════════════════════════════════════
      VIEW 2: DASHBOARD
 ════════════════════════════════════════ -->
 <div class="view" id="view-dashboard">
@@ -933,7 +858,7 @@
 <div class="view" id="view-terminal">
   <nav class="top-nav">
     <div class="nav-left">
-      <button class="nav-back-btn" onclick="showView(currentRole==='staff'?'staff':'dashboard')">
+      <button class="nav-back-btn" onclick="showView('dashboard')">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Dashboard
       </button>
@@ -1176,7 +1101,7 @@
       currentEmail = email;
       currentPractice = 'both';
       currentTerminalFilter = 'both';
-      go(() => { populateStaffDashboard(); showView('staff'); });
+      go(() => { populateDashboard(); showView('dashboard'); });
     }
   }
 
@@ -1205,8 +1130,8 @@
       currentEmail = 'shawna.guzman@blueangelclinical.com';
       currentPractice = 'both';
       currentTerminalFilter = 'both';
-      populateStaffDashboard();
-      showView('staff');
+      populateDashboard();
+      showView('dashboard');
     }
   }
 
@@ -1428,7 +1353,7 @@
     currentPractice = 'both';
     currentTerminalFilter = 'both';
     currentEmail = email;
-    go(() => { populateStaffDashboard(); showView('staff'); });
+    go(() => { populateDashboard(); showView('dashboard'); });
   }
 
   function skipSignIn() {
@@ -1453,8 +1378,8 @@
     currentPractice = 'both';
     currentTerminalFilter = 'both';
     currentEmail = 'shawna.guzman@blueangelclinical.com';
-    populateStaffDashboard();
-    showView('staff');
+    populateDashboard();
+    showView('dashboard');
   }
 
   function populateDashboard() {
@@ -1469,12 +1394,6 @@
       ? 'Combined Blue Angel workspace — Select a module to get started'
       : `${pd.name} — Select a module to get started`;
     document.getElementById('dash-switch-practice').style.display = 'none';
-  }
-
-  function populateStaffDashboard() {
-    const firstName = currentEmail.split('@')[0].split('.')[0];
-    const name = firstName ? firstName.charAt(0).toUpperCase() + firstName.slice(1) : '';
-    document.getElementById('staff-dash-title').textContent = name ? `Welcome back, ${name}` : 'Welcome back';
   }
 
   function setTerminalFilter(filter) {
