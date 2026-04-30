@@ -1238,8 +1238,17 @@
 
   if (isHubMode) { renderHub(); } else { render(); }
 
+  function loadCachedPatients(prac) {
+    try { return JSON.parse(localStorage.getItem(prac + "-patients-v1") || "[]"); }
+    catch { return []; }
+  }
+
+  function locationsFromStops(stops) {
+    const parts = (stops || []).map(s => [s.country, s.city].filter(Boolean).join(", ")).filter(Boolean);
+    return parts.join(" | ") || "Unknown destination";
+  }
+
   function renderHub() {
-    const allRecords = loadRecords();
     const pracFilter = params.get("practice") || "";
     const isStaff = currentView === "staff";
 
@@ -1252,7 +1261,6 @@
         </div>`;
     }
 
-    window._hubRecords = allRecords;
     window._hubIsStaff = isStaff;
     renderHubList(isStaff ? "all" : pracFilter);
   }
@@ -1264,25 +1272,41 @@
   }
 
   function renderHubList(filter) {
-    const allRecords = window._hubRecords;
+    const kitRecords = loadRecords();
     const isStaff = window._hubIsStaff;
     const showBadge = isStaff && filter === "all";
     const hubList = document.getElementById("hub-list");
     const knownPractices = ["sujansky", "daniher"];
+    const pracList = filter === "all" ? knownPractices : (knownPractices.includes(filter) ? [filter] : []);
+    const patientMap = new Map();
 
-    const patients = Object.entries(allRecords).map(([key, rec]) => {
+    pracList.forEach(prac => {
+      loadCachedPatients(prac).forEach(p => {
+        const locs = locationsFromStops(p.stops);
+        const key = `${prac}::${p.id}::${locs}`;
+        if (!patientMap.has(key)) {
+          patientMap.set(key, { prac, pid: p.id, locs, name: p.name, rec: kitRecords[key] || {} });
+        }
+      });
+    });
+
+    Object.entries(kitRecords).forEach(([key, rec]) => {
+      if (patientMap.has(key)) return;
       const parts = key.split("::");
-      if (parts.length < 2) return null;
+      if (parts.length < 2) return;
       const prac = parts[0];
-      const pid  = parts[1];
+      const pid = parts[1];
       const locs = parts.slice(2).join("::");
-      if (!knownPractices.includes(prac)) return null; // skip general/test records
+      if (!knownPractices.includes(prac)) return;
+      if (filter !== "all" && prac !== filter) return;
       const name = rec.patientName ||
         pid.replace(/^(sujansky|daniher)-sheet-/, "")
            .replace(/-\d+$/, "")
            .split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-      return { prac, pid, locs, name, rec };
-    }).filter(p => p && (filter === "all" || p.prac === filter));
+      patientMap.set(key, { prac, pid, locs, name, rec });
+    });
+
+    const patients = [...patientMap.values()];
 
     if (!patients.length) {
       hubList.innerHTML = `<div class="hub-empty">No patient kits found.<br>Kits are created through the practice workflow.</div>`;
