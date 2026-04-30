@@ -137,6 +137,21 @@
     line-height: 1.2;
   }
 
+  .travel-summary-main {
+    color: #142334;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.2;
+  }
+
+  .travel-summary-sub {
+    color: #4a5b6c;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-top: 3px;
+  }
+
   .view-switcher {
     display: flex;
     flex-wrap: wrap;
@@ -821,6 +836,48 @@
     return new Set(getEditableIds());
   }
 
+  function parseTravelStops(rawLocations) {
+    return String(rawLocations || "")
+      .split("|")
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .map((part) => {
+        const pieces = part.split(",").map((piece) => piece.trim()).filter(Boolean);
+        return {
+          full: part,
+          country: pieces[0] || part,
+          detail: pieces.slice(1).join(", ")
+        };
+      });
+  }
+
+  function renderTravelLocationsCard() {
+    const stops = parseTravelStops(travelLocationsValue);
+    if (!stops.length) {
+      travelLocations.textContent = travelLocationsValue;
+      return;
+    }
+
+    if (stops.length === 1) {
+      travelLocations.textContent = stops[0].full;
+      travelLocations.title = stops[0].full;
+      return;
+    }
+
+    const uniqueCountries = [...new Set(stops.map((stop) => stop.country))];
+    const visibleCountries = uniqueCountries.slice(0, 3).join(", ");
+    const remainingCountries = uniqueCountries.length - 3;
+    const summary = remainingCountries > 0
+      ? `${visibleCountries} +${remainingCountries} more`
+      : visibleCountries;
+
+    travelLocations.innerHTML = `
+      <div class="travel-summary-main">${summary}</div>
+      <div class="travel-summary-sub">${stops.length} stops</div>
+    `;
+    travelLocations.title = stops.map((stop) => stop.full).join(" | ");
+  }
+
   function buildViewUrl(view) {
     const nextUrl = new URL(window.location.href);
     nextUrl.searchParams.set("view", view);
@@ -842,7 +899,7 @@
   function renderHeaderContext() {
     const record = currentRecord();
     patientName.textContent = patientNameValue;
-    travelLocations.textContent = travelLocationsValue;
+    renderTravelLocationsCard();
     viewSwitcher.innerHTML = "";
     headerApproval.style.display = "block";
 
