@@ -642,10 +642,60 @@
     .page-header { flex-direction: column; }
     .item-row, .kit-row { grid-template-columns: 1fr; }
   }
+
+  /* ─── Hub ─── */
+  #hub-view .page-header { padding: 24px 26px; margin-bottom: 18px; }
+  #hub-view .header-main { padding-right: 0; }
+  .hub-filter-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .hub-filter-btn {
+    padding: 7px 16px; border-radius: 999px; border: 1px solid var(--line);
+    font-size: 13px; font-weight: 600; color: #526170; background: #f7fafc; cursor: pointer;
+    font: inherit;
+  }
+  .hub-filter-btn.active { background: var(--accent-soft); border-color: #cadef8; color: var(--accent-deep); }
+  .hub-row {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 18px; margin-bottom: 8px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    color: inherit;
+  }
+  .hub-row:hover { border-color: #a0c4ef; box-shadow: 0 2px 8px rgba(59,125,216,0.10); }
+  .hub-row-left { flex: 1; min-width: 0; }
+  .hub-name { font-size: 15px; font-weight: 650; color: #111827; }
+  .hub-dest { font-size: 12px; color: #4a5b6c; margin-top: 2px; }
+  .hub-badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 3px 9px; border-radius: 999px; flex-shrink: 0;
+  }
+  .hub-badge-sujansky { background: #EDF4FF; color: #275da5; }
+  .hub-badge-daniher  { background: #FEF3C7; color: #B45309; }
+  .hub-status {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 999px; flex-shrink: 0;
+  }
+  .hub-status-approved { background: var(--green-bg); border: 1px solid var(--green-line); color: var(--green-text); }
+  .hub-status-pending  { background: var(--red-bg); border: 1px solid var(--red-line); color: var(--red-text); }
+  .hub-empty { text-align: center; padding: 48px 24px; color: #667788; font-size: 14px; line-height: 1.6; }
 </style>
 </head>
 <body>
-<div class="page-wrap">
+
+<div id="hub-view" style="display:none">
+  <div class="page-wrap">
+    <div class="page-header">
+      <div class="header-main" style="padding-right:0">
+        <div class="page-eyebrow">Concierge Travel Medicine</div>
+        <div class="page-title">Patient Travel Kits</div>
+      </div>
+      <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill">CDC Yellow Book 2026 ↗</a>
+    </div>
+    <div id="hub-filters"></div>
+    <div id="hub-list"></div>
+  </div>
+</div>
+
+<div class="page-wrap" id="kit-view" style="display:none">
   <div class="page-header">
     <div class="header-main">
       <div class="page-eyebrow">Concierge Travel Medicine</div>
@@ -771,6 +821,13 @@
   const travelLocationsValue = params.get("locations") || params.get("location") || "Peru";
   const storageKey = "travel-kit-workflow-records-v3";
   const recordKey = practiceValue + "::" + patientIdValue + "::" + travelLocationsValue;
+  const isHubMode = !params.get("patientId") && !params.get("patient");
+
+  if (isHubMode) {
+    document.getElementById("hub-view").style.display = "";
+  } else {
+    document.getElementById("kit-view").style.display = "";
+  }
 
   const itemsList = document.getElementById("itemsList");
   const kitList = document.getElementById("kitList");
@@ -803,12 +860,13 @@
       sharedKit: [...basicKitItems],
       approved: false,
       approvedAt: "",
-      lastUpdatedBy: "staff"
+      lastUpdatedBy: "staff",
+      patientName: patientNameValue
     };
   }
 
   const records = loadRecords();
-  if (!records[recordKey]) {
+  if (!isHubMode && !records[recordKey]) {
     records[recordKey] = buildInitialRecord();
   }
 
@@ -1178,7 +1236,71 @@
     printWindow.print();
   });
 
-  render();
+  if (isHubMode) { renderHub(); } else { render(); }
+
+  function renderHub() {
+    const allRecords = loadRecords();
+    const pracFilter = params.get("practice") || "";
+    const isStaff = currentView === "staff";
+
+    if (isStaff) {
+      document.getElementById("hub-filters").innerHTML = `
+        <div class="hub-filter-row">
+          <button class="hub-filter-btn active" onclick="setHubFilter('all',this)">All</button>
+          <button class="hub-filter-btn" onclick="setHubFilter('sujansky',this)">Sujansky</button>
+          <button class="hub-filter-btn" onclick="setHubFilter('daniher',this)">Daniher</button>
+        </div>`;
+    }
+
+    window._hubRecords = allRecords;
+    renderHubList(isStaff ? "all" : (pracFilter || "all"));
+  }
+
+  function setHubFilter(filter, btn) {
+    document.querySelectorAll(".hub-filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderHubList(filter);
+  }
+
+  function renderHubList(filter) {
+    const allRecords = window._hubRecords;
+    const hubList = document.getElementById("hub-list");
+
+    const patients = Object.entries(allRecords).map(([key, rec]) => {
+      const parts = key.split("::");
+      if (parts.length < 2) return null;
+      const prac = parts[0];
+      const pid  = parts[1];
+      const locs = parts.slice(2).join("::");
+      const name = rec.patientName ||
+        pid.replace(/^(sujansky|daniher)-sheet-/, "")
+           .replace(/-\d+$/, "")
+           .split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+      return { prac, pid, locs, name, rec };
+    }).filter(p => p && (filter === "all" || p.prac === filter));
+
+    if (!patients.length) {
+      hubList.innerHTML = `<div class="hub-empty">No patient kits found for this practice.<br>Kits are created through the practice workflow.</div>`;
+      return;
+    }
+
+    patients.sort((a, b) => a.name.localeCompare(b.name));
+
+    hubList.innerHTML = patients.map(p => {
+      const kitUrl = `travel_kit.html?view=${currentView}&patientId=${encodeURIComponent(p.pid)}&patient=${encodeURIComponent(p.name)}&practice=${p.prac}&locations=${encodeURIComponent(p.locs)}`;
+      const approved = p.rec.approved;
+      const pracLabel = p.prac === "sujansky" ? "Sujansky" : p.prac === "daniher" ? "Daniher" : p.prac;
+      return `<a href="${kitUrl}" class="hub-row" style="text-decoration:none">
+        <div class="hub-row-left">
+          <div class="hub-name">${p.name}</div>
+          <div class="hub-dest">${p.locs || "No destination"}</div>
+        </div>
+        <span class="hub-badge hub-badge-${p.prac}">${pracLabel}</span>
+        <span class="hub-status hub-status-${approved ? "approved" : "pending"}">${approved ? "Approved" : "Pending"}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>`;
+    }).join("");
+  }
 </script>
 </body>
 </html>

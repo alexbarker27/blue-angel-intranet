@@ -1436,8 +1436,9 @@
         <div class="qa-grid" style="margin-bottom:20px">
           ${visibleLinks.filter(link => link.section === section).map(link => {
             const roleParam = currentRole === 'staff' ? 'staff' : 'doctor';
-            const resolvedUrl = link.url.includes('travel_kit') ? link.url + '?view=' + roleParam : link.url;
-            const resolvedEmbed = link.embedUrl.includes('travel_kit') ? link.embedUrl + '?view=' + roleParam : link.embedUrl;
+            const practiceParam = currentRole !== 'staff' ? '&practice=' + currentPractice : '';
+            const resolvedUrl = link.url.includes('travel_kit') ? link.url + '?view=' + roleParam + practiceParam : link.url;
+            const resolvedEmbed = link.embedUrl.includes('travel_kit') ? link.embedUrl + '?view=' + roleParam + practiceParam : link.embedUrl;
             return `
             <div class="qa-card">
               <div class="qa-card-top">
