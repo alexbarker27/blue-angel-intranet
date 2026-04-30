@@ -657,7 +657,7 @@
             <div class="context-value" id="patientName"></div>
           </div>
           <div class="context-card">
-            <div class="context-label">Travel Location</div>
+            <div class="context-label" id="travelLocationsLabel">Travel Location</div>
             <div class="context-value" id="travelLocations"></div>
           </div>
           <div class="header-approval" id="headerApproval"></div>
@@ -779,6 +779,7 @@
   const starterKitButton = document.getElementById("starterKitButton");
   const printKitButton = document.getElementById("printKitButton");
   const patientName = document.getElementById("patientName");
+  const travelLocationsLabel = document.getElementById("travelLocationsLabel");
   const travelLocations = document.getElementById("travelLocations");
   const headerApproval = document.getElementById("headerApproval");
   const viewSwitcher = document.getElementById("viewSwitcher");
@@ -853,6 +854,7 @@
 
   function renderTravelLocationsCard() {
     const stops = parseTravelStops(travelLocationsValue);
+    travelLocationsLabel.textContent = stops.length > 1 ? "Travel Locations" : "Travel Location";
     if (!stops.length) {
       travelLocations.textContent = travelLocationsValue;
       return;

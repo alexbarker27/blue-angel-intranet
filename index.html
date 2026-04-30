@@ -1,1480 +1,1190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blue Angel Clinical Partners — Portal</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Medicine Kit</title>
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #12202f;
+    --muted: #667788;
+    --line: #e6edf3;
+    --accent: #3b7dd8;
+    --accent-soft: #edf4ff;
+    --accent-deep: #275da5;
+    --green-bg: #f2fbf6;
+    --green-line: #cdebd8;
+    --green-text: #227a4f;
+    --green-hover: #e6f7ee;
+    --red-bg: #fff5f4;
+    --red-line: #f1d0cb;
+    --red-text: #b5473c;
+    --red-hover: #fdebea;
+    --sand-bg: #fbfaf6;
+    --sand-line: #e7dfcd;
+    --sand-text: #6e5a34;
+    --sand-hover: #f7f1e7;
+  }
 
-    :root {
-      --navy:     #0A2558;
-      --blue:     #1565C0;
-      --blue-lt:  #1E88E5;
-      --gold:     #C9A84C;
-      --gold-lt:  #E8C96A;
-      --bg:       #F0F4FF;
-      --white:    #FFFFFF;
-      --text:     #0D1B3E;
-      --muted:    #6B7A99;
-      --border:   #D4E1F7;
-      --green:    #16A34A;
-      --green-bg: #DCFCE7;
-      --amber:    #D97706;
-      --amber-bg: #FEF3C7;
-    }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    min-height: 100vh;
+    padding: 24px 20px 36px;
+  }
 
-    /* ─── VIEW SYSTEM ─── */
-    .view { display: none; }
-    .view.active { display: flex; flex-direction: column; min-height: 100vh; }
-    #view-login.active { align-items: center; justify-content: center; }
+  button, summary { font: inherit; }
 
-    /* ════════════════════════════════════════
-       LOGIN VIEW
-    ════════════════════════════════════════ */
-    #view-login {
-      background: linear-gradient(135deg, #0A2558 0%, #0E3A7A 50%, #1565C0 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-    .particle {
-      position: absolute; border-radius: 50%;
-      opacity: 0.06; background: white;
-      animation: float linear infinite;
-    }
-    @keyframes float {
-      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
-      10%  { opacity: 0.06; }
-      90%  { opacity: 0.06; }
-      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
-    }
+  .page-wrap {
+    margin: 0 auto;
+    max-width: 1280px;
+  }
 
-    .login-card {
-      display: flex;
-      width: 900px;
-      max-width: 95vw;
-      min-height: 560px;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(10,37,88,0.18);
-      position: relative;
-      z-index: 1;
-    }
+  .page-header,
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
 
-    /* Brand panel */
-    .brand-panel {
-      width: 42%;
-      background: radial-gradient(circle at top left, rgba(21,101,192,0.08), transparent 30%),
-                  linear-gradient(180deg, #FFFFFF 0%, #F4F8FF 100%);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 48px 36px; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .brand-panel::before {
-      content: ''; position: absolute;
-      width: 320px; height: 320px; border-radius: 50%;
-      border: 1px solid rgba(21,101,192,0.10);
-      top: -60px; right: -80px;
-    }
-    .brand-panel::after {
-      content: ''; position: absolute;
-      width: 200px; height: 200px; border-radius: 50%;
-      border: 1px solid rgba(21,101,192,0.08);
-      bottom: -40px; left: -40px;
-    }
-    .logo-wrap { position: relative; z-index: 1; margin-bottom: 28px; }
-    .logo-wrap img { width: 280px; max-width: 100%; height: auto; }
-    .brand-divider {
-      width: 48px; height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(21,101,192,0.4), transparent);
-      margin: 20px auto; position: relative; z-index: 1;
-    }
-    .brand-tagline {
-      position: relative; z-index: 1;
-      color: #49617F; font-size: 13px;
-      line-height: 1.7; max-width: 220px;
-    }
-    .brand-footer {
-      position: relative; z-index: 1;
-      margin-top: auto; padding-top: 32px;
-      font-size: 11px; color: rgba(10,37,88,0.42); letter-spacing: 0.05em;
-    }
+  .page-header {
+    position: relative;
+    margin-bottom: 18px;
+    padding: 24px 26px;
+  }
 
-    /* Form panel */
-    .form-panel {
-      flex: 1; background: var(--white);
-      display: flex; flex-direction: column;
-      justify-content: center; padding: 52px 48px;
-    }
-    .form-header { margin-bottom: 28px; }
-    .form-header h2 { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-    .form-header p { font-size: 13px; color: var(--muted); }
+  .header-main {
+    max-width: 100%;
+    padding-right: 250px;
+  }
 
-    .role-tabs {
-      display: flex; background: var(--bg);
-      border-radius: 10px; padding: 4px;
-      margin-bottom: 24px; gap: 4px;
-    }
-    .role-tab {
-      flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
-      padding: 10px; border-radius: 7px; cursor: pointer;
-      font-size: 13px; font-weight: 600; color: var(--muted);
-      transition: all 0.2s; border: none; background: transparent;
-    }
-    .role-tab.active {
-      background: var(--navy); color: var(--white);
-      box-shadow: 0 2px 8px rgba(10,37,88,0.18);
-    }
+  .page-eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
 
-    .field { margin-bottom: 16px; }
-    .field label {
-      display: block; font-size: 12px; font-weight: 600;
-      color: var(--text); letter-spacing: 0.04em;
-      text-transform: uppercase; margin-bottom: 7px;
-    }
-    .field select, .field input {
-      width: 100%; padding: 13px 16px;
-      border: 1.5px solid var(--border); border-radius: 10px;
-      font-size: 14px; color: var(--text); background: var(--white);
-      transition: border-color 0.2s, box-shadow 0.2s; outline: none; appearance: none;
-    }
-    .field select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A99' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;
-    }
-    .field input:focus, .field select:focus {
-      border-color: var(--blue); box-shadow: 0 0 0 3px rgba(21,101,192,0.12);
-    }
-    .pw-wrap { position: relative; }
-    .pw-wrap input { padding-right: 44px; }
-    .pw-toggle {
-      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-      background: none; border: none; cursor: pointer; color: var(--muted); padding: 2px; line-height: 0;
-    }
-    .forgot {
-      display: block; text-align: right; font-size: 12px;
-      color: var(--blue); text-decoration: none;
-      margin-top: -6px; margin-bottom: 20px;
-    }
-    .forgot:hover { text-decoration: underline; }
-    .btn-signin {
-      width: 100%; padding: 14px;
-      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
-      color: var(--white); border: none; border-radius: 10px;
-      font-size: 15px; font-weight: 600; cursor: pointer;
-      letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.15s;
-      position: relative; overflow: hidden;
-    }
-    .btn-signin::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .btn-signin:hover { opacity: 0.92; transform: translateY(-1px); }
-    .btn-signin:active { transform: translateY(0); }
-    .btn-skip {
-      width: 100%; padding: 12px 14px; margin-top: 10px;
-      background: var(--bg); color: var(--muted);
-      border: 1.5px dashed var(--border); border-radius: 10px;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .btn-skip:hover { border-color: var(--blue); color: var(--blue); }
-    .signin-note { margin-top: 18px; text-align: center; font-size: 12px; color: var(--muted); }
+  .page-title {
+    color: #111827;
+    font-size: 30px;
+    font-weight: 760;
+    letter-spacing: -0.03em;
+  }
 
-    /* Staff multi-practice checkboxes */
-    .practice-checks { display: flex; flex-direction: column; gap: 8px; }
-    .pcheck-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 11px 14px; border: 1.5px solid var(--border);
-      border-radius: 10px; cursor: pointer; transition: all 0.15s;
-    }
-    .pcheck-item:hover { border-color: var(--blue); background: #EEF4FF; }
-    .pcheck-item input[type="checkbox"] {
-      width: 16px; height: 16px; accent-color: var(--blue);
-      flex-shrink: 0; cursor: pointer;
-    }
-    .pcheck-item.checked { border-color: var(--blue); background: #EEF4FF; }
-    .pcheck-info { display: flex; flex-direction: column; gap: 1px; }
-    .pcheck-name { font-size: 13px; font-weight: 600; color: var(--text); }
-    .pcheck-loc  { font-size: 11px; color: var(--muted); }
+  .source-pill {
+    position: absolute;
+    right: 26px;
+    top: 24px;
+    border: 1.5px solid var(--accent);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 650;
+    padding: 8px 14px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
 
-    /* ── Practice Picker view ── */
-    #view-picker.active {
-      background: var(--bg); align-items: stretch;
-    }
-    .picker-body {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 48px 24px;
-    }
-    .picker-inner { width: 100%; max-width: 520px; }
-    .picker-eyebrow {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
-    }
-    .picker-title { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-    .picker-sub   { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
-    .picker-cards { display: flex; flex-direction: column; gap: 12px; }
-    .picker-card {
-      background: var(--white); border: 1.5px solid var(--border);
-      border-radius: 14px; padding: 20px 22px;
-      display: flex; align-items: center; justify-content: space-between;
-      cursor: pointer; transition: all 0.18s;
-    }
-    .picker-card:hover {
-      border-color: var(--blue);
-      box-shadow: 0 4px 20px rgba(21,101,192,0.12);
-      transform: translateY(-1px);
-    }
-    .picker-card-left { display: flex; flex-direction: column; gap: 3px; }
-    .picker-card-name { font-size: 16px; font-weight: 700; color: var(--text); }
-    .picker-card-sub  { font-size: 13px; color: var(--muted); }
-    .picker-card-arrow { color: var(--blue); flex-shrink: 0; }
-    .picker-back {
-      margin-top: 24px; background: none; border: none; cursor: pointer;
-      font-size: 13px; color: var(--muted); display: flex; align-items: center;
-      gap: 6px; padding: 0;
-    }
-    .picker-back:hover { color: var(--navy); }
-    .alert {
-      padding: 11px 14px; border-radius: 8px; font-size: 13px;
-      margin-bottom: 16px; display: none;
-    }
-    .alert.error { background: #FEE2E2; color: #991B1B; border-left: 3px solid #EF4444; }
-    .alert.show { display: block; }
+  .source-pill:hover { background: var(--accent-soft); }
 
-    @media (max-width: 660px) {
-      .brand-panel { display: none; }
-      .form-panel { padding: 36px 24px; }
+  .header-meta {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .header-topline {
+    align-items: stretch;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 185px 185px minmax(0, 1fr);
+  }
+
+  .context-card {
+    align-items: flex-start;
+    background: #f7faff;
+    border: 1px solid #d6e5f8;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 58px;
+    padding: 7px 11px;
+  }
+
+  .context-label {
+    color: #4b73d2;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+  }
+
+  .context-value {
+    color: #142334;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.2;
+  }
+
+  .travel-summary-main {
+    color: #142334;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.2;
+  }
+
+  .travel-summary-sub {
+    color: #4a5b6c;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-top: 3px;
+  }
+
+  .view-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .header-approval {
+    align-items: center;
+    align-self: stretch;
+    background: #f7faff;
+    border: 1px solid #d6e5f8;
+    border-radius: 12px;
+    display: flex;
+    min-height: 58px;
+    padding: 7px 11px;
+  }
+
+  .approval-row {
+    align-items: center;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: auto auto minmax(8px, 1fr) 1px auto;
+    width: 100%;
+  }
+
+  .approval-head {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .approval-title {
+    color: #12202f;
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .approval-inline {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .approval-spacer {
+    min-width: 8px;
+  }
+
+  .approval-divider {
+    align-self: center;
+    border-left: 1px solid #c7d9f2;
+    height: 22px;
+    margin: 0;
+  }
+
+  .view-pill {
+    background: #f7fafc;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: #526170;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 12px;
+    text-decoration: none;
+  }
+
+  .view-pill.active {
+    background: var(--accent-soft);
+    border-color: #cadef8;
+    color: var(--accent-deep);
+  }
+
+  @media (max-width: 980px) {
+    .header-topline {
+      grid-template-columns: 1fr;
     }
 
-    /* ════════════════════════════════════════
-       SHARED NAV
-    ════════════════════════════════════════ */
-    .top-nav {
-      background: linear-gradient(135deg, #061A42 0%, #0A2558 60%, #0E3A7A 100%);
-      color: white; display: flex; align-items: center;
-      justify-content: space-between; padding: 0 28px;
-      height: 60px; box-shadow: 0 2px 16px rgba(10,37,88,0.28);
-      flex-shrink: 0;
-    }
-    .nav-left { display: flex; align-items: center; gap: 14px; }
-    .nav-brand {
-      display: flex; align-items: center; gap: 12px;
-      text-decoration: none; color: white; cursor: pointer; border: none; background: none;
-    }
-    .nav-brand svg { width: 36px; height: 36px; flex-shrink: 0; }
-    .nav-brand-text { display: flex; flex-direction: column; line-height: 1.2; }
-    .nav-brand-text strong { font-size: 14px; font-weight: 700; letter-spacing: 0.04em; }
-    .nav-brand-text span { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
-    .nav-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.15); }
-    .nav-page-title {
-      font-size: 14px; font-weight: 600;
-      display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.85);
-    }
-    .live-dot {
-      width: 7px; height: 7px; border-radius: 50%; background: #22C55E;
-      animation: pulse-dot 2s infinite;
-    }
-    @keyframes pulse-dot {
-      0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
-      50%      { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
-    }
-    .nav-right { display: flex; align-items: center; gap: 12px; }
-    .nav-badge {
-      border-radius: 20px; padding: 4px 13px; font-size: 12px; font-weight: 600;
-    }
-    .nav-badge.practice {
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.85);
-    }
-    .nav-badge.role {
-      background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.32);
-      color: var(--gold-lt); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px;
-    }
-    .nav-back-btn {
-      display: flex; align-items: center; gap: 6px;
-      color: rgba(255,255,255,0.65); font-size: 13px; background: none;
-      border: 1px solid rgba(255,255,255,0.15); padding: 5px 12px;
-      border-radius: 7px; cursor: pointer; transition: all 0.2s;
-    }
-    .nav-back-btn:hover { background: rgba(255,255,255,0.08); color: white; }
-    .nav-signout {
-      background: none; border: 1px solid rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.65); padding: 5px 12px;
-      border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s;
-    }
-    .nav-signout:hover { background: rgba(255,255,255,0.08); color: white; }
-
-    /* ════════════════════════════════════════
-       DASHBOARD VIEW
-    ════════════════════════════════════════ */
-    .hero {
-      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
-      color: white; padding: 36px 40px 48px; position: relative; overflow: hidden;
-    }
-    .hero::after {
-      content: ''; position: absolute; right: -60px; top: -60px;
-      width: 360px; height: 360px; border-radius: 50%;
-      background: rgba(255,255,255,0.04); pointer-events: none;
-    }
-    .hero-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
-    .hero-eyebrow {
-      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--gold); font-weight: 600; margin-bottom: 6px;
-    }
-    .hero-title { font-size: 28px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; }
-    .hero-sub { font-size: 14px; color: rgba(255,255,255,0.58); }
-
-    .dash-main { max-width: 1100px; margin: 0 auto; padding: 36px 32px 60px; flex: 1; }
-    .section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+    .header-main {
+      padding-right: 0;
     }
 
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .source-pill {
+      margin-top: 14px;
+      position: static;
+    }
+  }
 
-    .module-card {
-      background: var(--white); border-radius: 16px; padding: 26px 22px;
-      box-shadow: 0 4px 20px rgba(10,37,88,0.08);
-      border: 1.5px solid var(--border);
-      display: flex; flex-direction: column; position: relative; overflow: hidden;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-    .module-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 3px; border-radius: 16px 16px 0 0;
-    }
-    .module-card.active { cursor: pointer; }
-    .module-card.active::before { background: linear-gradient(90deg, var(--navy), var(--blue)); }
-    .module-card.soon::before { background: var(--border); }
-    .module-card.active:hover { box-shadow: 0 8px 36px rgba(10,37,88,0.15); transform: translateY(-2px); }
-    .module-card.soon { opacity: 0.58; }
+  .workspace {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(380px, 0.9fr);
+  }
 
-    .card-icon {
-      width: 46px; height: 46px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
-    }
-    .card-icon.blue { background: linear-gradient(135deg, var(--navy), var(--blue)); }
-    .card-icon.gray { background: #E8EDF5; }
-    .card-icon.blue svg { color: white; }
-    .card-icon.gray svg { color: #9AA4BE; }
+  .card {
+    padding: 22px 24px;
+  }
 
-    .card-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
-    .card-desc { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; }
-    .card-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border);
-    }
-    .card-cta {
-      font-size: 13px; font-weight: 600; color: var(--blue);
-      display: flex; align-items: center; gap: 4px;
-      background: none; border: none; cursor: pointer; padding: 0;
-    }
-    .card-cta:hover { color: var(--navy); }
-    .coming-soon {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: #9AA4BE;
-      background: var(--bg); padding: 4px 10px; border-radius: 20px;
-    }
-    .status-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: #22C55E;
-      animation: pulse-dot 2s infinite;
-    }
+  .card-title {
+    color: #111827;
+    font-size: 18px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
 
-    .dash-footer {
-      text-align: center; padding: 20px; font-size: 12px; color: var(--muted);
-      border-top: 1px solid var(--border);
-    }
+  .card-copy {
+    color: #3d4e60;
+    font-size: 13px;
+    line-height: 1.45;
+  }
 
-    @media (max-width: 860px) { .grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 540px) {
-      .grid { grid-template-columns: 1fr; }
-      .dash-main { padding: 24px 16px 40px; }
-      .hero { padding: 24px 20px 32px; }
-    }
+  .workflow-panel {
+    background: #f8fbff;
+    border: 1px solid #deebfb;
+    border-radius: 12px;
+    margin-top: 16px;
+    padding: 14px 15px;
+  }
 
-    /* ════════════════════════════════════════
-       TERMINAL VIEW
-    ════════════════════════════════════════ */
-    .terminal-body { display: flex; flex: 1; overflow: hidden; }
+  .workflow-title {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
 
-    /* Terminal content */
-    .term-content { flex: 1; overflow-y: auto; padding: 28px 40px 60px; max-width: 900px; margin: 0 auto; width: 100%; }
+  .workflow-head {
+    align-items: flex-start;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+  }
 
-    /* Practice banner */
-    .practice-banner {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 24px; padding-bottom: 20px;
-      border-bottom: 1.5px solid var(--border);
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .pb-left {}
-    .pb-right { display: flex; align-items: center; }
-    .pb-eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-    .pb-name { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-    .pb-sub { font-size: 13px; color: var(--muted); }
-    .term-filter {
-      display: inline-flex;
-      gap: 6px;
-      padding: 4px;
-      border-radius: 12px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      box-shadow: 0 8px 20px rgba(10,37,88,0.08);
-    }
-    .term-filter-btn {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      padding: 8px 14px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-    }
-    .term-filter-btn.active {
-      background: var(--navy);
-      color: white;
-    }
-    .term-filter-btn:not(.active):hover {
-      background: var(--bg);
-      color: var(--text);
-    }
-    /* Tabs */
-    .t-tabs {
-      display: flex; gap: 3px; background: var(--white);
-      border: 1.5px solid var(--border); border-radius: 10px;
-      padding: 4px; margin-bottom: 22px; width: fit-content;
-    }
-    .t-tab {
-      display: flex; align-items: center; gap: 6px;
-      padding: 8px 16px; border-radius: 7px; border: none;
-      background: transparent; font-size: 13px; font-weight: 500;
-      color: var(--muted); cursor: pointer; transition: all 0.15s;
-    }
-    .t-tab.active { background: var(--navy); color: white; }
+  .workflow-copy {
+    color: #3f5164;
+    font-size: 12px;
+    line-height: 1.4;
+  }
 
-    .t-panel { display: none; }
-    .t-panel.active { display: block; }
+  .status-pill {
+    border-radius: 999px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-top: 0;
+    padding: 4px 7px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
 
-    /* Workflow intro bar */
-    .wf-intro {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; margin-bottom: 20px; padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .wf-title { font-size: 16px; font-weight: 700; color: var(--text); }
-    .wf-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
-    .btn-embed {
-      display: flex; align-items: center; gap: 7px;
-      background: var(--navy); color: white; padding: 9px 16px;
-      border-radius: 8px; font-size: 13px; font-weight: 600;
-      border: none; cursor: pointer; flex-shrink: 0; transition: opacity 0.2s;
-    }
-    .btn-embed:hover { opacity: 0.88; }
-    /* Embedded iframe */
-    .wf-frame {
-      width: 100%; height: 74vh; border: 1.5px solid var(--border);
-      border-radius: 10px; background: white;
-    }
+  .status-pill.approved {
+    background: var(--green-bg);
+    border: 1px solid var(--green-line);
+    color: var(--green-text);
+  }
 
-    /* Quick access */
-    .qa-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
-    }
-    .qa-grid {
-      display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 0;
-    }
-    .qa-card {
-      display: flex; flex-direction: row; align-items: center; gap: 12px;
-      background: var(--white); border: 1.5px solid var(--border);
-      border-radius: 10px; padding: 10px 14px;
-      transition: border-color 0.15s;
-    }
-    .qa-card:hover { border-color: var(--blue); }
-    .qa-card-top { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .qa-icon {
-      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .qa-text { min-width: 0; }
-    .qa-title { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .qa-sub   { font-size: 11px; color: var(--muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .qa-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
-    .qa-btn-tab {
-      padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
-      cursor: pointer; text-decoration: none; border: none; white-space: nowrap;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--navy); color: white; transition: opacity 0.15s;
-    }
-    .qa-btn-tab:hover { opacity: 0.85; }
-    .qa-btn-embed {
-      padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
-      cursor: pointer; white-space: nowrap; border: 1.5px solid var(--border);
-      background: var(--bg); color: var(--muted);
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color 0.15s, color 0.15s;
-    }
-    .qa-btn-embed:hover { border-color: var(--blue); color: var(--blue); }
-    @media (max-width: 500px) { .qa-grid { grid-template-columns: 1fr; } }
+  .status-pill.pending {
+    background: var(--red-bg);
+    border: 1px solid var(--red-line);
+    color: var(--red-text);
+  }
 
-    /* Step accordion */
-    .steps { display: flex; flex-direction: column; gap: 12px; }
-    .step-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 13px; overflow: hidden; }
-    .step-hd {
-      display: flex; align-items: center; gap: 14px;
-      padding: 16px 20px; cursor: pointer; transition: background 0.15s;
-    }
-    .step-hd:hover { background: var(--bg); }
-    .step-num {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--navy), var(--blue));
-      color: white; font-size: 13px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .step-num.done { background: linear-gradient(135deg, #15803D, #22C55E); }
-    .step-info { flex: 1; }
-    .step-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
-    .step-sub { font-size: 12px; color: var(--muted); }
-    .step-tag {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
-    }
-    .step-tag.active  { background: rgba(21,101,192,0.1); color: var(--blue); }
-    .step-tag.pending { background: var(--amber-bg); color: var(--amber); }
-    .step-tag.done    { background: var(--green-bg); color: var(--green); }
-    .step-chev { color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
-    .step-card.open .step-chev { transform: rotate(180deg); }
-    .step-bd {
-      display: none; padding: 0 20px 18px 66px;
-      border-top: 1px solid var(--border); padding-top: 14px;
-    }
-    .step-card.open .step-bd { display: block; }
-    .step-bd p { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+  .workflow-actions {
+    display: flex;
+    gap: 6px;
+  }
 
-    /* Checklist */
-    .ci {
-      display: flex; align-items: flex-start; gap: 8px;
-      font-size: 13px; color: var(--text);
-      padding: 6px 0; border-bottom: 1px solid var(--border);
-    }
-    .ci:last-of-type { border-bottom: none; }
-    .ci-box {
-      width: 16px; height: 16px; border-radius: 4px;
-      border: 1.5px solid var(--border); background: var(--white);
-      flex-shrink: 0; margin-top: 1px; cursor: pointer;
-      transition: all 0.15s; display: flex; align-items: center; justify-content: center;
-    }
-    .ci-box.checked { background: var(--green); border-color: var(--green); }
-    .ci-box.checked::after { content: '✓'; font-size: 10px; color: white; }
+  .starter-button,
+  .action-button,
+  .remove-button,
+  .clear-button,
+  .print-button,
+  .approve-button {
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(18, 32, 47, 0.06);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.015em;
+    padding: 6px 11px;
+    transition: 140ms ease;
+  }
 
-    /* Med table */
-    .med-tbl { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
-    .med-tbl th {
-      background: var(--bg); font-weight: 700; font-size: 11px;
-      letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
-      padding: 8px 10px; text-align: left; border-bottom: 1.5px solid var(--border);
-    }
-    .med-tbl td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
-    .med-tbl tr:last-child td { border-bottom: none; }
-    .med-tbl tr:hover td { background: var(--bg); }
+  .starter-button {
+    background: #f4f8ff;
+    border-color: #9fc2ef;
+    color: #255ea8;
+  }
 
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-    .badge.green { background: var(--green-bg); color: var(--green); }
-    .badge.blue  { background: rgba(21,101,192,0.1); color: var(--blue); }
-    .badge.gold  { background: rgba(201,168,76,0.15); color: #92670A; }
+  .starter-button:hover {
+    background: #e9f2ff;
+    border-color: #83afe8;
+    box-shadow: 0 2px 6px rgba(59, 125, 216, 0.16);
+  }
 
-    /* Notes */
-    .notes-area {
-      width: 100%; min-height: 100px; border: 1.5px solid var(--border);
-      border-radius: 9px; padding: 10px 12px; font-size: 13px;
-      font-family: inherit; color: var(--text); resize: vertical; outline: none;
-    }
-    .notes-area:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(21,101,192,0.1); }
+  .action-button,
+  .approve-button {
+    background: #e8f7ee;
+    border-color: #8dcc9f;
+    color: #145c39;
+  }
 
-    .info-card {
-      background: var(--white); border: 1.5px solid var(--border);
-      border-radius: 12px; padding: 22px; margin-bottom: 14px;
-    }
-    .info-card h3 {
-      font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 12px;
-      padding-bottom: 10px; border-bottom: 1px solid var(--border);
-    }
-    .ir { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--bg); font-size: 13px; }
-    .ir:last-child { border-bottom: none; }
-    .ir-k { color: var(--muted); }
-    .ir-v { font-weight: 600; color: var(--text); }
+  .action-button:hover,
+  .approve-button:hover {
+    background: #d5efdf;
+    border-color: #71bb89;
+    box-shadow: 0 2px 6px rgba(34, 122, 79, 0.18);
+    color: #114e30;
+  }
 
-    @media (max-width: 800px) {
-      .term-content { padding: 20px 16px 40px; }
-      .pb-name { font-size: 18px; }
-    }
-  </style>
+  .remove-button,
+  .clear-button {
+    background: #feeeee;
+    border-color: #e6a79f;
+    color: #9b362c;
+  }
+
+  .remove-button:hover,
+  .clear-button:hover {
+    background: #fbdedb;
+    border-color: #db8e84;
+    box-shadow: 0 2px 6px rgba(181, 71, 60, 0.18);
+    color: #872d25;
+  }
+
+  .print-button {
+    background: #fbf7ef;
+    border-color: #d9c79f;
+    color: #70572e;
+  }
+
+  .print-button:hover {
+    background: #f6efdf;
+    border-color: #ccb47d;
+    box-shadow: 0 2px 6px rgba(110, 90, 52, 0.14);
+    color: #5d4825;
+  }
+
+  .undo-button {
+    background: #fbfcfe;
+    border: 1.5px solid #cfd9e4;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(18, 32, 47, 0.05);
+    color: #55616f;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 6px 11px;
+    transition: 140ms ease;
+  }
+
+  .undo-button:hover {
+    background: #f4f7fa;
+    border-color: #b9c8d7;
+    box-shadow: 0 2px 6px rgba(107, 114, 128, 0.14);
+    color: #44505d;
+  }
+
+  .starter-button:focus-visible,
+  .action-button:focus-visible,
+  .remove-button:focus-visible,
+  .clear-button:focus-visible,
+  .print-button:focus-visible,
+  .approve-button:focus-visible,
+  .undo-button:focus-visible {
+    outline: 2px solid rgba(59, 125, 216, 0.24);
+    outline-offset: 2px;
+  }
+
+  .toolbar {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  .toolbar-copy {
+    color: #3d4e60;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .accordion {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .accordion-section {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .accordion-summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 14px 16px;
+    transition: background 120ms ease;
+  }
+
+  .accordion-summary::-webkit-details-marker { display: none; }
+  .accordion-summary:hover { background: #f8fbff; }
+
+  .accordion-head {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+  }
+
+  .accordion-icon {
+    align-items: center;
+    border: 1px solid #d7e4f5;
+    border-radius: 999px;
+    color: var(--accent-deep);
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 24px;
+    justify-content: center;
+    width: 24px;
+  }
+
+  .accordion-section[open] .accordion-icon {
+    background: var(--accent-soft);
+  }
+
+  .accordion-arrow {
+    border-bottom: 2px solid var(--accent-deep);
+    border-right: 2px solid var(--accent-deep);
+    display: block;
+    height: 7px;
+    transform: rotate(45deg);
+    transition: transform 120ms ease;
+    width: 7px;
+  }
+
+  .accordion-section[open] .accordion-arrow {
+    margin-top: 4px;
+    transform: rotate(225deg);
+  }
+
+  .accordion-title {
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .accordion-count {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .accordion-body {
+    border-top: 1px solid var(--line);
+    padding: 8px 12px 12px;
+  }
+
+  .item-list,
+  .kit-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .item-row,
+  .kit-row {
+    align-items: start;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    display: grid;
+    gap: 14px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 12px;
+  }
+
+  .item-name,
+  .kit-name {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 720;
+    margin-bottom: 6px;
+  }
+
+  .item-detail,
+  .kit-detail {
+    color: #2f4255;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .item-qty,
+  .kit-qty {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+
+  .kit-shell {
+    position: sticky;
+    top: 18px;
+  }
+
+  .kit-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .kit-intro {
+    background: #f8fbff;
+    border: 1px solid #dfebfa;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    padding: 14px 15px;
+  }
+
+  .kit-intro-label {
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+
+  .kit-intro-copy {
+    color: #34485c;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .section-block {
+    margin-top: 22px;
+  }
+
+  .section-block:first-child { margin-top: 0; }
+
+  .section-head {
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  .section-title {
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 730;
+  }
+
+  .section-count {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .empty-state {
+    background: #fafcff;
+    border: 1px dashed #ccd9e7;
+    border-radius: 12px;
+    color: #425568;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 18px;
+    text-align: center;
+  }
+
+  @media (max-width: 1040px) {
+    .workspace { grid-template-columns: 1fr; }
+    .kit-shell { position: static; }
+  }
+
+  @media (max-width: 720px) {
+    body { padding: 16px 12px 28px; }
+    .page-header, .card { padding: 20px; }
+    .page-header { flex-direction: column; }
+    .item-row, .kit-row { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
-
-<!-- ════════════════════════════════════════
-     VIEW 1: LOGIN
-════════════════════════════════════════ -->
-<div class="view active" id="view-login">
-  <div class="particles" id="particles"></div>
-
-  <div class="login-card">
-    <!-- Brand panel -->
-    <div class="brand-panel">
-      <div class="logo-wrap">
-        <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel Clinical Partners" />
-      </div>
-      <div class="brand-divider"></div>
-      <p class="brand-tagline">Empowering concierge physicians to deliver exceptional care — together.</p>
-      <div class="brand-footer">Physician Portal &nbsp;·&nbsp; Secure Access</div>
-    </div>
-
-    <!-- Form panel -->
-    <div class="form-panel">
-      <div class="form-header">
-        <h2>Welcome back</h2>
-        <p>Sign in to access your practice portal</p>
-      </div>
-
-      <div class="role-tabs">
-        <button class="role-tab active" id="tab-physician" onclick="setRole('physician')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M3 6a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><circle cx="12" cy="16" r="2"/><path d="M12 14v-2"/></svg>
-          Physician
-        </button>
-        <button class="role-tab" id="tab-staff" onclick="setRole('staff')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-          Staff
-        </button>
-      </div>
-
-      <div class="alert error" id="login-error">Please fill in all fields to continue.</div>
-
-      <form onsubmit="handleLogin(event)" novalidate>
-        <!-- Physician: single select -->
-        <div class="field" id="field-physician-practice">
-          <label for="f-practice">Practice</label>
-          <select id="f-practice">
-            <option value="" disabled selected>Select your practice</option>
-            <option value="sujansky">Sujansky Concierge Medicine — San Mateo, CA</option>
-            <option value="daniher">Daniher Concierge Medicine — San Mateo, CA</option>
-            <option value="other">Other Practice</option>
-          </select>
-        </div>
-        <!-- Staff: multi-check -->
-        <div class="field" id="field-staff-practice" style="display:none">
-          <label>Practices <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:11px">(select all that apply)</span></label>
-          <div class="practice-checks">
-            <label class="pcheck-item">
-              <input type="checkbox" value="sujansky" onchange="syncPcheck(this)"/>
-              <span class="pcheck-info">
-                <span class="pcheck-name">Sujansky Concierge Medicine</span>
-                <span class="pcheck-loc">San Mateo, CA</span>
-              </span>
-            </label>
-            <label class="pcheck-item">
-              <input type="checkbox" value="daniher" onchange="syncPcheck(this)"/>
-              <span class="pcheck-info">
-                <span class="pcheck-name">Daniher Concierge Medicine</span>
-                <span class="pcheck-loc">San Mateo, CA</span>
-              </span>
-            </label>
-            <label class="pcheck-item">
-              <input type="checkbox" value="other" onchange="syncPcheck(this)"/>
-              <span class="pcheck-info">
-                <span class="pcheck-name">Other Practice</span>
-                <span class="pcheck-loc">Bay Area, CA</span>
-              </span>
-            </label>
+<div class="page-wrap">
+  <div class="page-header">
+    <div class="header-main">
+      <div class="page-eyebrow">Concierge Travel Medicine</div>
+      <div class="page-title">Travel Medicine Kit</div>
+      <div class="header-meta">
+        <div class="header-topline">
+          <div class="context-card">
+            <div class="context-label">Patient</div>
+            <div class="context-value" id="patientName"></div>
           </div>
-        </div>
-        <div class="field">
-          <label for="f-email">Email Address</label>
-          <input type="email" id="f-email" placeholder="you@practice.com" autocomplete="email"/>
-        </div>
-        <div class="field">
-          <label for="f-password">Password</label>
-          <div class="pw-wrap">
-            <input type="password" id="f-password" placeholder="••••••••" autocomplete="current-password"/>
-            <button type="button" class="pw-toggle" onclick="togglePw()">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-              </svg>
-            </button>
+          <div class="context-card">
+            <div class="context-label" id="travelLocationsLabel">Travel Location</div>
+            <div class="context-value" id="travelLocations"></div>
           </div>
+          <div class="header-approval" id="headerApproval"></div>
         </div>
-        <a href="#" class="forgot">Forgot password?</a>
-        <button type="submit" class="btn-signin" id="signin-btn">Sign In</button>
-        <button type="button" class="btn-skip" onclick="skipSignIn()">Temporary: Skip Sign In</button>
-      </form>
-
-      <p class="signin-note">Need access? <a href="mailto:joseph@blueangelclinical.com" style="color:var(--blue)">joseph@blueangelclinical.com</a></p>
+        <div class="view-switcher" id="viewSwitcher"></div>
+      </div>
     </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════
-     VIEW 1b: PRACTICE PICKER (staff multi-practice)
-════════════════════════════════════════ -->
-<div class="view" id="view-picker">
-  <nav class="top-nav">
-    <div class="nav-left">
-      <button class="nav-brand" onclick="showView('login')">
-        <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel" style="height:36px;filter:brightness(0) invert(1);" />
-      </button>
-    </div>
-    <div class="nav-right">
-      <span class="nav-badge role" style="background:rgba(201,168,76,0.2);border:1px solid rgba(201,168,76,0.32);color:var(--gold-lt);text-transform:uppercase;letter-spacing:.08em;font-size:11px">Staff</span>
-      <button class="nav-signout" onclick="showView('login')">Sign Out</button>
-    </div>
-  </nav>
-  <div class="picker-body">
-    <div class="picker-inner">
-      <p class="picker-eyebrow">Staff Portal</p>
-      <h2 class="picker-title">Select a Practice</h2>
-      <p class="picker-sub">You have access to multiple practices. Which one are you logging in to today?</p>
-      <div class="picker-cards" id="picker-cards"></div>
-      <button class="picker-back" onclick="showView('login')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        Back to login
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════
-     VIEW 2: DASHBOARD
-════════════════════════════════════════ -->
-<div class="view" id="view-dashboard">
-  <nav class="top-nav">
-    <div class="nav-left">
-      <button class="nav-brand" onclick="showView('login')">
-        <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel" style="height:36px;filter:brightness(0) invert(1);" />
-      </button>
-    </div>
-    <div class="nav-right">
-      <span class="nav-badge practice" id="dash-nav-practice">—</span>
-      <span class="nav-badge role" id="dash-nav-role">—</span>
-      <button id="dash-switch-practice" class="nav-back-btn" style="display:none" onclick="populatePicker();showView('picker')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
-        Switch Practice
-      </button>
-      <button class="nav-signout" onclick="showView('login')">Sign Out</button>
-    </div>
-  </nav>
-
-  <div class="hero">
-    <div class="hero-inner">
-      <p class="hero-eyebrow">Practice Portal</p>
-      <h1 class="hero-title" id="dash-title">Welcome back</h1>
-      <p class="hero-sub" id="dash-sub">Select a module below to get started</p>
-    </div>
+    <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill">CDC Yellow Book 2026 -></a>
   </div>
 
-  <div class="dash-main">
-    <p class="section-label">Portal Modules</p>
-    <div class="grid">
+  <div class="workspace">
+    <div class="card">
+      <div class="card-title" id="leftCardTitle"></div>
+      <div class="card-copy" id="masterListCopy"></div>
+      <div class="toolbar">
+        <div class="toolbar-copy" id="toolbarCopy"></div>
+        <button class="starter-button" id="starterKitButton" type="button">Basic Kit</button>
+      </div>
+      <div class="accordion" id="itemsList"></div>
+    </div>
 
-      <!-- 1. FUNCTIONAL -->
-      <div class="module-card active" onclick="showView('terminal')">
-        <div class="card-icon blue">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4M6 8l3 3-3 3M11 14h4"/></svg>
+    <div class="card kit-shell">
+      <div class="kit-header">
+        <div>
+          <div class="card-title" id="kitPanelTitle">Kit Being Built</div>
+          <div class="card-copy" id="kitCopy"></div>
         </div>
-        <div class="card-title">Practice Terminal</div>
-        <p class="card-desc">Access practice-specific workflows, patient intake tools, travel medicine protocols, and operational dashboards.</p>
-        <div class="card-footer">
-          <button class="card-cta">Open Terminal <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-          <span class="status-dot"></span>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="print-button" id="printKitButton" type="button">Print</button>
+          <button class="clear-button" id="clearKitButton" type="button">Clear Kit</button>
         </div>
       </div>
-
-      <!-- 2 -->
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-        <div class="card-title">Clinic Map</div>
-        <p class="card-desc">Interactive map of all Blue Angel network practices, patient zones, and nearby specialist locations across the Bay Area.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
+      <div class="kit-intro">
+        <div class="kit-intro-label">Build</div>
+        <div class="kit-intro-copy" id="buildSummary"></div>
       </div>
-
-      <!-- 3 -->
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg></div>
-        <div class="card-title">Specialist Network</div>
-        <p class="card-desc">Directory of vetted specialist partners across cardiology, dermatology, orthopedics, and other key referral categories.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
-      </div>
-
-      <!-- 4 -->
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v4l3 3"/><path d="M3.6 9h16.8M3.6 15h16.8"/></svg></div>
-        <div class="card-title">Ancillary Services</div>
-        <p class="card-desc">Lab coordination, imaging referrals, infusion therapy, specialty partnerships, and ancillary revenue tracking across the network.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
-      </div>
-
-      <!-- 5 -->
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-4M10 16h4"/></svg></div>
-        <div class="card-title">Coverage Requests</div>
-        <p class="card-desc">Submit and manage cross-practice coverage requests, on-call coordination, and physician availability across the network.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
-      </div>
-
-      <!-- 6 -->
-      <div class="module-card soon">
-        <div class="card-icon gray"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-        <div class="card-title">Physician Forum</div>
-        <p class="card-desc">Private discussion board for Blue Angel physicians to share clinical insights, case questions, and network announcements.</p>
-        <div class="card-footer"><span class="coming-soon">Coming Soon</span></div>
-      </div>
-
+      <div id="kitList"></div>
     </div>
   </div>
-
-  <footer class="dash-footer">
-    &copy; 2024 Blue Angel Clinical Partners &nbsp;·&nbsp;
-    <a href="mailto:joseph@blueangelclinical.com" style="color:inherit">joseph@blueangelclinical.com</a>
-  </footer>
-</div>
-
-<!-- ════════════════════════════════════════
-     VIEW 3: TERMINAL
-════════════════════════════════════════ -->
-<div class="view" id="view-terminal">
-  <nav class="top-nav">
-    <div class="nav-left">
-      <button class="nav-back-btn" onclick="showView('dashboard')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        Dashboard
-      </button>
-      <span class="nav-divider"></span>
-      <span class="nav-page-title"><span class="live-dot"></span>Practice Terminal</span>
-    </div>
-    <div class="nav-right">
-      <span class="nav-badge practice" id="term-nav-practice">—</span>
-      <button class="nav-signout" onclick="showView('login')">Sign Out</button>
-    </div>
-  </nav>
-
-  <div class="terminal-body">
-    <!-- Content — fully generated by populateTerminal() -->
-    <div class="term-content" id="term-content"></div>
-  </div><!-- /terminal-body -->
 </div>
 
 <script>
-  /* ─── State ─── */
-  let currentRole      = 'physician';
-  let currentPractice  = '';
-  let currentEmail     = '';
-  let currentTerminalFilter = 'both';
-  let staffPractices   = [];   // practices checked on staff login
-  const STAFF_LOGIN_LOCAL_PART = 'shawna.guzman';
-
-  const SHARED_LINKS = [
-    {
-      title: 'Waitlist Tracker', sub: 'Combined patient waitlist',
-      url: 'https://docs.google.com/spreadsheets/d/17hdBYeBme5X_PePvZC0FHjlGGbOVeMQwWpFmFFaMJyE/edit?gid=206672164#gid=206672164',
-      embedUrl: 'https://docs.google.com/spreadsheets/d/17hdBYeBme5X_PePvZC0FHjlGGbOVeMQwWpFmFFaMJyE/htmlview',
-      iconBg: '#EEF4FF', iconStroke: 'var(--blue)',
-      iconPath: '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>',
-    },
-    {
-      title: 'Annual Physical Booking', sub: 'Scheduling tracker',
-      url: 'https://docs.google.com/spreadsheets/d/1J2zYr_RX1x7UFFUx7IHI9Qpn8xfHc4-U/edit?gid=723593024#gid=723593024',
-      embedUrl: 'https://docs.google.com/spreadsheets/d/1J2zYr_RX1x7UFFUx7IHI9Qpn8xfHc4-U/htmlview',
-      iconBg: '#F0FDF4', iconStroke: '#16A34A',
-      iconPath: '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 14v4M10 16h4"/>',
-    },
-    {
-      title: 'Prospective Sales Guide', sub: 'Patient acquisition guide',
-      url: 'https://docs.google.com/document/d/1IY1B19XMNZEdSTMnc0jHieSw3iEKhSKC/edit',
-      embedUrl: 'https://docs.google.com/document/d/1IY1B19XMNZEdSTMnc0jHieSw3iEKhSKC/preview',
-      iconBg: '#FDF4FF', iconStroke: '#9333EA',
-      iconPath: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
-    },
+  const catalog = [
+    { id: "wound-care", category: "Wound Care & Bandages", items: [
+      { id: "adhesive-bandages", name: "Adhesive Bandages, assorted (incl. waterproof)", qty: "15-20", instructions: "Clean the area, apply bandage, change daily or when wet." },
+      { id: "gauze-pads", name: "Gauze Pads (2x2 and 4x4 inch)", qty: "4-6 pads", instructions: "Cover larger wounds. Add a thin layer of antibiotic ointment first to prevent sticking. Secure with tape." },
+      { id: "elastic-bandage", name: "Elastic Bandage (2-inch and 4-inch)", qty: "1 of each", instructions: "Wrap snugly around a sprain - firm, but not tight enough to cause tingling or numbness." },
+      { id: "closure-strips", name: "Wound Closure Strips", qty: "8-10 strips", instructions: "Clean the wound first. Pinch skin edges together and apply strips across the cut. Do not use on dirty or infected wounds." },
+      { id: "medical-tape", name: "Medical Adhesive Tape", qty: "1 small roll", instructions: "Use to hold gauze or dressings in place." },
+      { id: "blister-gel-pads", name: "Blister Gel Pads", qty: "6-8 pads", instructions: "Do not pop the blister. Place the pad around it to offload pressure. Change daily." },
+      { id: "bandage-scissors", name: "Bandage Scissors", qty: "1", instructions: "For cutting tape and bandages. Allowed in carry-on if blade is under 4 inches." }
+    ]},
+    { id: "otc-medications", category: "OTC Medications", items: [
+      { id: "acetaminophen", name: "Acetaminophen (Tylenol) 500mg", qty: "24 tablets", instructions: "Take 1-2 tablets every 6-8 hours for pain or fever. Do not exceed 6 tablets per day. Avoid alcohol." },
+      { id: "ibuprofen", name: "Ibuprofen (Advil) 200mg", qty: "24 tablets", instructions: "Take 1-2 tablets every 6-8 hours with food for pain, fever, or swelling. Avoid if you have stomach ulcers or kidney problems." },
+      { id: "loperamide", name: "Loperamide (Imodium) 2mg", qty: "12 capsules", instructions: "Take 2 capsules after the first loose stool, then 1 after each one that follows. Max 8 per day. Stop and use your antibiotic instead if you have bloody diarrhea or fever." },
+      { id: "famotidine", name: "Famotidine (Pepcid) 20mg", qty: "10 tablets", instructions: "Take 1 tablet for heartburn or stomach upset. Can take twice daily if needed." },
+      { id: "ors", name: "Oral Rehydration Salts (ORS)", qty: "4-6 packets", instructions: "Mix 1 packet into 1 liter of clean water. Sip slowly over several hours. Use anytime you have significant diarrhea, vomiting, or feel dehydrated." },
+      { id: "cetirizine", name: "Cetirizine (Zyrtec) 10mg", qty: "14 tablets", instructions: "Take 1 tablet once daily for allergies or hives. Take at night if it makes you drowsy." },
+      { id: "pseudoephedrine", name: "Pseudoephedrine (Sudafed) 30mg", qty: "10 tablets", instructions: "Take 1-2 tablets every 4-6 hours for a stuffy nose or ear pressure on flights. Do not take if you have high blood pressure or heart disease." },
+      { id: "diphenhydramine", name: "Diphenhydramine (Benadryl) 25mg", qty: "12 tablets", instructions: "Take 25-50mg for allergic reactions, hives, or as a sleep aid. Causes drowsiness - do not drive after taking." },
+      { id: "meclizine", name: "Meclizine (Bonine) 25mg", qty: "8 tablets", instructions: "Take 1 tablet 1 hour before travel for motion sickness. May cause some drowsiness." },
+      { id: "bismuth", name: "Bismuth Subsalicylate (Pepto-Bismol) 262mg", qty: "24 tablets", instructions: "Take 2 tablets every 30-60 minutes for mild stomach upset or diarrhea, up to 8 doses per day. Turns stool and tongue black - this is normal. Do not take if allergic to aspirin." }
+    ]},
+    { id: "topicals", category: "Topicals", items: [
+      { id: "neosporin", name: "Antimicrobial Ointment (Neosporin)", qty: "1 small tube", instructions: "Apply a thin layer to minor cuts or scrapes to prevent infection and keep the bandage from sticking." },
+      { id: "hydrocortisone", name: "Hydrocortisone 1% Cream (Cortaid)", qty: "1 small tube", instructions: "Apply a small amount to itchy or irritated skin up to 3 times daily. Do not use on infected or broken skin." },
+      { id: "antifungal", name: "Antifungal Cream (Clotrimazole or Miconazole)", qty: "1 small tube", instructions: "Apply to the affected area twice daily for 1-2 weeks for athlete's foot, jock itch, or ringworm. Keep the area dry." },
+      { id: "aloe-vera", name: "Aloe Vera Gel", qty: "1 small tube", instructions: "Apply generously to sunburned or mildly burned skin. Reapply as needed." },
+      { id: "antiseptic-wipes", name: "Antiseptic Wipes", qty: "10 individually wrapped", instructions: "Use to clean a wound when soap and water aren't available. Single use only." }
+    ]},
+    { id: "instruments", category: "Instruments", items: [
+      { id: "thermometer", name: "Digital Thermometer", qty: "1", instructions: "Place under tongue, mouth closed, for 60 seconds. Fever is 100.4°F (38°C) or higher." },
+      { id: "tweezers", name: "Tweezers", qty: "1", instructions: "For splinters or ticks. For ticks: grab as close to the skin as possible and pull straight out - do not twist." },
+      { id: "pulse-oximeter", name: "Pulse Oximeter (fingertip)", qty: "1", instructions: "Clip to fingertip for 30 seconds. Normal reading is 95-100%. Below 90% at altitude - descend immediately. Below 90% at sea level - seek emergency care." }
+    ]},
+    { id: "prescriptions", category: "Prescription Medications", items: [
+      { id: "azithromycin", name: "Azithromycin (Zithromax) 500mg", qty: "5 tablets", instructions: "Traveler's diarrhea: take 500mg once daily for 3 days, or a single 1000mg dose if directed. Use when diarrhea is preventing normal activity, or if you have fever or blood in stool. If no improvement after 48 hours, seek care. Respiratory infection: take 500mg on day 1, then 250mg once daily on days 2-5. Complete the full course." },
+      { id: "ciprofloxacin", name: "Ciprofloxacin (Cipro) 500mg", qty: "14 tablets", instructions: "Traveler's diarrhea backup: take 500mg twice daily for 1-3 days only if azithromycin is unavailable. UTI: take 500mg twice daily for 3-7 days. Avoid dairy and antacids within 2 hours. Stop and call your doctor if you develop joint or tendon pain." },
+      { id: "ondansetron", name: "Ondansetron (Zofran) 4mg ODT", qty: "6 tablets", instructions: "Let the tablet dissolve on your tongue - do not swallow whole. Take for nausea or vomiting that is stopping you from eating or drinking. Can take every 8 hours as needed. Always drink fluids alongside it." },
+      { id: "acetazolamide", name: "Acetazolamide (Diamox) 250mg", qty: "20 tablets", instructions: "Prevention: start 1-2 days before going above 8,000 feet. Take 125-250mg twice daily while ascending and for 2 days at the highest point. Treatment: take 250mg twice daily and stop ascending. Descend if symptoms are not improving within 12-24 hours." },
+      { id: "dexamethasone", name: "Dexamethasone 4mg", qty: "8 tablets", instructions: "Emergency use for severe altitude sickness only. Take 8mg first, then 4mg every 6 hours. Descend as soon as you take this." },
+      { id: "doxycycline", name: "Doxycycline 100mg", qty: "trip duration + 28 days", instructions: "Malaria prevention: start 1-2 days before entering a malaria area. Take 1 tablet daily with food or milk. Continue for 4 full weeks after leaving. Stay upright for 30 minutes after each dose. Use strong sunscreen every day." },
+      { id: "malarone", name: "Atovaquone-Proguanil (Malarone)", qty: "trip duration + 7 days", instructions: "Malaria prevention: start 1-2 days before entering a malaria area. Take 1 tablet daily with food. Continue for 7 days after leaving. Emergency malaria treatment: take 4 tablets once daily for 3 days with a full meal and seek care as soon as possible." },
+      { id: "metronidazole", name: "Metronidazole (Flagyl) 500mg", qty: "14 tablets", instructions: "For persistent diarrhea lasting more than 1-2 weeks, especially with bloating. Take 500mg twice daily for 5-7 days with food. No alcohol during treatment or for 48 hours after the last dose." },
+      { id: "fluconazole", name: "Fluconazole (Diflucan) 150mg", qty: "1 tablet", instructions: "Take 1 tablet as a single dose for a yeast infection. See a doctor if symptoms don't resolve within 3 days." },
+      { id: "bactrim", name: "Trimethoprim-Sulfamethoxazole (Bactrim DS)", qty: "14 tablets", instructions: "UTI: take 1 tablet twice daily for 3 days. Skin infection: take 1 tablet twice daily for 5-7 days. Drink plenty of water. Do not take if you have a sulfa allergy." },
+      { id: "cephalexin", name: "Cephalexin (Keflex) 500mg", qty: "28 tablets", instructions: "For an infected skin wound. Take 500mg four times daily for 5-7 days. Finish the full course. Seek urgent care if redness is spreading, fever develops, or red streaks appear." },
+      { id: "cipro-eye-drops", name: "Ciprofloxacin Eye Drops 0.3%", qty: "1 bottle (5mL)", instructions: "For pink eye with yellow or green discharge. Put 1-2 drops in the affected eye every 2 hours while awake for 2 days, then every 4 hours for 5 more days." },
+      { id: "ofloxacin-ear-drops", name: "Ofloxacin Ear Drops", qty: "1 bottle (5mL)", instructions: "For swimmer's ear. Put 5-10 drops into the affected ear twice daily for 7 days. Lie on your side for 5 minutes after." },
+      { id: "epipen", name: "Epinephrine Auto-Injector (EpiPen)", qty: "2", instructions: "For a severe allergic reaction - throat tightening, difficulty breathing, or collapse. Inject into the outer thigh and hold for 10 seconds. Call 911 immediately after." },
+      { id: "albuterol", name: "Albuterol Inhaler", qty: "1 inhaler", instructions: "Shake well. Take 2 puffs every 4-6 hours for wheezing or shortness of breath. See a doctor if you need it more than 4 times in a day." },
+      { id: "prednisone", name: "Prednisone 20mg", qty: "10 tablets", instructions: "For a severe allergic reaction or asthma flare not controlled by your inhaler. Take with food. Follow your doctor's prescribed schedule." },
+      { id: "scopolamine", name: "Scopolamine Patch (Transderm Scop)", qty: "2 patches", instructions: "Stick the patch behind one ear at least 4 hours before travel. Each patch lasts 3 days. Wash hands after handling. Do not touch your eyes." },
+      { id: "naloxone", name: "Naloxone (Narcan) 4mg", qty: "2 doses", instructions: "For an opioid overdose - unresponsive, very slow or stopped breathing. Spray one full dose into one nostril. Repeat in the other after 2-3 minutes if no response. Call 911 immediately." }
+    ]}
   ];
 
-  const practiceData = {
-    both: {
-      name: 'Blue Angel Combined Staff Workspace', physician: 'Shawna Guzman',
-      website: '#', intakeForm: '#', intakeFormEmbed: '#',
-      sharedLinks: SHARED_LINKS,
-    },
-    sujansky: {
-      name: 'Sujansky Concierge Medicine', physician: 'Dr. Ulrike Sujansky, M.D.',
-      website: 'https://justintella.github.io/sujansky-website',
-      intakeForm: 'https://docs.google.com/forms/d/1CjDjCbpK6AecdjbDdutRAC8AzS55gnCRkfhyyx1YU8I/viewform',
-      intakeFormEmbed: 'https://docs.google.com/forms/d/1CjDjCbpK6AecdjbDdutRAC8AzS55gnCRkfhyyx1YU8I/viewform?embedded=true',
-      sharedLinks: SHARED_LINKS,
-    },
-    daniher: {
-      name: 'Daniher Concierge Medicine', physician: 'Dr. Amy Daniher, M.D.',
-      website: 'https://justintella.github.io/amy-daniher-website',
-      intakeForm: 'https://forms.gle/q84xUoohi6vbAKqZA',
-      intakeFormEmbed: 'https://forms.gle/q84xUoohi6vbAKqZA',
-      sharedLinks: SHARED_LINKS,
-    },
-    other: {
-      name: 'Your Practice', physician: 'Physician',
-      website: '#', intakeForm: '#', intakeFormEmbed: '#',
-    },
-  };
-
-  const TERMINAL_LINKS = [
-    {
-      section: 'Practice Websites',
-      title: 'Sujansky Website',
-      sub: 'Sujansky Concierge Medicine',
-      scope: 'sujansky',
-      url: practiceData.sujansky.website,
-      embedUrl: practiceData.sujansky.website,
-      iconBg: '#EEF4FF',
-      iconStroke: 'var(--blue)',
-      iconPath: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>',
-    },
-    {
-      section: 'Practice Websites',
-      title: 'Daniher Website',
-      sub: 'Daniher Concierge Medicine',
-      scope: 'daniher',
-      url: practiceData.daniher.website,
-      embedUrl: practiceData.daniher.website,
-      iconBg: '#EEF4FF',
-      iconStroke: 'var(--blue)',
-      iconPath: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>',
-    },
-    {
-      section: 'Travel Medicine',
-      title: 'Sujansky Workflow',
-      sub: 'Sujansky travel medicine workflow',
-      scope: 'sujansky',
-      url: 'https://justintella.github.io/sujansky-workflow/',
-      embedUrl: 'https://justintella.github.io/sujansky-workflow/',
-      iconBg: '#EAF4FF',
-      iconStroke: 'var(--blue)',
-      iconPath: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>',
-    },
-    {
-      section: 'Travel Medicine',
-      title: 'Staff Workflow',
-      sub: 'Shared staff workflow',
-      scope: 'both',
-      staffOnly: true,
-      url: 'https://justintella.github.io/staff-workflow/',
-      embedUrl: 'https://justintella.github.io/staff-workflow/',
-      iconBg: '#F0FDF4',
-      iconStroke: '#16A34A',
-      iconPath: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>',
-    },
-    {
-      section: 'Travel Medicine',
-      title: 'Daniher Workflow',
-      sub: 'Daniher travel medicine workflow',
-      scope: 'daniher',
-      url: 'https://justintella.github.io/daniher-travel-workflow/',
-      embedUrl: 'https://justintella.github.io/daniher-travel-workflow/',
-      iconBg: '#FEF3C7',
-      iconStroke: '#B45309',
-      iconPath: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>',
-    },
-    {
-      section: 'Travel Medicine',
-      title: 'Sujansky Intake Form',
-      sub: 'Travel medicine questionnaire',
-      scope: 'sujansky',
-      url: practiceData.sujansky.intakeForm,
-      embedUrl: practiceData.sujansky.intakeFormEmbed,
-      iconBg: '#FFF7ED',
-      iconStroke: 'var(--amber)',
-      iconPath: '<path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><circle cx="12" cy="13" r="2"/><path d="M8 17a4 4 0 018 0"/>',
-    },
-    {
-      section: 'Travel Medicine',
-      title: 'Daniher Intake Form',
-      sub: 'Travel medicine questionnaire',
-      scope: 'daniher',
-      url: practiceData.daniher.intakeForm,
-      embedUrl: practiceData.daniher.intakeFormEmbed,
-      iconBg: '#FFF7ED',
-      iconStroke: 'var(--amber)',
-      iconPath: '<path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><circle cx="12" cy="13" r="2"/><path d="M8 17a4 4 0 018 0"/>',
-    },
-    {
-      section: 'Travel Medicine',
-      title: 'Medicine Kit',
-      sub: 'CDC Yellow Book protocols',
-      scope: 'both',
-      url: 'https://justintella.github.io/blue-angel-intranet/travel_kit.html',
-      embedUrl: 'https://justintella.github.io/blue-angel-intranet/travel_kit.html',
-      iconBg: '#FFF1F2',
-      iconStroke: '#E11D48',
-      iconPath: '<path d="M3 9h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path d="M3 9l2-4h14l2 4"/><path d="M12 13v4M10 15h4"/>',
-    },
-    ...SHARED_LINKS.map(link => ({ ...link, section: 'Clinic Operations', scope: 'both' })),
+  const basicKitItems = [
+    "acetaminophen", "ibuprofen", "loperamide", "famotidine", "ors", "cetirizine", "pseudoephedrine",
+    "adhesive-bandages", "antiseptic-wipes", "neosporin", "hydrocortisone", "thermometer",
+    "ondansetron", "azithromycin", "ciprofloxacin"
   ];
 
-  /* ─── View switching ─── */
-  function showView(name) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById('view-' + name).classList.add('active');
-    window.scrollTo(0, 0);
-  }
+  const url = new URL(window.location.href);
+  const params = url.searchParams;
+  const currentView = params.get("view") === "doctor" ? "doctor" : "staff";
+  const patientNameValue = params.get("patient") || "Maya Chen";
+  const patientIdValue = params.get("patientId") || patientNameValue.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const practiceValue = params.get("practice") || params.get("source") || "general";
+  const travelLocationsValue = params.get("locations") || params.get("location") || "Peru";
+  const storageKey = "travel-kit-workflow-records-v3";
+  const recordKey = practiceValue + "::" + patientIdValue + "::" + travelLocationsValue;
 
-  /* ─── Particles ─── */
-  (function() {
-    const c = document.getElementById('particles');
-    for (let i = 0; i < 18; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      const sz = Math.random() * 60 + 20;
-      p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*-30}s`;
-      c.appendChild(p);
+  const itemsList = document.getElementById("itemsList");
+  const kitList = document.getElementById("kitList");
+  const buildSummary = document.getElementById("buildSummary");
+  const clearKitButton = document.getElementById("clearKitButton");
+  const starterKitButton = document.getElementById("starterKitButton");
+  const printKitButton = document.getElementById("printKitButton");
+  const patientName = document.getElementById("patientName");
+  const travelLocationsLabel = document.getElementById("travelLocationsLabel");
+  const travelLocations = document.getElementById("travelLocations");
+  const headerApproval = document.getElementById("headerApproval");
+  const viewSwitcher = document.getElementById("viewSwitcher");
+  const kitPanelTitle = document.getElementById("kitPanelTitle");
+  const masterListCopy = document.getElementById("masterListCopy");
+  const toolbarCopy = document.getElementById("toolbarCopy");
+  const kitCopy = document.getElementById("kitCopy");
+  const leftCardTitle = document.getElementById("leftCardTitle");
+  let openSections = new Set();
+
+  function loadRecords() {
+    try {
+      return JSON.parse(window.localStorage.getItem(storageKey) || "{}");
+    } catch (error) {
+      return {};
     }
-  })();
-
-  /* ─── Login ─── */
-  function setRole(role) {
-    currentRole = role;
-    document.getElementById('tab-physician').classList.toggle('active', role === 'physician');
-    document.getElementById('tab-staff').classList.toggle('active', role === 'staff');
-    document.getElementById('field-physician-practice').style.display = role === 'physician' ? '' : 'none';
-    document.getElementById('field-staff-practice').style.display     = 'none';
   }
 
-  function syncPcheck(cb) {
-    cb.closest('.pcheck-item').classList.toggle('checked', cb.checked);
+  function buildInitialRecord() {
+    return {
+      sharedKit: [...basicKitItems],
+      approved: false,
+      approvedAt: "",
+      lastUpdatedBy: "staff"
+    };
   }
 
-  function isAllowedStaffEmail(email) {
-    const local = (email || '').trim().toLowerCase().split('@')[0].replace(/\s+/g, '');
-    return local === STAFF_LOGIN_LOCAL_PART || local === 'shawnaguzman';
+  const records = loadRecords();
+  if (!records[recordKey]) {
+    records[recordKey] = buildInitialRecord();
   }
 
-  function togglePw() {
-    const i = document.getElementById('f-password');
-    i.type = i.type === 'password' ? 'text' : 'password';
+  function currentRecord() {
+    return records[recordKey];
   }
 
-  function handleLogin(e) {
-    e.preventDefault();
-    const email    = document.getElementById('f-email').value.trim();
-    const password = document.getElementById('f-password').value;
-    const err      = document.getElementById('login-error');
+  function saveRecords() {
+    window.localStorage.setItem(storageKey, JSON.stringify(records));
+  }
 
-    if (currentRole === 'physician') {
-      const practice = document.getElementById('f-practice').value;
-      if (!practice || !email || !password) {
-        err.textContent = 'Please fill in all fields to continue.';
-        err.classList.add('show'); return;
-      }
-      err.classList.remove('show');
-      currentPractice = practice;
-      currentEmail    = email;
-      go(() => { populateDashboard(); showView('dashboard'); });
+  function getEditableIds() {
+    return currentRecord().sharedKit;
+  }
+
+  function setEditableIds(nextIds, changedBy) {
+    const record = currentRecord();
+    record.sharedKit = [...nextIds];
+    record.lastUpdatedBy = changedBy;
+    record.approved = false;
+    record.approvedAt = "";
+    saveRecords();
+  }
+
+  function getEditableSet() {
+    return new Set(getEditableIds());
+  }
+
+  function parseTravelStops(rawLocations) {
+    return String(rawLocations || "")
+      .split("|")
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .map((part) => {
+        const pieces = part.split(",").map((piece) => piece.trim()).filter(Boolean);
+        return {
+          full: part,
+          country: pieces[0] || part,
+          detail: pieces.slice(1).join(", ")
+        };
+      });
+  }
+
+  function renderTravelLocationsCard() {
+    const stops = parseTravelStops(travelLocationsValue);
+    travelLocationsLabel.textContent = stops.length > 1 ? "Travel Locations" : "Travel Location";
+    if (!stops.length) {
+      travelLocations.textContent = travelLocationsValue;
+      return;
+    }
+
+    if (stops.length === 1) {
+      travelLocations.textContent = stops[0].full;
+      travelLocations.title = stops[0].full;
+      return;
+    }
+
+    const uniqueCountries = [...new Set(stops.map((stop) => stop.country))];
+    const visibleCountries = uniqueCountries.slice(0, 3).join(", ");
+    const remainingCountries = uniqueCountries.length - 3;
+    const summary = remainingCountries > 0
+      ? `${visibleCountries} +${remainingCountries} more`
+      : visibleCountries;
+
+    travelLocations.innerHTML = `
+      <div class="travel-summary-main">${summary}</div>
+      <div class="travel-summary-sub">${stops.length} stops</div>
+    `;
+    travelLocations.title = stops.map((stop) => stop.full).join(" | ");
+  }
+
+  function buildViewUrl(view) {
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set("view", view);
+    nextUrl.searchParams.set("patientId", patientIdValue);
+    nextUrl.searchParams.set("patient", patientNameValue);
+    nextUrl.searchParams.set("practice", practiceValue);
+    nextUrl.searchParams.set("locations", travelLocationsValue);
+    return nextUrl.toString();
+  }
+
+  function captureOpenSections() {
+    const nextOpen = new Set();
+    itemsList.querySelectorAll("details[data-section-id]").forEach((details) => {
+      if (details.open) nextOpen.add(details.dataset.sectionId);
+    });
+    openSections = nextOpen;
+  }
+
+  function renderHeaderContext() {
+    const record = currentRecord();
+    patientName.textContent = patientNameValue;
+    renderTravelLocationsCard();
+    viewSwitcher.innerHTML = "";
+    headerApproval.style.display = "block";
+
+    ["staff", "doctor"].forEach((view) => {
+      const link = document.createElement("a");
+      link.className = "view-pill" + (view === currentView ? " active" : "");
+      link.href = buildViewUrl(view);
+      link.textContent = view === "staff" ? "Open Staff View" : "Open Doctor View";
+      viewSwitcher.appendChild(link);
+    });
+
+    if (currentView === "doctor") {
+      leftCardTitle.textContent = "Doctor Review";
+      kitPanelTitle.textContent = "Kit Created";
+      masterListCopy.textContent = "Review the patient kit, make any edits you want, and approve it when it is correct.";
+      toolbarCopy.textContent = "Doctor edits update the same patient-specific kit shown in staff view.";
+      starterKitButton.textContent = "Basic Kit";
+      clearKitButton.textContent = "Clear Kit";
+      kitCopy.textContent = "Review the current kit items, amounts, and instructions.";
     } else {
-      // staff — just need email + password, pick practice after
-      if (!email || !password) {
-        err.textContent = 'Please enter your email and password.';
-        err.classList.add('show'); return;
-      }
-      if (!isAllowedStaffEmail(email)) {
-        err.textContent = 'Staff access is currently limited to Shawna Guzman.';
-        err.classList.add('show'); return;
-      }
-      err.classList.remove('show');
-      currentEmail = email;
-      currentPractice = 'both';
-      currentTerminalFilter = 'both';
-      go(() => { populateDashboard(); showView('dashboard'); });
+      leftCardTitle.textContent = "Master Item List";
+      kitPanelTitle.textContent = "Kit Being Built";
+      masterListCopy.textContent = "Open a section to add items that are not already in the patient kit.";
+      toolbarCopy.textContent = "Staff edits uncheck approval until the doctor approves again.";
+      starterKitButton.textContent = "Basic Kit";
+      clearKitButton.textContent = "Clear Kit";
+      kitCopy.textContent = "This is the staff view of the kit.";
     }
-  }
 
-  function go(fn) {
-    const btn = document.getElementById('signin-btn');
-    btn.textContent = 'Signing in…'; btn.disabled = true;
-    setTimeout(() => { btn.textContent = 'Sign In'; btn.disabled = false; fn(); }, 800);
-  }
-
-  function skipSignIn() {
-    const err = document.getElementById('login-error');
-    if (currentRole === 'physician') {
-      const practice = document.getElementById('f-practice').value;
-      if (!practice) {
-        err.textContent = 'Please select a practice before skipping sign in.';
-        err.classList.add('show');
-        return;
-      }
-      err.classList.remove('show');
-      currentPractice = practice;
-      currentEmail    = 'demo@blueangelclinical.com';
-      populateDashboard();
-      showView('dashboard');
-    } else {
-      err.classList.remove('show');
-      currentEmail = 'shawna.guzman@blueangelclinical.com';
-      currentPractice = 'both';
-      currentTerminalFilter = 'both';
-      populateDashboard();
-      showView('dashboard');
-    }
-  }
-
-  /* ─── Practice picker ─── */
-  function populatePicker() {
-    const container = document.getElementById('picker-cards');
-    container.innerHTML = '';
-    Object.keys(practiceData).forEach(key => {
-      const pd = practiceData[key] || practiceData.other;
-      const card = document.createElement('div');
-      card.className = 'picker-card';
-      card.innerHTML = `
-        <div class="picker-card-left">
-          <div class="picker-card-name">${pd.name}</div>
-          <div class="picker-card-sub">${pd.physician} &nbsp;·&nbsp; San Mateo, CA</div>
+    if (currentView === "doctor") {
+      headerApproval.innerHTML = `
+        <div class="approval-row">
+          <div class="approval-head">
+            <div class="approval-title">Doctor Approval</div>
+            <div class="workflow-actions">
+            ${record.approved ? `
+              <button class="undo-button" id="headerUndoApprovalButton" type="button">Undo Approval</button>
+            ` : `
+              <button class="approve-button" id="headerApproveKitButton" type="button">Approve Kit</button>
+            `}
+            </div>
+          </div>
+          <div class="approval-spacer"></div>
+          <div class="approval-divider"></div>
+          <div class="approval-inline">
+            <div class="status-pill ${record.approved ? "approved" : "pending"}" style="margin-top:0;">${record.approved ? "Approved" : "Not Approved"}</div>
+          </div>
         </div>
-        <svg class="picker-card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
-      card.onclick = () => {
-        currentPractice = key;
-        populateDashboard();
-        showView('dashboard');
-      };
-      container.appendChild(card);
+      `;
+
+      const approveButton = document.getElementById("headerApproveKitButton");
+      if (approveButton) {
+        approveButton.addEventListener("click", () => {
+          record.approved = true;
+          record.approvedAt = new Date().toLocaleString();
+          record.lastUpdatedBy = "doctor";
+          saveRecords();
+          render();
+        });
+      }
+
+      const undoButton = document.getElementById("headerUndoApprovalButton");
+      if (undoButton) {
+        undoButton.addEventListener("click", () => {
+          record.approved = false;
+          record.approvedAt = "";
+          record.lastUpdatedBy = "doctor";
+          saveRecords();
+          render();
+        });
+      }
+    } else {
+      headerApproval.innerHTML = `
+        <div class="approval-row">
+          <div class="approval-head">
+            <div class="approval-title">Staff View</div>
+          </div>
+          <div class="approval-spacer"></div>
+          <div class="approval-divider"></div>
+          <div class="approval-inline">
+            <div class="status-pill ${record.approved ? "approved" : "pending"}" style="margin-top:0;">${record.approved ? "Approved" : "Needs Doctor Approval"}</div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  function renderItemsList() {
+    captureOpenSections();
+    itemsList.innerHTML = "";
+    const selected = getEditableSet();
+
+    catalog.forEach((section) => {
+      const remaining = section.items.filter((item) => !selected.has(item.id));
+
+      const details = document.createElement("details");
+      details.className = "accordion-section";
+      details.dataset.sectionId = section.id;
+      if (openSections.has(section.id)) details.open = true;
+
+      const summary = document.createElement("summary");
+      summary.className = "accordion-summary";
+      summary.innerHTML =
+        "<div class='accordion-head'><span class='accordion-icon'><span class='accordion-arrow'></span></span><div class='accordion-title'>" + section.category + "</div></div>" +
+        "<div class='accordion-count'>" + remaining.length + " available</div>";
+      details.appendChild(summary);
+
+      const body = document.createElement("div");
+      body.className = "accordion-body";
+
+      if (!remaining.length) {
+        body.innerHTML = "<div class='empty-state'>Everything from this section is already in this kit.</div>";
+      } else {
+        const list = document.createElement("div");
+        list.className = "item-list";
+
+        remaining.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "item-row";
+
+          const left = document.createElement("div");
+          left.innerHTML =
+            "<div class='item-name'>" + item.name + "</div>" +
+            "<div class='item-detail'>" + item.instructions + "</div>" +
+            "<div class='item-qty'>" + item.qty + "</div>";
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "action-button";
+          button.textContent = currentView === "doctor" ? "Add" : "Add to kit";
+          button.addEventListener("click", () => {
+            const nextIds = [...getEditableSet(), item.id];
+            setEditableIds(nextIds, currentView);
+            render();
+          });
+
+          row.appendChild(left);
+          row.appendChild(button);
+          list.appendChild(row);
+        });
+
+        body.appendChild(list);
+      }
+
+      details.appendChild(body);
+      itemsList.appendChild(details);
     });
   }
 
-  /* ─── Dashboard population ─── */
-  function populateDashboard() {
-    const pd = practiceData[currentPractice] || practiceData.other;
-    const firstName = currentEmail.split('@')[0].split('.')[0];
-    const name = firstName ? firstName.charAt(0).toUpperCase() + firstName.slice(1) : '';
+  function renderKitList() {
+    kitList.innerHTML = "";
+    const selected = getEditableSet();
 
-    document.getElementById('dash-nav-practice').textContent = pd.name;
-    document.getElementById('dash-nav-role').textContent     = currentRole === 'physician' ? 'Physician' : 'Staff';
-    document.getElementById('dash-title').textContent        = name ? `Welcome back, ${name}` : 'Welcome back';
-    document.getElementById('dash-sub').textContent          = `${pd.name} — Select a module to get started`;
+    let total = 0;
+    let usedSections = 0;
 
-    // Show "Switch Practice" for multi-practice staff
-    if (currentPractice === 'both') {
-      document.getElementById('dash-sub').textContent = 'Combined Blue Angel workspace — Select a module to get started';
-    }
-    const switchBtn = document.getElementById('dash-switch-practice');
-    switchBtn.style.display = 'none';
-  }
+    catalog.forEach((section) => {
+      const chosen = section.items.filter((item) => selected.has(item.id));
+      if (!chosen.length) return;
 
-  /* ─── Terminal population ─── */
-  function populateTerminal() {
-    const pd = practiceData[currentPractice] || practiceData.other;
-    document.getElementById('term-nav-practice').textContent = pd.name;
+      total += chosen.length;
+      usedSections += 1;
 
-    document.getElementById('term-content').innerHTML = `
-      <div class="practice-banner">
-        <div class="pb-left">
-          <p class="pb-eyebrow">Blue Angel Clinical Partners</p>
-          <h2 class="pb-name">${pd.name}</h2>
-          <p class="pb-sub">${pd.physician} &middot; San Mateo, CA</p>
-        </div>
-      </div>
+      const wrap = document.createElement("div");
+      wrap.className = "section-block";
 
-      <p class="qa-label">Practice</p>
-      <div class="qa-grid" style="margin-bottom:20px">
-        <div class="qa-card">
-          <div class="qa-card-top">
-            <div class="qa-icon" style="background:#EEF4FF">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
-            </div>
-            <div class="qa-text">
-              <div class="qa-title">Practice Website</div>
-              <div class="qa-sub">${pd.name}</div>
-            </div>
-          </div>
-          <div class="qa-actions">
-            <button class="qa-btn-embed" onclick="openEmbed('${pd.website}','Practice Website')">Open in Site</button>
-            <a class="qa-btn-tab" href="${pd.website}" target="_blank">New Tab ↗</a>
-          </div>
-        </div>
-      </div>
+      const head = document.createElement("div");
+      head.className = "section-head";
+      head.innerHTML =
+        "<div class='section-title'>" + section.category + "</div>" +
+        "<div class='section-count'>" + chosen.length + " selected</div>";
+      wrap.appendChild(head);
 
-      <p class="qa-label">Travel Medicine</p>
-      <div class="qa-grid" style="margin-bottom:20px">
-        <div class="qa-card">
-          <div class="qa-card-top">
-            <div class="qa-icon" style="background:#F0FDF4">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-            </div>
-            <div class="qa-text">
-              <div class="qa-title">Workflow</div>
-              <div class="qa-sub">Travel medicine steps</div>
-            </div>
-          </div>
-          <div class="qa-actions">
-            <button class="qa-btn-embed" onclick="openEmbed('https://justintella.github.io/travel-medicine-workflow/','Workflow')">Open in Site</button>
-            <a class="qa-btn-tab" href="https://justintella.github.io/travel-medicine-workflow/" target="_blank">New Tab ↗</a>
-          </div>
-        </div>
+      const list = document.createElement("div");
+      list.className = "kit-list";
 
-        <div class="qa-card">
-          <div class="qa-card-top">
-            <div class="qa-icon" style="background:#FFF7ED">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><circle cx="12" cy="13" r="2"/><path d="M8 17a4 4 0 018 0"/></svg>
-            </div>
-            <div class="qa-text">
-              <div class="qa-title">Patient Intake Form</div>
-              <div class="qa-sub">Travel medicine questionnaire</div>
-            </div>
-          </div>
-          <div class="qa-actions">
-            <button class="qa-btn-embed" onclick="openEmbed('${pd.intakeFormEmbed}','Patient Intake Form')">Open in Site</button>
-            <a class="qa-btn-tab" href="${pd.intakeForm}" target="_blank">New Tab ↗</a>
-          </div>
-        </div>
+      chosen.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "kit-row";
 
-        <div class="qa-card">
-          <div class="qa-card-top">
-            <div class="qa-icon" style="background:#FFF1F2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path d="M3 9l2-4h14l2 4"/><path d="M12 13v4M10 15h4"/></svg>
-            </div>
-            <div class="qa-text">
-              <div class="qa-title">Travel Medicine Kit</div>
-              <div class="qa-sub">CDC Yellow Book protocols</div>
-            </div>
-          </div>
-          <div class="qa-actions">
-            <button class="qa-btn-embed" onclick="openEmbed('https://justintella.github.io/blue-angel-intranet/travel_kit.html','Travel Medicine Kit')">Open in Site</button>
-            <a class="qa-btn-tab" href="https://justintella.github.io/blue-angel-intranet/travel_kit.html" target="_blank">New Tab ↗</a>
-          </div>
-        </div>
-      </div>
+        const left = document.createElement("div");
+        left.innerHTML =
+          "<div class='kit-name'>" + item.name + "</div>" +
+          "<div class='kit-detail'>" + item.instructions + "</div>" +
+          "<div class='kit-qty'>" + item.qty + "</div>";
 
-      ${(pd.sharedLinks || []).length ? `
-      <p class="qa-label">Clinic Operations</p>
-      <div class="qa-grid" style="margin-bottom:20px">
-        ${pd.sharedLinks.map(sl => `
-        <div class="qa-card">
-          <div class="qa-card-top">
-            <div class="qa-icon" style="background:${sl.iconBg}">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${sl.iconStroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${sl.iconPath}</svg>
-            </div>
-            <div class="qa-text">
-              <div class="qa-title">${sl.title}</div>
-              <div class="qa-sub">${sl.sub}</div>
-            </div>
-          </div>
-          <div class="qa-actions">
-            <button class="qa-btn-embed" onclick="openEmbed('${sl.embedUrl}','${sl.title}')">Open in Site</button>
-            <a class="qa-btn-tab" href="${sl.url}" target="_blank">New Tab ↗</a>
-          </div>
-        </div>`).join('')}
-      </div>` : ''}
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "remove-button";
+        button.textContent = "Remove";
+        button.addEventListener("click", () => {
+          const nextIds = getEditableIds().filter((id) => id !== item.id);
+          setEditableIds(nextIds, currentView);
+          render();
+        });
 
-      <div id="embed-section" style="display:none;margin-top:28px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-          <span id="embed-title" style="font-size:14px;font-weight:600;color:var(--text)">—</span>
-          <button onclick="closeEmbed()" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:5px">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            Close
-          </button>
-        </div>
-        <iframe id="wf-iframe" class="wf-frame" src="" title="Embedded view"></iframe>
-      </div>
-    `;
-  }
+        row.appendChild(left);
+        row.appendChild(button);
+        list.appendChild(row);
+      });
 
-  /* Override dashboard → terminal nav to populate first */
-  const origShowView = showView;
-  window.showView = function(name) {
-    if (name === 'terminal') populateTerminal();
-    origShowView(name);
-  };
-
-  /* ─── Terminal embed ─── */
-  function openEmbed(url, title) {
-    const fr = document.getElementById('wf-iframe');
-    fr.src = url;
-    document.getElementById('embed-title').textContent = title;
-    const sec = document.getElementById('embed-section');
-    sec.style.display = 'block';
-    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-  function closeEmbed() {
-    document.getElementById('embed-section').style.display = 'none';
-    document.getElementById('wf-iframe').src = '';
-  }
-
-  /* ─── Step accordion ─── */
-  function handleLogin(e) {
-    e.preventDefault();
-    const email    = document.getElementById('f-email').value.trim();
-    const password = document.getElementById('f-password').value;
-    const err      = document.getElementById('login-error');
-
-    if (currentRole === 'physician') {
-      const practice = document.getElementById('f-practice').value;
-      if (!practice || !email || !password) {
-        err.textContent = 'Please fill in all fields to continue.';
-        err.classList.add('show');
-        return;
-      }
-      err.classList.remove('show');
-      currentPractice = practice;
-      currentTerminalFilter = practice;
-      currentEmail = email;
-      go(() => { populateDashboard(); showView('dashboard'); });
-      return;
-    }
-
-    if (!email || !password) {
-      err.textContent = 'Please enter your email and password.';
-      err.classList.add('show');
-      return;
-    }
-    if (!isAllowedStaffEmail(email)) {
-      err.textContent = 'Staff access is currently limited to Shawna Guzman.';
-      err.classList.add('show');
-      return;
-    }
-
-    err.classList.remove('show');
-    currentPractice = 'both';
-    currentTerminalFilter = 'both';
-    currentEmail = email;
-    go(() => { populateDashboard(); showView('dashboard'); });
-  }
-
-  function skipSignIn() {
-    const err = document.getElementById('login-error');
-    err.classList.remove('show');
-
-    if (currentRole === 'physician') {
-      const practice = document.getElementById('f-practice').value;
-      if (!practice) {
-        err.textContent = 'Please select a practice before skipping sign in.';
-        err.classList.add('show');
-        return;
-      }
-      currentPractice = practice;
-      currentTerminalFilter = practice;
-      currentEmail = 'demo@blueangelclinical.com';
-      populateDashboard();
-      showView('dashboard');
-      return;
-    }
-
-    currentPractice = 'both';
-    currentTerminalFilter = 'both';
-    currentEmail = 'shawna.guzman@blueangelclinical.com';
-    populateDashboard();
-    showView('dashboard');
-  }
-
-  function populateDashboard() {
-    const pd = practiceData[currentPractice] || practiceData.other;
-    const firstName = currentEmail.split('@')[0].split('.')[0];
-    const name = firstName ? firstName.charAt(0).toUpperCase() + firstName.slice(1) : '';
-
-    document.getElementById('dash-nav-practice').textContent = pd.name;
-    document.getElementById('dash-nav-role').textContent = currentRole === 'physician' ? 'Physician' : 'Staff';
-    document.getElementById('dash-title').textContent = name ? `Welcome back, ${name}` : 'Welcome back';
-    document.getElementById('dash-sub').textContent = currentPractice === 'both'
-      ? 'Combined Blue Angel workspace — Select a module to get started'
-      : `${pd.name} — Select a module to get started`;
-    document.getElementById('dash-switch-practice').style.display = 'none';
-  }
-
-  function setTerminalFilter(filter) {
-    currentTerminalFilter = filter;
-    populateTerminal();
-  }
-
-  function populateTerminal() {
-    const pd = practiceData[currentPractice] || practiceData.other;
-    const activeFilter = currentRole === 'staff' ? currentTerminalFilter : currentPractice;
-    const visibleLinks = TERMINAL_LINKS.filter(link => {
-      if (link.staffOnly && currentRole !== 'staff') return false;
-      if (currentRole === 'staff' && link.title === 'Sujansky Workflow') return false;
-      return activeFilter === 'both' ? true : link.scope === 'both' || link.scope === activeFilter;
+      wrap.appendChild(list);
+      kitList.appendChild(wrap);
     });
-    const sections = [...new Set(visibleLinks.map(link => link.section))];
 
-    document.getElementById('term-nav-practice').textContent = pd.name;
+    if (!total) {
+      kitList.innerHTML = "<div class='empty-state'>Nothing is in the kit yet.</div>";
+      buildSummary.textContent = "No items added yet.";
+    } else {
+      const record = currentRecord();
+      const suffix = record.approved
+        ? " Approved by doctor."
+        : " Awaiting doctor approval.";
+      buildSummary.textContent = total + " items across " + usedSections + " sections." + suffix;
+    }
+  }
 
-    document.getElementById('term-content').innerHTML = `
-      <div class="practice-banner">
-        <div class="pb-left">
-          <p class="pb-eyebrow">Blue Angel Clinical Partners</p>
-          <h2 class="pb-name">${pd.name}</h2>
-          <p class="pb-sub">${pd.physician} &middot; San Mateo, CA</p>
-        </div>
-        ${currentRole === 'staff' ? `
-          <div class="pb-right">
-            <div class="term-filter">
-              <button class="term-filter-btn ${activeFilter === 'both' ? 'active' : ''}" onclick="setTerminalFilter('both')">Both</button>
-              <button class="term-filter-btn ${activeFilter === 'sujansky' ? 'active' : ''}" onclick="setTerminalFilter('sujansky')">Sujansky</button>
-              <button class="term-filter-btn ${activeFilter === 'daniher' ? 'active' : ''}" onclick="setTerminalFilter('daniher')">Daniher</button>
+  function render() {
+    renderHeaderContext();
+    renderItemsList();
+    renderKitList();
+  }
+
+  starterKitButton.addEventListener("click", () => {
+    setEditableIds(basicKitItems, currentView);
+    render();
+  });
+
+  clearKitButton.addEventListener("click", () => {
+    setEditableIds([], currentView);
+    render();
+  });
+
+  printKitButton.addEventListener("click", () => {
+    const chosenIds = getEditableIds();
+    const selectedItems = catalog.flatMap((section) =>
+      section.items
+        .filter((item) => chosenIds.includes(item.id))
+        .map((item) => ({ section: section.category, ...item }))
+    );
+
+    const sections = catalog.map((section) => {
+      const items = selectedItems.filter((item) => item.section === section.category);
+      if (!items.length) return "";
+      return `
+        <section style="margin-bottom:24px;">
+          <h2 style="font-size:18px;margin:0 0 10px;color:#111827;">${section.category}</h2>
+          ${items.map((item) => `
+            <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #e5e7eb;">
+              <div style="font-weight:700;color:#111827;">${item.name}</div>
+              <div style="font-size:13px;color:#374151;margin-top:4px;">Amount: ${item.qty}</div>
+              <div style="font-size:13px;color:#4b5563;line-height:1.55;margin-top:6px;">${item.instructions}</div>
             </div>
-          </div>
-        ` : ''}
-      </div>
+          `).join("")}
+        </section>
+      `;
+    }).join("");
 
-      ${sections.map(section => `
-        <p class="qa-label">${section}</p>
-        <div class="qa-grid" style="margin-bottom:20px">
-          ${visibleLinks.filter(link => link.section === section).map(link => `
-            <div class="qa-card">
-              <div class="qa-card-top">
-                <div class="qa-icon" style="background:${link.iconBg}">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${link.iconStroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${link.iconPath}</svg>
-                </div>
-                <div class="qa-text">
-                  <div class="qa-title">${link.title}</div>
-                  <div class="qa-sub">${link.sub}</div>
-                </div>
-              </div>
-              <div class="qa-actions">
-                <button class="qa-btn-embed" onclick="openEmbed('${link.embedUrl}','${link.title}')">Open in Site</button>
-                <a class="qa-btn-tab" href="${link.url}" target="_blank">New Tab ↗</a>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `).join('')}
+    const printWindow = window.open("", "_blank", "width=900,height=700");
+    if (!printWindow) return;
 
-      <div id="embed-section" style="display:none;margin-top:28px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-          <span id="embed-title" style="font-size:14px;font-weight:600;color:var(--text)">—</span>
-          <button onclick="closeEmbed()" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:5px">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            Close
-          </button>
-        </div>
-        <iframe id="wf-iframe" class="wf-frame" src="" title="Embedded view"></iframe>
-      </div>
-    `;
-  }
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Travel Medicine Kit Item List and Instructions</title>
+      </head>
+      <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:32px;color:#111827;">
+        <h1 style="margin:0 0 8px;">Travel Medicine Kit</h1>
+        <p style="margin:0 0 12px;color:#4b5563;">${patientNameValue}</p>
+        <p style="margin:0 0 24px;color:#4b5563;">${travelLocationsValue}</p>
+        <p style="margin:0 0 24px;color:#4b5563;">Item list and instructions.</p>
+        ${sections || "<p>No items in the kit.</p>"}
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  });
 
-  function toggleStep(id) {
-    document.getElementById(id).classList.toggle('open');
-  }
-
-  /* ─── Checklist ─── */
-  function toggleCheck(el) {
-    el.classList.toggle('checked');
-  }
+  render();
 </script>
 </body>
 </html>
