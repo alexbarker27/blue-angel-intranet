@@ -158,6 +158,10 @@
     gap: 8px;
   }
 
+  .view-switcher .all-patients-link {
+    margin-right: auto;
+  }
+
   .header-approval {
     align-items: center;
     align-self: stretch;
@@ -525,6 +529,113 @@
     gap: 10px;
   }
 
+  .item-copy-head {
+    align-items: start;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .instruction-edit-button {
+    align-items: center;
+    background: #f7faff;
+    border: 1px solid #d6e5f8;
+    border-radius: 999px;
+    color: #4b73d2;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 700;
+    height: 28px;
+    justify-content: center;
+    line-height: 1;
+    width: 28px;
+  }
+
+  .instruction-edit-button:hover {
+    background: #eaf2ff;
+    border-color: #b8cff1;
+    color: #315fb7;
+  }
+
+  .instruction-modal[hidden] {
+    display: none;
+  }
+
+  .instruction-modal {
+    align-items: center;
+    background: rgba(18, 32, 47, 0.36);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    padding: 20px;
+    position: fixed;
+    z-index: 50;
+  }
+
+  .instruction-modal-card {
+    background: #ffffff;
+    border: 1px solid #d6e5f8;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(18, 32, 47, 0.18);
+    max-width: 680px;
+    padding: 22px;
+    width: min(100%, 680px);
+  }
+
+  .instruction-modal-title {
+    color: #12202f;
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.2;
+  }
+
+  .instruction-modal-subtitle {
+    color: #3d4e60;
+    font-size: 13px;
+    line-height: 1.45;
+    margin-top: 6px;
+  }
+
+  .instruction-modal-field {
+    margin-top: 16px;
+  }
+
+  .instruction-modal-label {
+    color: #4b73d2;
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .instruction-modal-textarea {
+    border: 1px solid #c7d9f2;
+    border-radius: 14px;
+    color: #142334;
+    font: inherit;
+    min-height: 160px;
+    padding: 14px 16px;
+    resize: vertical;
+    width: 100%;
+  }
+
+  .instruction-modal-textarea:focus {
+    border-color: #7da8e9;
+    box-shadow: 0 0 0 3px rgba(59, 125, 216, 0.14);
+    outline: none;
+  }
+
+  .instruction-modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+
   .item-row,
   .kit-row {
     align-items: start;
@@ -642,63 +753,10 @@
     .page-header { flex-direction: column; }
     .item-row, .kit-row { grid-template-columns: 1fr; }
   }
-
-  /* ─── Hub ─── */
-  #hub-view .page-header { padding: 24px 26px; margin-bottom: 18px; }
-  #hub-view .header-main { padding-right: 0; }
-  .hub-filter-row { display: flex; gap: 8px; margin-bottom: 16px; }
-  .hub-filter-btn {
-    padding: 7px 16px; border-radius: 999px; border: 1px solid var(--line);
-    font-size: 13px; font-weight: 600; color: #526170; background: #f7fafc; cursor: pointer;
-    font: inherit;
-  }
-  .hub-filter-btn.active { background: var(--accent-soft); border-color: #cadef8; color: var(--accent-deep); }
-  .hub-row {
-    display: flex; align-items: center; gap: 14px;
-    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-    padding: 14px 18px; margin-bottom: 8px;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    color: inherit;
-  }
-  .hub-row:hover { border-color: #a0c4ef; box-shadow: 0 2px 8px rgba(59,125,216,0.10); }
-  .hub-row-left { flex: 1; min-width: 0; }
-  .hub-name { font-size: 15px; font-weight: 650; color: #111827; }
-  .hub-dest { font-size: 12px; color: #4a5b6c; margin-top: 2px; }
-  .hub-badge {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
-    text-transform: uppercase; padding: 3px 9px; border-radius: 999px; flex-shrink: 0;
-  }
-  .hub-badge-sujansky { background: #EDF4FF; color: #275da5; }
-  .hub-badge-daniher  { background: #FEF3C7; color: #B45309; }
-  .hub-status {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
-    text-transform: uppercase; padding: 4px 10px; border-radius: 999px; flex-shrink: 0;
-  }
-  .hub-status-approved { background: var(--green-bg); border: 1px solid var(--green-line); color: var(--green-text); }
-  .hub-status-pending  { background: var(--red-bg); border: 1px solid var(--red-line); color: var(--red-text); }
-  .hub-empty { text-align: center; padding: 48px 24px; color: #667788; font-size: 14px; line-height: 1.6; }
 </style>
 </head>
 <body>
-
-<div id="hub-view" style="display:none">
-  <div class="page-wrap">
-    <div class="page-header">
-      <div class="header-main" style="padding-right:0">
-        <div class="page-eyebrow">Concierge Travel Medicine</div>
-        <div class="page-title">Patient Travel Kits</div>
-      </div>
-      <div style="position:absolute;right:26px;top:24px;display:flex;align-items:center;gap:14px">
-        <img id="hub-practice-logo" src="" alt="" style="display:none;width:165px;height:auto">
-        <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill" style="position:static">CDC Yellow Book 2026 ↗</a>
-      </div>
-    </div>
-    <div id="hub-filters"></div>
-    <div id="hub-list"></div>
-  </div>
-</div>
-
-<div class="page-wrap" id="kit-view" style="display:none">
+<div class="page-wrap">
   <div class="page-header">
     <div class="header-main">
       <div class="page-eyebrow">Concierge Travel Medicine</div>
@@ -718,14 +776,11 @@
         <div class="view-switcher" id="viewSwitcher"></div>
       </div>
     </div>
-    <div style="position:absolute;right:26px;top:24px;display:flex;gap:8px;align-items:center">
-      <a id="hub-back-link" href="#" class="source-pill" style="position:static">← All Patients</a>
-      <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill" style="position:static">CDC Yellow Book ↗</a>
-    </div>
+    <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill">CDC Yellow Book 2026 -></a>
   </div>
 
-  <div class="workspace">
-    <div class="card">
+  <div class="workspace" id="workspace">
+    <div class="card" id="leftPanel">
       <div class="card-title" id="leftCardTitle"></div>
       <div class="card-copy" id="masterListCopy"></div>
       <div class="toolbar">
@@ -741,7 +796,7 @@
           <div class="card-title" id="kitPanelTitle">Kit Being Built</div>
           <div class="card-copy" id="kitCopy"></div>
         </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;" id="kitActions">
           <button class="print-button" id="printKitButton" type="button">Print</button>
           <button class="clear-button" id="clearKitButton" type="button">Clear Kit</button>
         </div>
@@ -751,6 +806,21 @@
         <div class="kit-intro-copy" id="buildSummary"></div>
       </div>
       <div id="kitList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="instruction-modal" id="instructionModal" hidden>
+  <div class="instruction-modal-card">
+    <div class="instruction-modal-title" id="instructionModalTitle">Edit Instructions</div>
+    <div class="instruction-modal-subtitle">These edits apply only to the current patient's kit and will show in the created kit and staff view.</div>
+    <div class="instruction-modal-field">
+      <label class="instruction-modal-label" for="instructionModalTextarea">Instructions</label>
+      <textarea class="instruction-modal-textarea" id="instructionModalTextarea"></textarea>
+    </div>
+    <div class="instruction-modal-actions">
+      <button class="undo-button" id="instructionModalCancel" type="button">Cancel</button>
+      <button class="approve-button" id="instructionModalSave" type="button">Save Instructions</button>
     </div>
   </div>
 </div>
@@ -783,9 +853,7 @@
       { id: "hydrocortisone", name: "Hydrocortisone 1% Cream (Cortaid)", qty: "1 small tube", instructions: "Apply a small amount to itchy or irritated skin up to 3 times daily. Do not use on infected or broken skin." },
       { id: "antifungal", name: "Antifungal Cream (Clotrimazole or Miconazole)", qty: "1 small tube", instructions: "Apply to the affected area twice daily for 1-2 weeks for athlete's foot, jock itch, or ringworm. Keep the area dry." },
       { id: "aloe-vera", name: "Aloe Vera Gel", qty: "1 small tube", instructions: "Apply generously to sunburned or mildly burned skin. Reapply as needed." },
-      { id: "antiseptic-wipes", name: "Antiseptic Wipes", qty: "10 individually wrapped", instructions: "Use to clean a wound when soap and water aren't available. Single use only." },
-      { id: "instant-ice-pack", name: "Instant Ice Pack", qty: "2", instructions: "Squeeze and shake to activate. Apply to sprains, bruises, or swelling for 15–20 minutes at a time. Do not apply directly to skin — wrap in a cloth first." },
-      { id: "instant-heat-pack", name: "Instant Heat Pack", qty: "2", instructions: "Squeeze and shake to activate. Apply to sore or stiff muscles for 15–20 minutes at a time. Do not apply directly to skin — wrap in a cloth first." }
+      { id: "antiseptic-wipes", name: "Antiseptic Wipes", qty: "10 individually wrapped", instructions: "Use to clean a wound when soap and water aren't available. Single use only." }
     ]},
     { id: "instruments", category: "Instruments", items: [
       { id: "thermometer", name: "Digital Thermometer", qty: "1", instructions: "Place under tongue, mouth closed, for 60 seconds. Fever is 100.4°F (38°C) or higher." },
@@ -817,7 +885,7 @@
   const basicKitItems = [
     "acetaminophen", "ibuprofen", "loperamide", "famotidine", "ors", "cetirizine", "pseudoephedrine",
     "adhesive-bandages", "antiseptic-wipes", "neosporin", "hydrocortisone", "thermometer",
-    "ondansetron", "azithromycin", "ciprofloxacin"
+    "ondansetron", "azithromycin", "ciprofloxacin", "acetazolamide"
   ];
 
   const url = new URL(window.location.href);
@@ -829,33 +897,6 @@
   const travelLocationsValue = params.get("locations") || params.get("location") || "Peru";
   const storageKey = "travel-kit-workflow-records-v3";
   const recordKey = practiceValue + "::" + patientIdValue + "::" + travelLocationsValue;
-  const isHubMode = !params.get("patientId") && !params.get("patient");
-
-  const hubBackLink = document.getElementById("hub-back-link");
-  if (hubBackLink) {
-    const hubParams = currentView === "doctor" && practiceValue && practiceValue !== "general"
-      ? `?view=doctor&practice=${practiceValue}`
-      : `?view=staff`;
-    hubBackLink.href = `travel_kit.html${hubParams}`;
-  }
-
-  const practiceLogoUrls = {
-    sujansky: "https://justintella.github.io/sujansky-workflow/practice-logo.png",
-    daniher:  "https://justintella.github.io/daniher-travel-workflow/practice-logo.png",
-  };
-
-  const hubLogo = document.getElementById("hub-practice-logo");
-  if (hubLogo && practiceLogoUrls[practiceValue]) {
-    hubLogo.src = practiceLogoUrls[practiceValue];
-    hubLogo.alt = practiceValue === "sujansky" ? "Ulrike Sujansky, M.D." : "Amy Daniher, M.D.";
-    hubLogo.style.display = "";
-  }
-
-  if (isHubMode) {
-    document.getElementById("hub-view").style.display = "";
-  } else {
-    document.getElementById("kit-view").style.display = "";
-  }
 
   const itemsList = document.getElementById("itemsList");
   const kitList = document.getElementById("kitList");
@@ -863,16 +904,25 @@
   const clearKitButton = document.getElementById("clearKitButton");
   const starterKitButton = document.getElementById("starterKitButton");
   const printKitButton = document.getElementById("printKitButton");
+  const instructionModal = document.getElementById("instructionModal");
+  const instructionModalTitle = document.getElementById("instructionModalTitle");
+  const instructionModalTextarea = document.getElementById("instructionModalTextarea");
+  const instructionModalCancel = document.getElementById("instructionModalCancel");
+  const instructionModalSave = document.getElementById("instructionModalSave");
   const patientName = document.getElementById("patientName");
   const travelLocationsLabel = document.getElementById("travelLocationsLabel");
   const travelLocations = document.getElementById("travelLocations");
   const headerApproval = document.getElementById("headerApproval");
   const viewSwitcher = document.getElementById("viewSwitcher");
+  const workspace = document.getElementById("workspace");
+  const leftPanel = document.getElementById("leftPanel");
+  const kitActions = document.getElementById("kitActions");
   const kitPanelTitle = document.getElementById("kitPanelTitle");
   const masterListCopy = document.getElementById("masterListCopy");
   const toolbarCopy = document.getElementById("toolbarCopy");
   const kitCopy = document.getElementById("kitCopy");
   const leftCardTitle = document.getElementById("leftCardTitle");
+  let editingInstructionItemId = null;
   let openSections = new Set();
 
   function loadRecords() {
@@ -883,19 +933,19 @@
     }
   }
 
-  function buildInitialRecord() {
+  function buildInitialRecord(initialView) {
     return {
-      sharedKit: [...basicKitItems],
+      sharedKit: initialView === "doctor" ? [] : [...basicKitItems],
+      customInstructions: {},
       approved: false,
       approvedAt: "",
-      lastUpdatedBy: "staff",
-      patientName: patientNameValue
+      lastUpdatedBy: initialView === "doctor" ? "doctor" : "staff"
     };
   }
 
   const records = loadRecords();
-  if (!isHubMode && !records[recordKey]) {
-    records[recordKey] = buildInitialRecord();
+  if (!records[recordKey]) {
+    records[recordKey] = buildInitialRecord(currentView);
   }
 
   function currentRecord() {
@@ -921,6 +971,51 @@
 
   function getEditableSet() {
     return new Set(getEditableIds());
+  }
+
+  function getInstructionText(item) {
+    return currentRecord().customInstructions?.[item.id] || item.instructions;
+  }
+
+  function setInstructionOverride(itemId, nextInstructions, changedBy) {
+    const record = currentRecord();
+    if (!record.customInstructions) record.customInstructions = {};
+    if (nextInstructions && nextInstructions.trim() && nextInstructions.trim() !== findItemById(itemId)?.instructions) {
+      record.customInstructions[itemId] = nextInstructions.trim();
+    } else {
+      delete record.customInstructions[itemId];
+    }
+    record.lastUpdatedBy = changedBy;
+    record.approved = false;
+    record.approvedAt = "";
+    saveRecords();
+  }
+
+  function findItemById(itemId) {
+    return catalog.flatMap((section) => section.items).find((item) => item.id === itemId);
+  }
+
+  function openInstructionEditor(item) {
+    editingInstructionItemId = item.id;
+    instructionModalTitle.textContent = `Edit Instructions: ${item.name}`;
+    instructionModalTextarea.value = getInstructionText(item);
+    instructionModal.hidden = false;
+    window.requestAnimationFrame(() => {
+      instructionModalTextarea.focus();
+      instructionModalTextarea.setSelectionRange(instructionModalTextarea.value.length, instructionModalTextarea.value.length);
+    });
+  }
+
+  function closeInstructionEditor() {
+    editingInstructionItemId = null;
+    instructionModal.hidden = true;
+  }
+
+  function saveInstructionEditor() {
+    if (!editingInstructionItemId) return;
+    setInstructionOverride(editingInstructionItemId, instructionModalTextarea.value, "doctor");
+    closeInstructionEditor();
+    render();
   }
 
   function parseTravelStops(rawLocations) {
@@ -976,6 +1071,15 @@
     return nextUrl.toString();
   }
 
+  function getAllPatientsUrl() {
+    const practiceRoutes = {
+      staff: "https://justintella.github.io/staff-workflow/",
+      daniher: "https://justintella.github.io/daniher-travel-workflow/",
+      sujansky: "https://justintella.github.io/sujansky-workflow/"
+    };
+    return practiceRoutes[practiceValue] || practiceRoutes.staff;
+  }
+
   function captureOpenSections() {
     const nextOpen = new Set();
     itemsList.querySelectorAll("details[data-section-id]").forEach((details) => {
@@ -991,9 +1095,26 @@
     viewSwitcher.innerHTML = "";
     headerApproval.style.display = "block";
 
-    // No view switcher — each role enters through their own workflow link
+    const allPatientsLink = document.createElement("a");
+    allPatientsLink.className = "view-pill all-patients-link";
+    allPatientsLink.href = getAllPatientsUrl();
+    allPatientsLink.textContent = "All Patients";
+    viewSwitcher.appendChild(allPatientsLink);
+
+    ["staff", "doctor"].forEach((view) => {
+      const link = document.createElement("a");
+      link.className = "view-pill" + (view === currentView ? " active" : "");
+      link.href = buildViewUrl(view);
+      link.textContent = view === "staff" ? "Open Staff View" : "Open Doctor View";
+      viewSwitcher.appendChild(link);
+    });
 
     if (currentView === "doctor") {
+      workspace.style.gridTemplateColumns = "minmax(0, 1.1fr) minmax(380px, 0.9fr)";
+      leftPanel.style.display = "block";
+      starterKitButton.style.display = "";
+      clearKitButton.style.display = "";
+      printKitButton.style.display = "";
       leftCardTitle.textContent = "Doctor Review";
       kitPanelTitle.textContent = "Kit Created";
       masterListCopy.textContent = "Review the patient kit, make any edits you want, and approve it when it is correct.";
@@ -1002,13 +1123,13 @@
       clearKitButton.textContent = "Clear Kit";
       kitCopy.textContent = "Review the current kit items, amounts, and instructions.";
     } else {
-      leftCardTitle.textContent = "Master Item List";
-      kitPanelTitle.textContent = "Kit Being Built";
-      masterListCopy.textContent = "Open a section to add items that are not already in the patient kit.";
-      toolbarCopy.textContent = "Staff edits uncheck approval until the doctor approves again.";
-      starterKitButton.textContent = "Basic Kit";
-      clearKitButton.textContent = "Clear Kit";
-      kitCopy.textContent = "This is the staff view of the kit.";
+      workspace.style.gridTemplateColumns = "1fr";
+      leftPanel.style.display = "none";
+      starterKitButton.style.display = "none";
+      clearKitButton.style.display = "none";
+      printKitButton.style.display = "";
+      kitPanelTitle.textContent = "Kit Created";
+      kitCopy.textContent = "This is the created version of the kit for staff.";
     }
 
     if (currentView === "doctor") {
@@ -1019,8 +1140,6 @@
             <div class="workflow-actions">
             ${record.approved ? `
               <button class="undo-button" id="headerUndoApprovalButton" type="button">Undo Approval</button>
-            ` : `
-              <button class="approve-button" id="headerApproveKitButton" type="button">Approve Kit</button>
             `}
             </div>
           </div>
@@ -1031,17 +1150,6 @@
           </div>
         </div>
       `;
-
-      const approveButton = document.getElementById("headerApproveKitButton");
-      if (approveButton) {
-        approveButton.addEventListener("click", () => {
-          record.approved = true;
-          record.approvedAt = new Date().toLocaleString();
-          record.lastUpdatedBy = "doctor";
-          saveRecords();
-          render();
-        });
-      }
 
       const undoButton = document.getElementById("headerUndoApprovalButton");
       if (undoButton) {
@@ -1066,6 +1174,24 @@
           </div>
         </div>
       `;
+    }
+
+    let inlineApproveButton = document.getElementById("inlineApproveKitButton");
+    if (inlineApproveButton) inlineApproveButton.remove();
+    if (currentView === "doctor" && !record.approved) {
+      inlineApproveButton = document.createElement("button");
+      inlineApproveButton.type = "button";
+      inlineApproveButton.className = "approve-button";
+      inlineApproveButton.id = "inlineApproveKitButton";
+      inlineApproveButton.textContent = "Approve Kit";
+      inlineApproveButton.addEventListener("click", () => {
+        record.approved = true;
+        record.approvedAt = new Date().toLocaleString();
+        record.lastUpdatedBy = "doctor";
+        saveRecords();
+        render();
+      });
+      kitActions.prepend(inlineApproveButton);
     }
   }
 
@@ -1104,9 +1230,22 @@
 
           const left = document.createElement("div");
           left.innerHTML =
-            "<div class='item-name'>" + item.name + "</div>" +
-            "<div class='item-detail'>" + item.instructions + "</div>" +
+            "<div class='item-copy-head'><div class='item-name'>" + item.name + "</div></div>" +
+            "<div class='item-detail'>" + getInstructionText(item) + "</div>" +
             "<div class='item-qty'>" + item.qty + "</div>";
+
+          if (currentView === "doctor") {
+            const head = left.querySelector(".item-copy-head");
+            const editButton = document.createElement("button");
+            editButton.type = "button";
+            editButton.className = "instruction-edit-button";
+            editButton.textContent = "✎";
+            editButton.title = "Edit instructions";
+            editButton.addEventListener("click", () => {
+              openInstructionEditor(item);
+            });
+            head.appendChild(editButton);
+          }
 
           const button = document.createElement("button");
           button.type = "button";
@@ -1164,22 +1303,36 @@
 
         const left = document.createElement("div");
         left.innerHTML =
-          "<div class='kit-name'>" + item.name + "</div>" +
-          "<div class='kit-detail'>" + item.instructions + "</div>" +
+          "<div class='item-copy-head'><div class='kit-name'>" + item.name + "</div></div>" +
+          "<div class='kit-detail'>" + getInstructionText(item) + "</div>" +
           "<div class='kit-qty'>" + item.qty + "</div>";
 
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "remove-button";
-        button.textContent = "Remove";
-        button.addEventListener("click", () => {
-          const nextIds = getEditableIds().filter((id) => id !== item.id);
-          setEditableIds(nextIds, currentView);
-          render();
-        });
+        if (currentView === "doctor") {
+          const head = left.querySelector(".item-copy-head");
+          const editButton = document.createElement("button");
+          editButton.type = "button";
+          editButton.className = "instruction-edit-button";
+          editButton.textContent = "✎";
+          editButton.title = "Edit instructions";
+          editButton.addEventListener("click", () => {
+            openInstructionEditor(item);
+          });
+          head.appendChild(editButton);
+        }
 
         row.appendChild(left);
-        row.appendChild(button);
+        if (currentView === "doctor") {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "remove-button";
+          button.textContent = "Remove";
+          button.addEventListener("click", () => {
+            const nextIds = getEditableIds().filter((id) => id !== item.id);
+            setEditableIds(nextIds, currentView);
+            render();
+          });
+          row.appendChild(button);
+        }
         list.appendChild(row);
       });
 
@@ -1220,7 +1373,7 @@
     const selectedItems = catalog.flatMap((section) =>
       section.items
         .filter((item) => chosenIds.includes(item.id))
-        .map((item) => ({ section: section.category, ...item }))
+        .map((item) => ({ section: section.category, ...item, instructions: getInstructionText(item) }))
     );
 
     const sections = catalog.map((section) => {
@@ -1264,100 +1417,31 @@
     printWindow.print();
   });
 
-  if (isHubMode) { renderHub(); } else { render(); }
+  instructionModalCancel.addEventListener("click", () => {
+    closeInstructionEditor();
+  });
 
-  function loadCachedPatients(prac) {
-    try { return JSON.parse(localStorage.getItem(prac + "-patients-v1") || "[]"); }
-    catch { return []; }
-  }
+  instructionModalSave.addEventListener("click", () => {
+    saveInstructionEditor();
+  });
 
-  function locationsFromStops(stops) {
-    const parts = (stops || []).map(s => [s.country, s.city].filter(Boolean).join(", ")).filter(Boolean);
-    return parts.join(" | ") || "Unknown destination";
-  }
-
-  function renderHub() {
-    const pracFilter = params.get("practice") || "";
-    const isStaff = currentView === "staff";
-
-    if (isStaff) {
-      document.getElementById("hub-filters").innerHTML = `
-        <div class="hub-filter-row">
-          <button class="hub-filter-btn active" onclick="setHubFilter('all',this)">All</button>
-          <button class="hub-filter-btn" onclick="setHubFilter('sujansky',this)">Sujansky</button>
-          <button class="hub-filter-btn" onclick="setHubFilter('daniher',this)">Daniher</button>
-        </div>`;
+  instructionModal.addEventListener("click", (event) => {
+    if (event.target === instructionModal) {
+      closeInstructionEditor();
     }
+  });
 
-    window._hubIsStaff = isStaff;
-    renderHubList(isStaff ? "all" : pracFilter);
-  }
-
-  function setHubFilter(filter, btn) {
-    document.querySelectorAll(".hub-filter-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    renderHubList(filter);
-  }
-
-  function renderHubList(filter) {
-    const kitRecords = loadRecords();
-    const isStaff = window._hubIsStaff;
-    const showBadge = isStaff && filter === "all";
-    const hubList = document.getElementById("hub-list");
-    const knownPractices = ["sujansky", "daniher"];
-    const pracList = filter === "all" ? knownPractices : (knownPractices.includes(filter) ? [filter] : []);
-    const patientMap = new Map();
-
-    pracList.forEach(prac => {
-      loadCachedPatients(prac).forEach(p => {
-        const locs = locationsFromStops(p.stops);
-        const key = `${prac}::${p.id}::${locs}`;
-        if (!patientMap.has(key)) {
-          patientMap.set(key, { prac, pid: p.id, locs, name: p.name, rec: kitRecords[key] || {} });
-        }
-      });
-    });
-
-    Object.entries(kitRecords).forEach(([key, rec]) => {
-      if (patientMap.has(key)) return;
-      const parts = key.split("::");
-      if (parts.length < 2) return;
-      const prac = parts[0];
-      const pid = parts[1];
-      const locs = parts.slice(2).join("::");
-      if (!knownPractices.includes(prac)) return;
-      if (filter !== "all" && prac !== filter) return;
-      const name = rec.patientName ||
-        pid.replace(/^(sujansky|daniher)-sheet-/, "")
-           .replace(/-\d+$/, "")
-           .split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-      patientMap.set(key, { prac, pid, locs, name, rec });
-    });
-
-    const patients = [...patientMap.values()];
-
-    if (!patients.length) {
-      hubList.innerHTML = `<div class="hub-empty">No patient kits found.<br>Kits are created through the practice workflow.</div>`;
-      return;
+  document.addEventListener("keydown", (event) => {
+    if (instructionModal.hidden) return;
+    if (event.key === "Escape") {
+      closeInstructionEditor();
     }
+    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+      saveInstructionEditor();
+    }
+  });
 
-    patients.sort((a, b) => a.name.localeCompare(b.name));
-
-    hubList.innerHTML = patients.map(p => {
-      const kitUrl = `travel_kit.html?view=${currentView}&patientId=${encodeURIComponent(p.pid)}&patient=${encodeURIComponent(p.name)}&practice=${p.prac}&locations=${encodeURIComponent(p.locs)}`;
-      const approved = p.rec.approved;
-      const pracLabel = p.prac === "sujansky" ? "Sujansky" : "Daniher";
-      return `<a href="${kitUrl}" class="hub-row" style="text-decoration:none">
-        <div class="hub-row-left">
-          <div class="hub-name">${p.name}</div>
-          <div class="hub-dest">${p.locs || "No destination"}</div>
-        </div>
-        ${showBadge ? `<span class="hub-badge hub-badge-${p.prac}">${pracLabel}</span>` : ""}
-        <span class="hub-status hub-status-${approved ? "approved" : "pending"}">${approved ? "Approved" : "Pending"}</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>`;
-    }).join("");
-  }
+  render();
 </script>
 </body>
 </html>
