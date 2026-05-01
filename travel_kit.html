@@ -1066,6 +1066,14 @@
     saveRecords();
   }
 
+  function setApprovalState(isApproved) {
+    const record = currentRecord();
+    record.approved = !!isApproved;
+    record.approvedAt = isApproved ? new Date().toLocaleString() : "";
+    record.lastUpdatedBy = "doctor";
+    saveRecords();
+  }
+
   function findItemById(itemId) {
     return catalog.flatMap((section) => section.items).find((item) => item.id === itemId);
   }
@@ -1220,15 +1228,8 @@
       inlineApproveButton.id = "inlineApproveKitButton";
       inlineApproveButton.textContent = record.approved ? "Undo Approval" : "Approve Kit";
       inlineApproveButton.addEventListener("click", () => {
-        if (record.approved) {
-          record.approved = false;
-          record.approvedAt = "";
-        } else {
-          record.approved = true;
-          record.approvedAt = new Date().toLocaleString();
-        }
-        record.lastUpdatedBy = "doctor";
-        saveRecords();
+        const nextApproved = !currentRecord().approved;
+        setApprovalState(nextApproved);
         render();
       });
       const clearButtonNode = document.getElementById("clearKitButton");
