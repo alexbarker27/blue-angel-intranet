@@ -49,25 +49,6 @@
       padding: 24px 26px;
     }
 
-    .back-link {
-      align-items: center;
-      background: #f7faff;
-      border: 1px solid #d6e5f8;
-      border-radius: 999px;
-      color: #315fb7;
-      display: inline-flex;
-      gap: 8px;
-      margin-bottom: 14px;
-      padding: 7px 12px;
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .back-link:hover {
-      background: #eaf2ff;
-    }
-
     .eyebrow {
       color: var(--accent);
       font-size: 12px;
@@ -244,22 +225,35 @@
 
     .open-button {
       align-items: center;
-      background: var(--navy);
-      border: 1px solid var(--navy);
+      background: linear-gradient(135deg, #0a2558 0%, #1f5fb8 100%);
+      border: 1px solid #123a7a;
       border-radius: 10px;
+      box-shadow: 0 8px 18px rgba(10, 37, 88, 0.14);
       color: #ffffff;
       display: inline-flex;
-      font-size: 0;
+      font-size: 12px;
       font-weight: 700;
-      height: 38px;
+      gap: 8px;
+      height: 40px;
       justify-content: center;
-      min-width: 42px;
-      padding: 0 12px;
+      min-width: 98px;
+      padding: 0 14px;
       text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
     }
 
     .open-button:hover {
-      opacity: 0.9;
+      box-shadow: 0 10px 22px rgba(10, 37, 88, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .open-button:active {
+      transform: translateY(0);
+    }
+
+    .open-button-arrow {
+      font-size: 13px;
+      line-height: 1;
     }
 
     @media (max-width: 860px) {
@@ -280,10 +274,6 @@
 <body>
   <div class="page-wrap">
     <div class="header-card">
-      <a class="back-link" id="backToTerminal" href="terminal.html">
-        <span>&larr;</span>
-        <span>Back to Terminal</span>
-      </a>
       <div class="eyebrow">Concierge Travel Medicine</div>
       <h1 class="title">Patient Hub</h1>
       <p class="subtitle" id="hubSubtitle">Loading patients and kit links...</p>
@@ -317,7 +307,6 @@
     const hubCount = document.getElementById("hubCount");
     const hubState = document.getElementById("hubState");
     const patientGrid = document.getElementById("patientGrid");
-    const backToTerminal = document.getElementById("backToTerminal");
     const hubFilters = document.getElementById("hubFilters");
     let activeFilter = "all";
     let loadedPatients = [];
@@ -327,18 +316,6 @@
       daniher: "Daniher",
       sujansky: "Sujansky"
     };
-
-    function getTerminalUrl() {
-      const terminalUrl = new URL("terminal.html", window.location.href);
-      if (currentView === "staff") {
-        terminalUrl.searchParams.set("practice", "both");
-        terminalUrl.searchParams.set("role", "staff");
-      } else {
-        terminalUrl.searchParams.set("practice", practiceParam === "sujansky" ? "sujansky" : "daniher");
-        terminalUrl.searchParams.set("role", "physician");
-      }
-      return terminalUrl.toString();
-    }
 
     function travelLocationsParam(stops) {
       const parts = (stops || [])
@@ -455,7 +432,8 @@
               </div>
               <div class="patient-actions">
                 <a class="open-button" href="${kitUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${patient.name} kit">
-                  <span aria-hidden="true">↗</span>
+                  <span>Open Kit</span>
+                  <span class="open-button-arrow" aria-hidden="true">↗</span>
                 </a>
               </div>
             </div>
@@ -467,12 +445,11 @@
     }
 
     async function init() {
-      backToTerminal.href = getTerminalUrl();
       hubSubtitle.textContent = currentView === "staff"
         ? "All patient kits across both travel medicine practices. Click any patient to open the staff version of that kit."
         : `${practiceLabels[practiceParam] || "Practice"} patient kits. Click any patient to open the doctor version of that kit.`;
 
-      if (currentView === "staff") {
+      if (currentView === "staff" && practiceParam === "staff") {
         hubFilters.hidden = false;
         hubFilters.querySelectorAll(".filter-button").forEach((button) => {
           button.addEventListener("click", () => {
@@ -483,6 +460,8 @@
             renderPatients();
           });
         });
+      } else {
+        hubFilters.remove();
       }
 
       try {
