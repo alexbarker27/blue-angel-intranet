@@ -12,7 +12,6 @@
       --muted: #667788;
       --line: #dbe5ef;
       --accent: #3b7dd8;
-      --accent-soft: #eef4ff;
       --navy: #0a2558;
       --good: #227a4f;
       --good-bg: #eef9f2;
@@ -50,14 +49,6 @@
       padding: 24px 26px;
     }
 
-    .header-top {
-      align-items: center;
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 14px;
-    }
-
     .back-link {
       align-items: center;
       background: #f7faff;
@@ -66,6 +57,7 @@
       color: #315fb7;
       display: inline-flex;
       gap: 8px;
+      margin-bottom: 14px;
       padding: 7px 12px;
       text-decoration: none;
       font-size: 12px;
@@ -75,19 +67,6 @@
     .back-link:hover {
       background: #eaf2ff;
     }
-
-    .source-link {
-      border: 1.5px solid var(--accent);
-      border-radius: 999px;
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 650;
-      padding: 8px 14px;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .source-link:hover { background: var(--accent-soft); }
 
     .eyebrow {
       color: var(--accent);
@@ -118,11 +97,42 @@
       padding: 18px 20px;
     }
 
+    .hub-toolbar {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+    }
+
     .hub-meta {
       align-items: center;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+    }
+
+    .hub-filters {
+      align-items: center;
+      display: flex;
+      gap: 8px;
+    }
+
+    .filter-button {
+      background: #f7faff;
+      border: 1px solid #d6e5f8;
+      border-radius: 999px;
+      color: #315fb7;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 12px;
+    }
+
+    .filter-button.active {
+      background: #315fb7;
+      border-color: #315fb7;
+      color: #ffffff;
     }
 
     .meta-pill {
@@ -284,23 +294,25 @@
 <body>
   <div class="page-wrap">
     <div class="header-card">
-      <div class="header-top">
-        <a class="back-link" id="backToPortal" href="index.html">
-          <span>←</span>
-          <span>Portal</span>
-        </a>
-        <a class="source-link" href="travel_kit.html" id="kitHubLink">Open Kit Shell</a>
-      </div>
+      <a class="back-link" id="backToTerminal" href="terminal.html">
+        <span>&larr;</span>
+        <span>Back to Terminal</span>
+      </a>
       <div class="eyebrow">Concierge Travel Medicine</div>
       <h1 class="title">Patient Hub</h1>
       <p class="subtitle" id="hubSubtitle">Loading patients and kit links...</p>
     </div>
 
     <div class="hub-card">
-      <div class="hub-meta">
-        <div class="meta-pill" id="hubRole">Role</div>
-        <div class="meta-pill" id="hubScope">Scope</div>
-        <div class="hub-count" id="hubCount">Loading...</div>
+      <div class="hub-toolbar">
+        <div class="hub-filters" id="hubFilters" hidden>
+          <button class="filter-button active" type="button" data-filter="all">All</button>
+          <button class="filter-button" type="button" data-filter="sujansky">Sujansky</button>
+          <button class="filter-button" type="button" data-filter="daniher">Daniher</button>
+        </div>
+        <div class="hub-meta">
+          <div class="hub-count" id="hubCount">Loading...</div>
+        </div>
       </div>
     </div>
 
@@ -316,13 +328,13 @@
     const practiceParam = params.get("practice") || (currentView === "staff" ? "staff" : "daniher");
 
     const hubSubtitle = document.getElementById("hubSubtitle");
-    const hubRole = document.getElementById("hubRole");
-    const hubScope = document.getElementById("hubScope");
     const hubCount = document.getElementById("hubCount");
     const hubState = document.getElementById("hubState");
     const patientGrid = document.getElementById("patientGrid");
-    const backToPortal = document.getElementById("backToPortal");
-    const kitHubLink = document.getElementById("kitHubLink");
+    const backToTerminal = document.getElementById("backToTerminal");
+    const hubFilters = document.getElementById("hubFilters");
+    let activeFilter = "all";
+    let loadedPatients = [];
 
     const practiceLabels = {
       staff: "All Practices",
@@ -330,12 +342,16 @@
       sujansky: "Sujansky"
     };
 
-    function normalizePortalUrl() {
-      const practice = currentView === "staff"
-        ? "both"
-        : (practiceParam === "sujansky" ? "sujansky" : "daniher");
-      const role = currentView === "staff" ? "staff" : "physician";
-      return `index.html?practice=${encodeURIComponent(practice)}&role=${encodeURIComponent(role)}`;
+    function getTerminalUrl() {
+      const terminalUrl = new URL("terminal.html", window.location.href);
+      if (currentView === "staff") {
+        terminalUrl.searchParams.set("practice", "both");
+        terminalUrl.searchParams.set("role", "staff");
+      } else {
+        terminalUrl.searchParams.set("practice", practiceParam === "sujansky" ? "sujansky" : "daniher");
+        terminalUrl.searchParams.set("role", "physician");
+      }
+      return terminalUrl.toString();
     }
 
     function travelLocationsParam(stops) {
@@ -419,7 +435,15 @@
       return loaded.sort((left, right) => left.name.localeCompare(right.name));
     }
 
-    function renderPatients(patients) {
+    function getVisiblePatients() {
+      if (currentView !== "staff" || activeFilter === "all") {
+        return loadedPatients;
+      }
+      return loadedPatients.filter((patient) => patient.sourceId === activeFilter);
+    }
+
+    function renderPatients() {
+      const patients = getVisiblePatients();
       hubState.hidden = true;
       patientGrid.hidden = false;
       patientGrid.innerHTML = patients.map((patient) => {
@@ -451,29 +475,40 @@
           </div>
         `;
       }).join("");
+
+      hubCount.textContent = `${patients.length} patients`;
     }
 
     async function init() {
-      backToPortal.href = normalizePortalUrl();
-      kitHubLink.href = `travel_kit.html?view=${encodeURIComponent(currentView)}${currentView === "doctor" ? `&practice=${encodeURIComponent(practiceParam)}` : ""}`;
-      hubRole.textContent = currentView === "doctor" ? "Doctor View" : "Staff View";
-      hubScope.textContent = currentView === "staff" ? "All Patients" : `${practiceLabels[practiceParam] || "Practice"} Patients`;
+      backToTerminal.href = getTerminalUrl();
       hubSubtitle.textContent = currentView === "staff"
         ? "All patient kits across both travel medicine practices. Click any patient to open the staff version of that kit."
         : `${practiceLabels[practiceParam] || "Practice"} patient kits. Click any patient to open the doctor version of that kit.`;
 
-      try {
-        const patients = await loadPatients();
-        hubCount.textContent = `${patients.length} patients`;
+      if (currentView === "staff") {
+        hubFilters.hidden = false;
+        hubFilters.querySelectorAll(".filter-button").forEach((button) => {
+          button.addEventListener("click", () => {
+            activeFilter = button.dataset.filter || "all";
+            hubFilters.querySelectorAll(".filter-button").forEach((item) => {
+              item.classList.toggle("active", item === button);
+            });
+            renderPatients();
+          });
+        });
+      }
 
-        if (!patients.length) {
+      try {
+        loadedPatients = await loadPatients();
+
+        if (!loadedPatients.length) {
           hubState.hidden = false;
           hubState.textContent = "No patients are available right now.";
           patientGrid.hidden = true;
           return;
         }
 
-        renderPatients(patients);
+        renderPatients();
       } catch (error) {
         hubCount.textContent = "Unavailable";
         hubState.hidden = false;
