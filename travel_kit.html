@@ -181,12 +181,6 @@
     margin-top: 3px;
   }
 
-  .view-switcher {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
   .header-approval {
     align-items: center;
     align-self: stretch;
@@ -822,7 +816,6 @@
           </div>
           <div class="header-approval" id="headerApproval"></div>
         </div>
-        <div class="view-switcher" id="viewSwitcher"></div>
       </div>
     </div>
     <a href="https://www.cdc.gov/yellow-book/hcp/contents/index.html" target="_blank" rel="noopener noreferrer" class="source-pill">CDC Yellow Book 2026 -></a>
@@ -949,7 +942,6 @@
   const travelLocationsLabel = document.getElementById("travelLocationsLabel");
   const travelLocations = document.getElementById("travelLocations");
   const headerApproval = document.getElementById("headerApproval");
-  const viewSwitcher = document.getElementById("viewSwitcher");
   const workspace = document.getElementById("workspace");
   const leftPanel = document.getElementById("leftPanel");
   const kitActions = document.getElementById("kitActions");
@@ -1107,16 +1099,6 @@
     travelLocations.title = stops.map((stop) => stop.full).join(" | ");
   }
 
-  function buildViewUrl(view) {
-    const nextUrl = new URL(window.location.href);
-    nextUrl.searchParams.set("view", view);
-    nextUrl.searchParams.set("patientId", patientIdValue);
-    nextUrl.searchParams.set("patient", patientNameValue);
-    nextUrl.searchParams.set("practice", practiceValue);
-    nextUrl.searchParams.set("locations", travelLocationsValue);
-    return nextUrl.toString();
-  }
-
   function getAllPatientsUrl() {
     const practiceRoutes = {
       staff: "https://justintella.github.io/staff-workflow/",
@@ -1138,17 +1120,8 @@
     const record = currentRecord();
     patientName.textContent = patientNameValue;
     renderTravelLocationsCard();
-    viewSwitcher.innerHTML = "";
     headerApproval.style.display = "block";
     allPatientsButton.href = getAllPatientsUrl();
-
-    ["staff", "doctor"].forEach((view) => {
-      const link = document.createElement("a");
-      link.className = "view-pill" + (view === currentView ? " active" : "");
-      link.href = buildViewUrl(view);
-      link.textContent = view === "staff" ? "Open Staff View" : "Open Doctor View";
-      viewSwitcher.appendChild(link);
-    });
 
     if (currentView === "doctor") {
       workspace.style.gridTemplateColumns = "minmax(0, 1.1fr) minmax(380px, 0.9fr)";
