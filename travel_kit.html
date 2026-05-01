@@ -923,8 +923,9 @@
   const patientIdValue = params.get("patientId") || patientNameValue.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   const practiceValue = params.get("practice") || params.get("source") || "general";
   const travelLocationsValue = params.get("locations") || params.get("location") || "Peru";
-  const storageKey = "travel-kit-workflow-records-v3";
-  const recordKey = practiceValue + "::" + patientIdValue + "::" + travelLocationsValue;
+  const storageKey = "travel-kit-workflow-records-v4";
+  const recordKey = practiceValue + "::" + patientIdValue;
+  const legacyRecordPrefix = recordKey + "::";
 
   const itemsList = document.getElementById("itemsList");
   const kitList = document.getElementById("kitList");
@@ -963,7 +964,7 @@
 
   function buildInitialRecord(initialView) {
     return {
-      sharedKit: initialView === "doctor" ? [] : [...basicKitItems],
+      sharedKit: [],
       customInstructions: {},
       approved: false,
       approvedAt: "",
@@ -971,22 +972,58 @@
     };
   }
 
-  const records = loadRecords();
-  if (!records[recordKey]) {
-    records[recordKey] = buildInitialRecord(currentView);
-  } else if (
-    currentView === "doctor" &&
-    records[recordKey].lastUpdatedBy === "staff" &&
-    !records[recordKey].approved &&
-    JSON.stringify(records[recordKey].sharedKit || []) === JSON.stringify(basicKitItems)
-  ) {
-    records[recordKey].sharedKit = [];
-    records[recordKey].customInstructions = records[recordKey].customInstructions || {};
-    records[recordKey].lastUpdatedBy = "doctor";
-    saveRecords();
+  let records = loadRecords();
+
+  function normalizeRecord(record, initialView) {
+    return {
+      sharedKit: Array.isArray(record?.sharedKit) ? [...new Set(record.sharedKit)] : [],
+      customInstructions: record?.customInstructions && typeof record.customInstructions === "object"
+        ? { ...record.customInstructions }
+        : {},
+      approved: !!record?.approved,
+      approvedAt: record?.approvedAt || "",
+      lastUpdatedBy: record?.lastUpdatedBy || (initialView === "doctor" ? "doctor" : "staff")
+    };
   }
 
+  function findLegacyRecord(recordsMap) {
+    const exactLegacy = recordsMap[practiceValue + "::" + patientIdValue + "::" + travelLocationsValue];
+    if (exactLegacy) return exactLegacy;
+
+    const candidates = Object.entries(recordsMap)
+      .filter(([key]) => key.startsWith(legacyRecordPrefix))
+      .map(([, value]) => value);
+
+    if (!candidates.length) return null;
+
+    return candidates.sort((left, right) => {
+      const leftScore = (left?.sharedKit?.length || 0) + (Object.keys(left?.customInstructions || {}).length * 5) + (left?.approved ? 100 : 0);
+      const rightScore = (right?.sharedKit?.length || 0) + (Object.keys(right?.customInstructions || {}).length * 5) + (right?.approved ? 100 : 0);
+      return rightScore - leftScore;
+    })[0];
+  }
+
+  function ensureCurrentRecord() {
+    records = loadRecords();
+
+    if (!records[recordKey]) {
+      const legacyRecord = findLegacyRecord(records);
+      records[recordKey] = normalizeRecord(legacyRecord || buildInitialRecord(currentView), currentView);
+
+      Object.keys(records)
+        .filter((key) => key.startsWith(legacyRecordPrefix))
+        .forEach((key) => {
+          delete records[key];
+        });
+
+      saveRecords();
+    }
+  }
+
+  ensureCurrentRecord();
+
   function currentRecord() {
+    ensureCurrentRecord();
     return records[recordKey];
   }
 
@@ -1356,6 +1393,7 @@
   }
 
   function render() {
+    ensureCurrentRecord();
     renderHeaderContext();
     renderItemsList();
     renderKitList();
@@ -1442,6 +1480,17 @@
     if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
       saveInstructionEditor();
     }
+  });
+
+  window.addEventListener("storage", (event) => {
+    if (event.key !== storageKey) return;
+    records = loadRecords();
+    render();
+  });
+
+  window.addEventListener("focus", () => {
+    records = loadRecords();
+    render();
   });
 
   render();
