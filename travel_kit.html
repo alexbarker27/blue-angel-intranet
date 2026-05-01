@@ -59,6 +59,35 @@
     padding: 24px 26px;
   }
 
+  .header-back {
+    margin-bottom: 14px;
+  }
+
+  .all-patients-button {
+    align-items: center;
+    background: #f7faff;
+    border: 1px solid #d6e5f8;
+    border-radius: 999px;
+    color: #315fb7;
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 700;
+    gap: 8px;
+    padding: 7px 12px;
+    text-decoration: none;
+  }
+
+  .all-patients-button:hover {
+    background: #eaf2ff;
+    border-color: #b8cff1;
+    color: #244c95;
+  }
+
+  .all-patients-arrow {
+    font-size: 13px;
+    line-height: 1;
+  }
+
   .header-main {
     max-width: 100%;
     padding-right: 250px;
@@ -156,10 +185,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-  }
-
-  .view-switcher .all-patients-link {
-    margin-right: auto;
   }
 
   .header-approval {
@@ -260,6 +285,24 @@
     font-weight: 750;
     letter-spacing: -0.02em;
     margin-bottom: 8px;
+  }
+
+  .kit-header {
+    align-items: flex-start;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  .kit-title-block {
+    min-width: 0;
+  }
+
+  .kit-actions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 10px;
+    white-space: nowrap;
   }
 
   .card-copy {
@@ -759,6 +802,12 @@
 <div class="page-wrap">
   <div class="page-header">
     <div class="header-main">
+      <div class="header-back">
+        <a class="all-patients-button" id="allPatientsButton" href="#">
+          <span class="all-patients-arrow">←</span>
+          <span>All Patients</span>
+        </a>
+      </div>
       <div class="page-eyebrow">Concierge Travel Medicine</div>
       <div class="page-title">Travel Medicine Kit</div>
       <div class="header-meta">
@@ -792,11 +841,11 @@
 
     <div class="card kit-shell">
       <div class="kit-header">
-        <div>
+        <div class="kit-title-block">
           <div class="card-title" id="kitPanelTitle">Kit Being Built</div>
           <div class="card-copy" id="kitCopy"></div>
         </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;" id="kitActions">
+        <div class="kit-actions" id="kitActions">
           <button class="print-button" id="printKitButton" type="button">Print</button>
           <button class="clear-button" id="clearKitButton" type="button">Clear Kit</button>
         </div>
@@ -864,21 +913,7 @@
       { id: "azithromycin", name: "Azithromycin (Zithromax) 500mg", qty: "5 tablets", instructions: "Traveler's diarrhea: take 500mg once daily for 3 days, or a single 1000mg dose if directed. Use when diarrhea is preventing normal activity, or if you have fever or blood in stool. If no improvement after 48 hours, seek care. Respiratory infection: take 500mg on day 1, then 250mg once daily on days 2-5. Complete the full course." },
       { id: "ciprofloxacin", name: "Ciprofloxacin (Cipro) 500mg", qty: "14 tablets", instructions: "Traveler's diarrhea backup: take 500mg twice daily for 1-3 days only if azithromycin is unavailable. UTI: take 500mg twice daily for 3-7 days. Avoid dairy and antacids within 2 hours. Stop and call your doctor if you develop joint or tendon pain." },
       { id: "ondansetron", name: "Ondansetron (Zofran) 4mg ODT", qty: "6 tablets", instructions: "Let the tablet dissolve on your tongue - do not swallow whole. Take for nausea or vomiting that is stopping you from eating or drinking. Can take every 8 hours as needed. Always drink fluids alongside it." },
-      { id: "acetazolamide", name: "Acetazolamide (Diamox) 250mg", qty: "20 tablets", instructions: "Prevention: start 1-2 days before going above 8,000 feet. Take 125-250mg twice daily while ascending and for 2 days at the highest point. Treatment: take 250mg twice daily and stop ascending. Descend if symptoms are not improving within 12-24 hours." },
-      { id: "dexamethasone", name: "Dexamethasone 4mg", qty: "8 tablets", instructions: "Emergency use for severe altitude sickness only. Take 8mg first, then 4mg every 6 hours. Descend as soon as you take this." },
-      { id: "doxycycline", name: "Doxycycline 100mg", qty: "trip duration + 28 days", instructions: "Malaria prevention: start 1-2 days before entering a malaria area. Take 1 tablet daily with food or milk. Continue for 4 full weeks after leaving. Stay upright for 30 minutes after each dose. Use strong sunscreen every day." },
-      { id: "malarone", name: "Atovaquone-Proguanil (Malarone)", qty: "trip duration + 7 days", instructions: "Malaria prevention: start 1-2 days before entering a malaria area. Take 1 tablet daily with food. Continue for 7 days after leaving. Emergency malaria treatment: take 4 tablets once daily for 3 days with a full meal and seek care as soon as possible." },
-      { id: "metronidazole", name: "Metronidazole (Flagyl) 500mg", qty: "14 tablets", instructions: "For persistent diarrhea lasting more than 1-2 weeks, especially with bloating. Take 500mg twice daily for 5-7 days with food. No alcohol during treatment or for 48 hours after the last dose." },
-      { id: "fluconazole", name: "Fluconazole (Diflucan) 150mg", qty: "1 tablet", instructions: "Take 1 tablet as a single dose for a yeast infection. See a doctor if symptoms don't resolve within 3 days." },
-      { id: "bactrim", name: "Trimethoprim-Sulfamethoxazole (Bactrim DS)", qty: "14 tablets", instructions: "UTI: take 1 tablet twice daily for 3 days. Skin infection: take 1 tablet twice daily for 5-7 days. Drink plenty of water. Do not take if you have a sulfa allergy." },
-      { id: "cephalexin", name: "Cephalexin (Keflex) 500mg", qty: "28 tablets", instructions: "For an infected skin wound. Take 500mg four times daily for 5-7 days. Finish the full course. Seek urgent care if redness is spreading, fever develops, or red streaks appear." },
-      { id: "cipro-eye-drops", name: "Ciprofloxacin Eye Drops 0.3%", qty: "1 bottle (5mL)", instructions: "For pink eye with yellow or green discharge. Put 1-2 drops in the affected eye every 2 hours while awake for 2 days, then every 4 hours for 5 more days." },
-      { id: "ofloxacin-ear-drops", name: "Ofloxacin Ear Drops", qty: "1 bottle (5mL)", instructions: "For swimmer's ear. Put 5-10 drops into the affected ear twice daily for 7 days. Lie on your side for 5 minutes after." },
-      { id: "epipen", name: "Epinephrine Auto-Injector (EpiPen)", qty: "2", instructions: "For a severe allergic reaction - throat tightening, difficulty breathing, or collapse. Inject into the outer thigh and hold for 10 seconds. Call 911 immediately after." },
-      { id: "albuterol", name: "Albuterol Inhaler", qty: "1 inhaler", instructions: "Shake well. Take 2 puffs every 4-6 hours for wheezing or shortness of breath. See a doctor if you need it more than 4 times in a day." },
-      { id: "prednisone", name: "Prednisone 20mg", qty: "10 tablets", instructions: "For a severe allergic reaction or asthma flare not controlled by your inhaler. Take with food. Follow your doctor's prescribed schedule." },
-      { id: "scopolamine", name: "Scopolamine Patch (Transderm Scop)", qty: "2 patches", instructions: "Stick the patch behind one ear at least 4 hours before travel. Each patch lasts 3 days. Wash hands after handling. Do not touch your eyes." },
-      { id: "naloxone", name: "Naloxone (Narcan) 4mg", qty: "2 doses", instructions: "For an opioid overdose - unresponsive, very slow or stopped breathing. Spray one full dose into one nostril. Repeat in the other after 2-3 minutes if no response. Call 911 immediately." }
+      { id: "acetazolamide", name: "Acetazolamide (Diamox) 250mg", qty: "20 tablets", instructions: "Prevention: start 1-2 days before going above 8,000 feet. Take 125-250mg twice daily while ascending and for 2 days at the highest point. Treatment: take 250mg twice daily and stop ascending. Descend if symptoms are not improving within 12-24 hours." }
     ]}
   ];
 
@@ -910,6 +945,7 @@
   const instructionModalCancel = document.getElementById("instructionModalCancel");
   const instructionModalSave = document.getElementById("instructionModalSave");
   const patientName = document.getElementById("patientName");
+  const allPatientsButton = document.getElementById("allPatientsButton");
   const travelLocationsLabel = document.getElementById("travelLocationsLabel");
   const travelLocations = document.getElementById("travelLocations");
   const headerApproval = document.getElementById("headerApproval");
@@ -946,6 +982,16 @@
   const records = loadRecords();
   if (!records[recordKey]) {
     records[recordKey] = buildInitialRecord(currentView);
+  } else if (
+    currentView === "doctor" &&
+    records[recordKey].lastUpdatedBy === "staff" &&
+    !records[recordKey].approved &&
+    JSON.stringify(records[recordKey].sharedKit || []) === JSON.stringify(basicKitItems)
+  ) {
+    records[recordKey].sharedKit = [];
+    records[recordKey].customInstructions = records[recordKey].customInstructions || {};
+    records[recordKey].lastUpdatedBy = "doctor";
+    saveRecords();
   }
 
   function currentRecord() {
@@ -1094,12 +1140,7 @@
     renderTravelLocationsCard();
     viewSwitcher.innerHTML = "";
     headerApproval.style.display = "block";
-
-    const allPatientsLink = document.createElement("a");
-    allPatientsLink.className = "view-pill all-patients-link";
-    allPatientsLink.href = getAllPatientsUrl();
-    allPatientsLink.textContent = "All Patients";
-    viewSwitcher.appendChild(allPatientsLink);
+    allPatientsButton.href = getAllPatientsUrl();
 
     ["staff", "doctor"].forEach((view) => {
       const link = document.createElement("a");
@@ -1121,7 +1162,7 @@
       toolbarCopy.textContent = "Doctor edits update the same patient-specific kit shown in staff view.";
       starterKitButton.textContent = "Basic Kit";
       clearKitButton.textContent = "Clear Kit";
-      kitCopy.textContent = "Review the current kit items, amounts, and instructions.";
+      kitCopy.textContent = "";
     } else {
       workspace.style.gridTemplateColumns = "1fr";
       leftPanel.style.display = "none";
@@ -1129,7 +1170,7 @@
       clearKitButton.style.display = "none";
       printKitButton.style.display = "";
       kitPanelTitle.textContent = "Kit Created";
-      kitCopy.textContent = "This is the created version of the kit for staff.";
+      kitCopy.textContent = "";
     }
 
     if (currentView === "doctor") {
@@ -1137,11 +1178,6 @@
         <div class="approval-row">
           <div class="approval-head">
             <div class="approval-title">Doctor Approval</div>
-            <div class="workflow-actions">
-            ${record.approved ? `
-              <button class="undo-button" id="headerUndoApprovalButton" type="button">Undo Approval</button>
-            `}
-            </div>
           </div>
           <div class="approval-spacer"></div>
           <div class="approval-divider"></div>
@@ -1150,17 +1186,6 @@
           </div>
         </div>
       `;
-
-      const undoButton = document.getElementById("headerUndoApprovalButton");
-      if (undoButton) {
-        undoButton.addEventListener("click", () => {
-          record.approved = false;
-          record.approvedAt = "";
-          record.lastUpdatedBy = "doctor";
-          saveRecords();
-          render();
-        });
-      }
     } else {
       headerApproval.innerHTML = `
         <div class="approval-row">
@@ -1178,15 +1203,20 @@
 
     let inlineApproveButton = document.getElementById("inlineApproveKitButton");
     if (inlineApproveButton) inlineApproveButton.remove();
-    if (currentView === "doctor" && !record.approved) {
+    if (currentView === "doctor") {
       inlineApproveButton = document.createElement("button");
       inlineApproveButton.type = "button";
-      inlineApproveButton.className = "approve-button";
+      inlineApproveButton.className = record.approved ? "undo-button" : "approve-button";
       inlineApproveButton.id = "inlineApproveKitButton";
-      inlineApproveButton.textContent = "Approve Kit";
+      inlineApproveButton.textContent = record.approved ? "Undo Approval" : "Approve Kit";
       inlineApproveButton.addEventListener("click", () => {
-        record.approved = true;
-        record.approvedAt = new Date().toLocaleString();
+        if (record.approved) {
+          record.approved = false;
+          record.approvedAt = "";
+        } else {
+          record.approved = true;
+          record.approvedAt = new Date().toLocaleString();
+        }
         record.lastUpdatedBy = "doctor";
         saveRecords();
         render();
