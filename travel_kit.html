@@ -1137,12 +1137,12 @@
   }
 
   function getAllPatientsUrl() {
-    const practiceRoutes = {
-      staff: "https://justintella.github.io/staff-workflow/",
-      daniher: "https://justintella.github.io/daniher-travel-workflow/",
-      sujansky: "https://justintella.github.io/sujansky-workflow/"
-    };
-    return practiceRoutes[practiceValue] || practiceRoutes.staff;
+    const hubUrl = new URL("patient_hub.html", window.location.href);
+    hubUrl.searchParams.set("view", currentView);
+    if (currentView === "doctor") {
+      hubUrl.searchParams.set("practice", practiceValue);
+    }
+    return hubUrl.toString();
   }
 
   function captureOpenSections() {
@@ -1231,7 +1231,12 @@
         saveRecords();
         render();
       });
-      kitActions.prepend(inlineApproveButton);
+      const clearButtonNode = document.getElementById("clearKitButton");
+      if (clearButtonNode) {
+        kitActions.insertBefore(inlineApproveButton, clearButtonNode);
+      } else {
+        kitActions.appendChild(inlineApproveButton);
+      }
     }
   }
 

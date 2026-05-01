@@ -1022,8 +1022,8 @@
       title: 'Patient Hub',
       sub: 'Travel kit hub — all patients',
       scope: 'both',
-      url: 'https://justintella.github.io/blue-angel-intranet/travel_kit.html',
-      embedUrl: 'https://justintella.github.io/blue-angel-intranet/travel_kit.html',
+      url: 'https://justintella.github.io/blue-angel-intranet/patient_hub.html',
+      embedUrl: 'https://justintella.github.io/blue-angel-intranet/patient_hub.html',
       iconBg: '#FFF1F2',
       iconStroke: '#E11D48',
       iconPath: '<path d="M3 9h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path d="M3 9l2-4h14l2 4"/><path d="M12 13v4M10 15h4"/>',
@@ -1429,8 +1429,10 @@
           ${visibleLinks.filter(link => link.section === section).map(link => {
             const roleParam = currentRole === 'staff' ? 'staff' : 'doctor';
             const practiceParam = currentRole !== 'staff' ? '&practice=' + currentPractice : '';
-            const resolvedUrl = link.url.includes('travel_kit') ? link.url + '?view=' + roleParam + practiceParam : link.url;
-            const resolvedEmbed = link.embedUrl.includes('travel_kit') ? link.embedUrl + '?view=' + roleParam + practiceParam : link.embedUrl;
+            const needsKitContext = link.url.includes('travel_kit') || link.url.includes('patient_hub');
+            const needsEmbedContext = link.embedUrl.includes('travel_kit') || link.embedUrl.includes('patient_hub');
+            const resolvedUrl = needsKitContext ? link.url + '?view=' + roleParam + practiceParam : link.url;
+            const resolvedEmbed = needsEmbedContext ? link.embedUrl + '?view=' + roleParam + practiceParam : link.embedUrl;
             return `
             <div class="qa-card">
               <div class="qa-card-top">
