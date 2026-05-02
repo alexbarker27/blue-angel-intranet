@@ -912,9 +912,10 @@
 
   const basicKitItems = [
     "acetaminophen", "ibuprofen", "loperamide", "famotidine", "ors", "cetirizine", "pseudoephedrine",
-    "adhesive-bandages", "antiseptic-wipes", "neosporin", "hydrocortisone", "thermometer",
-    "ondansetron", "azithromycin", "ciprofloxacin", "acetazolamide"
+    "adhesive-bandages", "antiseptic-wipes", "neosporin", "hydrocortisone", "thermometer"
   ];
+
+  const basicKitSet = new Set(basicKitItems);
 
   const url = new URL(window.location.href);
   const params = url.searchParams;
@@ -1247,7 +1248,12 @@
     const selected = getEditableSet();
 
     catalog.forEach((section) => {
-      const remaining = section.items.filter((item) => !selected.has(item.id));
+      const menuItems = section.id === "prescriptions"
+        ? section.items
+        : section.items.filter((item) => basicKitSet.has(item.id));
+      const remaining = menuItems.filter((item) => !selected.has(item.id));
+
+      if (!menuItems.length) return;
 
       const details = document.createElement("details");
       details.className = "accordion-section";
