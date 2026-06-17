@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinic Network — Blue Angel Clinical Partners</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0A2558;
+      --blue:    #1565C0;
+      --blue-lt: #1E88E5;
+      --gold:    #C9A84C;
+      --gold-lt: #E8C96A;
+      --bg:      #F0F4FF;
+      --white:   #FFFFFF;
+      --text:    #0D1B3E;
+      --muted:   #6B7A99;
+      --border:  #D4E1F7;
+      --amber:   #D97706;
+      --amber-bg:#FEF3C7;
+      --card-sh: 0 4px 24px rgba(10,37,88,0.09);
+      --card-sh-hover: 0 8px 40px rgba(10,37,88,0.16);
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── TOP NAV (matches dashboard.html) ── */
+    nav {
+      background: linear-gradient(135deg, #061A42 0%, #0A2558 60%, #0E3A7A 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      box-shadow: 0 2px 16px rgba(10,37,88,0.28);
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; color: white;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 14px;
+      padding: 8px 12px;
+    }
+    .nav-brand img { width: 180px; height: auto; flex-shrink: 0; display: block; }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-practice-badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px; padding: 5px 14px;
+      font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85);
+    }
+    .nav-role-badge {
+      background: rgba(201,168,76,0.2);
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 20px; padding: 5px 14px;
+      font-size: 11px; font-weight: 700; color: var(--gold-lt);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .nav-signout {
+      background: none; border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      padding: 6px 14px; border-radius: 7px;
+      font-size: 12px; cursor: pointer; transition: all 0.2s;
+    }
+    .nav-signout:hover { background: rgba(255,255,255,0.08); color: white; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: white; padding: 36px 40px 44px;
+      position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: ''; position: absolute; right: -60px; top: -60px;
+      width: 360px; height: 360px; border-radius: 50%;
+      background: rgba(255,255,255,0.04); pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+    .hero-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      font-size: 13px; margin-bottom: 14px;
+    }
+    .hero-back:hover { color: white; }
+    .hero-greeting {
+      font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 8px;
+    }
+    .hero-title { font-size: 30px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+    .hero-sub { font-size: 14px; color: rgba(255,255,255,0.6); }
+
+    /* ── MAIN / TWO-PANE ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 32px 60px; }
+
+    .map-layout {
+      display: grid;
+      grid-template-columns: 65% 35%;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    /* Map column (Google Maps embed) */
+    .map-wrap {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      box-shadow: var(--card-sh);
+      min-height: 480px;
+      background: #E8EDF5;
+    }
+    #map-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    /* Loading shimmer overlay */
+    .map-loading {
+      position: absolute; inset: 0; z-index: 5;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      color: var(--muted); font-size: 14px; font-weight: 600;
+      background: linear-gradient(110deg, #E8EDF5 30%, #F4F7FE 50%, #E8EDF5 70%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .map-loading.hidden { display: none; }
+    .map-loading svg { color: var(--blue); }
+
+    /* Clinic list column */
+    .clinic-list { display: flex; flex-direction: column; gap: 14px; }
+    .list-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
+    }
+    .clinic-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 18px 18px;
+      box-shadow: var(--card-sh);
+      border: 1.5px solid var(--border);
+      border-left: 3px solid var(--border);
+      cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      text-align: left;
+      font: inherit; color: inherit; width: 100%;
+    }
+    .clinic-card:hover { box-shadow: var(--card-sh-hover); transform: translateY(-1px); }
+    .clinic-card.selected { border-left-color: var(--gold); border-color: var(--blue-lt); }
+    .clinic-card:focus-visible { outline: 3px solid var(--blue-lt); outline-offset: 2px; }
+    .clinic-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .clinic-row { display: flex; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 4px; }
+    .clinic-row svg { flex-shrink: 0; margin-top: 2px; color: var(--blue); }
+    .clinic-doctors { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .doctor-chip {
+      font-size: 11px; font-weight: 600; color: var(--navy);
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 3px 10px;
+    }
+    .maps-link {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      margin-top: 14px; width: 100%;
+      min-height: 44px;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: white; text-decoration: none;
+      font-size: 13px; font-weight: 600;
+      border-radius: 9px; padding: 0 14px;
+      transition: filter 0.2s;
+    }
+    .maps-link:hover { filter: brightness(1.1); }
+
+    footer {
+      text-align: center; padding: 24px; font-size: 12px; color: var(--muted);
+      border-top: 1px solid var(--border); margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 16px; }
+      .hero { padding: 26px 20px 34px; }
+      main { padding: 24px 16px 40px; }
+      .map-layout { grid-template-columns: 1fr; }
+      .map-wrap { min-height: 320px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-brand" id="brand-link" href="dashboard.html">
+    <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel Clinical Partners logo" />
+  </a>
+  <div class="nav-right">
+    <span class="nav-practice-badge" id="nav-practice">—</span>
+    <span class="nav-role-badge" id="nav-role">—</span>
+    <button class="nav-signout" onclick="window.location.href='login.html'">Sign Out</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <a class="hero-back" id="back-link" href="dashboard.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to portal
+    </a>
+    <p class="hero-greeting">Clinic Map</p>
+    <h1 class="hero-title">Blue Angel Clinical Partners locations</h1>
+    <p class="hero-sub">Find any practice in the network — address, hours, and directions.</p>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<main>
+  <div class="map-layout">
+    <!-- MAP (free Google Maps embed — no API key, no billing) -->
+    <div class="map-wrap">
+      <iframe id="map-frame" title="Map of the selected clinic location"
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="map-loading" id="map-loading">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Loading map…
+      </div>
+    </div>
+
+    <!-- CLINIC LIST -->
+    <div class="clinic-list">
+      <p class="list-label">Clinics (<span id="clinic-count">0</span>)</p>
+      <div id="clinic-cards"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2024 Blue Angel Clinical Partners &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp;
+  <a href="mailto:joseph@blueangelclinical.com" style="color:inherit">joseph@blueangelclinical.com</a>
+</footer>
+
+<script>
+  /* ──────────────────────────────────────────────────────────────
+     CLINIC DATA — add one entry per acquired clinic.
+     Only public info (address, phone, hours, doctors). Never patient data.
+     The Google Maps embed geocodes the `address` string automatically,
+     so no coordinates are needed — just keep the address accurate.
+     ────────────────────────────────────────────────────────────── */
+  const clinics = [
+    {
+      id: "san-mateo",
+      name: "Sujansky & Daniher Concierge Medicine",
+      address: "34 North San Mateo Drive, Suite 1, San Mateo, CA 94401",
+      lat: 37.5674610,
+      lng: -122.3271461,
+      phone: "(650) 393-5851",
+      hours: "By appointment — call to confirm",
+      doctors: ["Dr. Ulrike Sujansky", "Dr. Amy Daniher"]
+    }
+    // Add more clinics here as BACP acquires them, e.g.:
+    // , { id: "id", name: "…", address: "…", phone: "…", hours: "…", doctors: ["…"] }
+  ];
+
+  /* ── Carry URL params through to the nav + back links ── */
+  const params = new URLSearchParams(window.location.search);
+  const practice = params.get('practice') || 'sujansky';
+  const role     = params.get('role')     || 'physician';
+  const email    = params.get('email')    || '';
+  const practiceNames = {
+    sujansky: 'Sujansky Concierge Medicine',
+    daniher:  'Daniher Concierge Medicine',
+    other:    'Your Practice',
+  };
+  document.getElementById('nav-practice').textContent = practiceNames[practice] || 'Your Practice';
+  document.getElementById('nav-role').textContent     = role === 'physician' ? 'Physician' : 'Staff';
+  const qp = new URLSearchParams({ practice, role, email }).toString();
+  document.getElementById('brand-link').href = `dashboard.html?${qp}`;
+  document.getElementById('back-link').href  = `dashboard.html?${qp}`;
+
+  /* ── Helpers ── */
+  const esc = s => String(s).replace(/[&<>"']/g, c => (
+    { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
+  ));
+  // Use coordinates (not a text search) so the map shows a single clean pin with no number badge.
+  const embedUrl = c => `https://www.google.com/maps?q=${c.lat},${c.lng}&z=15&output=embed`;
+  const mapsUrl  = c => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.address)}`;
+
+  const frame      = document.getElementById('map-frame');
+  const loadingEl  = document.getElementById('map-loading');
+  frame.addEventListener('load', () => loadingEl.classList.add('hidden'));
+  // Safety net: hide the shimmer even if the iframe load event is slow/blocked.
+  setTimeout(() => loadingEl.classList.add('hidden'), 5000);
+
+  /* ── Build the clinic list cards ── */
+  const cardsEl = document.getElementById('clinic-cards');
+  document.getElementById('clinic-count').textContent = clinics.length;
+  const cardById = {};
+
+  clinics.forEach(c => {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'clinic-card';
+    card.setAttribute('aria-label', `${c.name}. ${c.address}. Show on map.`);
+    card.innerHTML =
+      `<div class="clinic-name">${esc(c.name)}</div>` +
+      `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>${esc(c.address)}</span></div>` +
+      `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg><span>${esc(c.phone)}</span></div>` +
+      `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>${esc(c.hours)}</span></div>` +
+      `<div class="clinic-doctors">${c.doctors.map(d => `<span class="doctor-chip">${esc(d)}</span>`).join('')}</div>` +
+      `<a class="maps-link" href="${mapsUrl(c)}" target="_blank" rel="noopener">` +
+        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>` +
+        `Open in Google Maps</a>`;
+    card.addEventListener('click', e => {
+      if (e.target.closest('.maps-link')) return;   // let the link work normally
+      selectClinic(c.id, true);
+    });
+    cardsEl.appendChild(card);
+    cardById[c.id] = card;
+  });
+
+  /* ── Select a clinic: highlight its card + point the map at it ── */
+  function selectClinic(id, fromCard) {
+    Object.values(cardById).forEach(el => el.classList.remove('selected'));
+    const card = cardById[id];
+    if (card) card.classList.add('selected');
+    const c = clinics.find(x => x.id === id);
+    if (c) {
+      loadingEl.classList.remove('hidden');
+      frame.src = embedUrl(c);
+    }
+    if (fromCard && card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /* ── Initial view: first clinic ── */
+  if (clinics.length) selectClinic(clinics[0].id, false);
+</script>
+</body>
+</html>
