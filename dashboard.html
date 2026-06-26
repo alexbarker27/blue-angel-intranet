@@ -51,12 +51,8 @@
       gap: 14px;
       text-decoration: none;
       color: white;
-      background: rgba(255,255,255,0.96);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 14px;
-      padding: 8px 12px;
     }
-    .nav-brand img { width: 180px; height: auto; flex-shrink: 0; display: block; }
+    .nav-brand img { width: 180px; height: auto; flex-shrink: 0; display: block; filter: brightness(0) invert(1); }
     .nav-brand-text {
       display: flex;
       flex-direction: column;
@@ -490,10 +486,14 @@
   const practiceNames = {
     sujansky: 'Sujansky Concierge Medicine',
     daniher:  'Daniher Concierge Medicine',
+    both:     'Blue Angel Combined Staff Workspace',
     other:    'Your Practice',
   };
 
-  const practiceName = practiceNames[practice] || 'Your Practice';
+  // Staff (Shawna) always see the combined workspace, never a single practice.
+  const practiceName = role === 'staff'
+    ? 'Blue Angel Combined Staff Workspace'
+    : (practiceNames[practice] || 'Your Practice');
 
   // Update nav
   document.getElementById('nav-practice').textContent = practiceName;

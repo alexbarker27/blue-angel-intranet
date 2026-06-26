@@ -426,7 +426,7 @@
 
     <form id="login-form" onsubmit="handleLogin(event)" novalidate>
       <!-- Practice Name -->
-      <div class="field">
+      <div class="field" id="practice-field">
         <label for="practice">Practice</label>
         <select id="practice" name="practice" required>
           <option value="" disabled selected>Select your practice</option>
@@ -492,6 +492,19 @@
     currentRole = role;
     document.getElementById('tab-physician').classList.toggle('active', role === 'physician');
     document.getElementById('tab-staff').classList.toggle('active', role === 'staff');
+
+    // Physicians pick a practice; staff (Shawna) get the combined workspace,
+    // so hide and un-require the practice picker for staff.
+    const practiceField  = document.getElementById('practice-field');
+    const practiceSelect = document.getElementById('practice');
+    if (role === 'staff') {
+      practiceField.style.display = 'none';
+      practiceSelect.required = false;
+    } else {
+      practiceField.style.display = '';
+      practiceSelect.required = true;
+    }
+    document.getElementById('error-msg').classList.remove('show');
   }
 
   // ── Password toggle
@@ -503,35 +516,61 @@
   // ── Login handler
   function handleLogin(e) {
     e.preventDefault();
-    const practice = document.getElementById('practice').value;
     const email    = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const errEl    = document.getElementById('error-msg');
 
-    if (!practice || !email || !password) {
-      errEl.textContent = 'Please fill in all fields to continue.';
+    if (currentRole === 'physician') {
+      const practice = document.getElementById('practice').value;
+      if (!practice || !email || !password) {
+        errEl.textContent = 'Please select a practice and fill in all fields to continue.';
+        errEl.classList.add('show');
+        return;
+      }
+      errEl.classList.remove('show');
+      redirectToDashboard({ practice, role: 'physician', email });
+      return;
+    }
+
+    // Staff (Shawna) — no practice selection; routes to the combined workspace.
+    if (!email || !password) {
+      errEl.textContent = 'Please enter your email and password.';
       errEl.classList.add('show');
       return;
     }
     errEl.classList.remove('show');
+    redirectToDashboard({ practice: 'both', role: 'staff', email });
+  }
 
+  function redirectToDashboard(ctx) {
     const btn = document.getElementById('signin-btn');
     btn.textContent = 'Signing in…';
     btn.disabled = true;
-
     setTimeout(() => {
-      // Pass context to dashboard
-      const params = new URLSearchParams({ practice, role: currentRole, email });
+      const params = new URLSearchParams(ctx);
       window.location.href = `dashboard.html?${params}`;
     }, 900);
   }
 
   function skipSignIn() {
-    const params = new URLSearchParams({
-      practice: 'sujansky',
-      role: 'physician',
-      email: 'demo@blueangelclinical.com'
-    });
+    const errEl = document.getElementById('error-msg');
+
+    if (currentRole === 'physician') {
+      const practice = document.getElementById('practice').value;
+      if (!practice) {
+        errEl.textContent = 'Please select a practice before skipping sign in.';
+        errEl.classList.add('show');
+        return;
+      }
+      errEl.classList.remove('show');
+      const params = new URLSearchParams({ practice, role: 'physician', email: 'demo@blueangelclinical.com' });
+      window.location.href = `dashboard.html?${params}`;
+      return;
+    }
+
+    // Staff skip → Shawna's combined workspace.
+    errEl.classList.remove('show');
+    const params = new URLSearchParams({ practice: 'both', role: 'staff', email: 'shawna.guzman@blueangelclinical.com' });
     window.location.href = `dashboard.html?${params}`;
   }
 </script>
