@@ -374,17 +374,47 @@
       </div>
     </div>
 
-    <!-- Billing & Revenue -->
+    <!-- Physician Forum -->
     <div class="module-card soon">
       <div class="card-icon gray">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="5" width="20" height="14" rx="2"/>
-          <path d="M2 10h20"/>
-          <path d="M6 15h4M14 15h2"/>
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
         </svg>
       </div>
-      <div class="card-title">Billing &amp; Revenue</div>
-      <p class="card-desc">Centralized billing management, membership fee tracking, insurance claims, and revenue cycle analytics across all practices.</p>
+      <div class="card-title">Physician Forum</div>
+      <p class="card-desc">Private discussion board for Blue Angel physicians to share clinical insights, case questions, and network announcements.</p>
+      <div class="card-footer">
+        <span class="coming-soon">Coming Soon</span>
+      </div>
+    </div>
+
+    <!-- Specialist Network -->
+    <div class="module-card soon">
+      <div class="card-icon gray">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="10" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 00-3-3.87"/>
+          <path d="M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+      </div>
+      <div class="card-title">Specialist Network</div>
+      <p class="card-desc">Find and refer patients to trusted specialists across the network.</p>
+      <div class="card-footer">
+        <span class="coming-soon">Coming Soon</span>
+      </div>
+    </div>
+
+    <!-- Coverage Requests -->
+    <div class="module-card soon">
+      <div class="card-icon gray">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <div class="card-title">Coverage Requests</div>
+      <p class="card-desc">Schedule and manage physician call coverage requests across the network.</p>
       <div class="card-footer">
         <span class="coming-soon">Coming Soon</span>
       </div>
@@ -405,39 +435,24 @@
       </div>
     </div>
 
-    <!-- 4. Specialist Network -->
+    <!-- Hidden from the dashboard for now (kept here so they can be re-enabled later):
+         Billing & Revenue and Analytics & Reports.
+
     <div class="module-card soon">
       <div class="card-icon gray">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-          <circle cx="10" cy="7" r="4"/>
-          <path d="M22 21v-2a4 4 0 00-3-3.87"/>
-          <path d="M16 3.13a4 4 0 010 7.75"/>
+          <rect x="2" y="5" width="20" height="14" rx="2"/>
+          <path d="M2 10h20"/>
+          <path d="M6 15h4M14 15h2"/>
         </svg>
       </div>
-      <div class="card-title">Specialist Network</div>
-      <p class="card-desc">Find and refer patients to trusted specialists across the network.</p>
+      <div class="card-title">Billing &amp; Revenue</div>
+      <p class="card-desc">Centralized billing management, membership fee tracking, insurance claims, and revenue cycle analytics across all practices.</p>
       <div class="card-footer">
         <span class="coming-soon">Coming Soon</span>
       </div>
     </div>
 
-    <!-- 5. Coverage Requests -->
-    <div class="module-card soon">
-      <div class="card-icon gray">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-        </svg>
-      </div>
-      <div class="card-title">Coverage Requests</div>
-      <p class="card-desc">Schedule and manage physician call coverage requests across the network.</p>
-      <div class="card-footer">
-        <span class="coming-soon">Coming Soon</span>
-      </div>
-    </div>
-
-    <!-- 6. Analytics & Reports -->
     <div class="module-card soon">
       <div class="card-icon gray">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -453,20 +468,7 @@
         <span class="coming-soon">Coming Soon</span>
       </div>
     </div>
-
-    <!-- Physician Forum -->
-    <div class="module-card soon">
-      <div class="card-icon gray">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-        </svg>
-      </div>
-      <div class="card-title">Physician Forum</div>
-      <p class="card-desc">Private discussion board for Blue Angel physicians to share clinical insights, case questions, and network announcements.</p>
-      <div class="card-footer">
-        <span class="coming-soon">Coming Soon</span>
-      </div>
-    </div>
+    -->
 
   </div><!-- /grid -->
 </main>
@@ -499,10 +501,19 @@
   document.getElementById('nav-practice').textContent = practiceName;
   document.getElementById('nav-role').textContent     = role === 'physician' ? 'Physician' : 'Staff';
 
-  // Update hero
-  const firstName = email.split('@')[0].split('.')[0];
-  const displayName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
-  document.getElementById('hero-title').textContent = displayName && displayName !== ''
+  // Update hero — greet physicians by their practice's doctor; staff by first name
+  const physicianNames = {
+    sujansky: 'Dr. Sujansky',
+    daniher:  'Dr. Daniher',
+  };
+  let displayName;
+  if (role === 'physician') {
+    displayName = physicianNames[practice] || '';
+  } else {
+    const firstName = email.split('@')[0].split('.')[0];
+    displayName = firstName ? firstName.charAt(0).toUpperCase() + firstName.slice(1) : '';
+  }
+  document.getElementById('hero-title').textContent = displayName
     ? `Welcome back, ${displayName}`
     : 'Welcome back';
   document.getElementById('hero-sub').textContent = `${practiceName} — Select a module to get started`;
