@@ -24,6 +24,7 @@
       --amber-bg:#FEF3C7;
       --card-sh: 0 4px 24px rgba(10,37,88,0.09);
       --card-sh-hover: 0 8px 40px rgba(10,37,88,0.16);
+      --map-h: 600px;   /* fixed map height — keeps the map square-ish as clinics grow */
     }
 
     body {
@@ -100,13 +101,13 @@
     .hero-sub { font-size: 14px; color: rgba(255,255,255,0.6); }
 
     /* ── MAIN / TWO-PANE ── */
-    main { max-width: 1100px; margin: 0 auto; padding: 32px 32px 60px; }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 0 60px; }
 
     .map-layout {
       display: grid;
       grid-template-columns: 65% 35%;
       gap: 20px;
-      align-items: stretch;
+      align-items: start;
     }
 
     /* Map column (Google Maps embed) */
@@ -116,7 +117,7 @@
       overflow: hidden;
       border: 1.5px solid var(--border);
       box-shadow: var(--card-sh);
-      min-height: 480px;
+      height: var(--map-h);
       background: #E8EDF5;
     }
     #map-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
@@ -138,6 +139,13 @@
 
     /* Clinic list column */
     .clinic-list { display: flex; flex-direction: column; gap: 14px; }
+    /* Cards scroll within the map's height so the page doesn't grow as clinics are added. */
+    #clinic-cards {
+      display: flex; flex-direction: column; gap: 14px;
+      max-height: calc(var(--map-h) - 34px);
+      overflow-y: auto;
+      padding-right: 6px;
+    }
     .list-label {
       font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
       text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
@@ -166,17 +174,9 @@
       background: var(--bg); border: 1px solid var(--border);
       border-radius: 20px; padding: 3px 10px;
     }
-    .maps-link {
-      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      margin-top: 14px; width: 100%;
-      min-height: 44px;
-      background: linear-gradient(135deg, var(--navy), var(--blue));
-      color: white; text-decoration: none;
-      font-size: 13px; font-weight: 600;
-      border-radius: 9px; padding: 0 14px;
-      transition: filter 0.2s;
-    }
-    .maps-link:hover { filter: brightness(1.1); }
+    .clinic-type span { color: var(--navy); font-weight: 600; }
+    .addr-link { color: var(--blue); text-decoration: none; font-weight: 600; }
+    .addr-link:hover { text-decoration: underline; }
 
     footer {
       text-align: center; padding: 24px; font-size: 12px; color: var(--muted);
@@ -188,7 +188,9 @@
       .hero { padding: 26px 20px 34px; }
       main { padding: 24px 16px 40px; }
       .map-layout { grid-template-columns: 1fr; }
-      .map-wrap { min-height: 320px; }
+      .map-wrap { height: 340px; }
+      /* On mobile, stack and let the page scroll instead of a tiny inner scrollbox. */
+      #clinic-cards { max-height: none; overflow-y: visible; padding-right: 0; }
     }
   </style>
 </head>
@@ -222,7 +224,7 @@
 <!-- ── MAIN ── -->
 <main>
   <div class="map-layout">
-    <!-- MAP (free Google Maps embed — no API key, no billing) -->
+    <!-- MAP (free Google Maps embed — no API key; shows the selected clinic) -->
     <div class="map-wrap">
       <iframe id="map-frame" title="Map of the selected clinic location"
               loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -248,23 +250,62 @@
 <script>
   /* ──────────────────────────────────────────────────────────────
      CLINIC DATA — add one entry per acquired clinic.
-     Only public info (address, phone, hours, doctors). Never patient data.
+     Only public info (type, address, phone, hours, doctors). Never patient data.
      The Google Maps embed geocodes the `address` string automatically,
      so no coordinates are needed — just keep the address accurate.
+     Sujansky and Daniher are two separate practices that share an address.
      ────────────────────────────────────────────────────────────── */
   const clinics = [
     {
-      id: "san-mateo",
-      name: "Sujansky & Daniher Concierge Medicine",
+      id: "sujansky-san-mateo",
+      name: "Ulrike Sujansky, M.D.",
+      type: "Internal Medicine (Adult Only)",
       address: "34 North San Mateo Drive, Suite 1, San Mateo, CA 94401",
-      lat: 37.5674610,
-      lng: -122.3271461,
       phone: "(650) 393-5851",
       hours: "By appointment — call to confirm",
-      doctors: ["Dr. Ulrike Sujansky", "Dr. Amy Daniher"]
+      doctors: ["Dr. Ulrike Sujansky"],
+      coords: [37.5674610, -122.3271461],
+      locationId: "san-mateo",
+      mapLabel: "Ulrike Sujansky, M.D."
+    },
+    {
+      id: "daniher-san-mateo",
+      name: "Amy Sawyer Daniher, M.D.",
+      type: "Internal Medicine (Adult Only)",
+      address: "34 North San Mateo Drive, Suite 1, San Mateo, CA 94401",
+      phone: "(650) 393-5851",
+      hours: "By appointment — call to confirm",
+      doctors: ["Dr. Amy Daniher"],
+      coords: [37.5674610, -122.3271461],
+      locationId: "san-mateo",
+      mapLabel: "Amy Daniher, M.D."
+    },
+    {
+      id: "golden-gate-sf",
+      name: "Golden Gate Concierge Medicine",
+      type: "Internal Medicine (Adult Only)",
+      address: "2186 Geary Blvd, Suite 314, San Francisco, CA 94115",
+      phone: "(415) 921-5300",
+      hours: "By appointment — call to confirm",
+      doctors: ["Dr. Peter Coopersmith", "Dr. Carolyn Cooper", "Dr. Tom Ronay", "Dr. Leah Tessler"],
+      coords: [37.7841, -122.4392],
+      locationId: "golden-gate",
+      mapLabel: "Golden Gate Concierge Medicine"
+    },
+    {
+      id: "pediatric-gems-la",
+      name: "Pediatric Gems",
+      type: "Pediatrics",
+      address: "955 Carrillo Drive, Suite 210, Los Angeles, CA 90048",
+      phone: "",
+      hours: "By appointment — call to confirm",
+      doctors: ["Dr. Edmond Sarraf"],
+      coords: [34.0760, -118.3772],
+      locationId: "pediatric-gems",
+      mapLabel: "Pediatric Gems"
     }
-    // Add more clinics here as BACP acquires them, e.g.:
-    // , { id: "id", name: "…", address: "…", phone: "…", hours: "…", doctors: ["…"] }
+    // Add more clinics here as BACP acquires them. Practices that share an
+    // address should share a locationId so they collapse to a single map pin.
   ];
 
   /* ── Carry URL params through to the nav + back links ── */
@@ -287,8 +328,8 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => (
     { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
   ));
-  // Use coordinates (not a text search) so the map shows a single clean pin with no number badge.
-  const embedUrl = c => `https://www.google.com/maps?q=${c.lat},${c.lng}&z=15&output=embed`;
+  // Coordinates give a clean single pin (no address/suite label on the marker).
+  const embedUrl = c => `https://maps.google.com/maps?q=${c.coords[0]},${c.coords[1]}&z=15&output=embed`;
   const mapsUrl  = c => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.address)}`;
 
   const frame      = document.getElementById('map-frame');
@@ -309,15 +350,13 @@
     card.setAttribute('aria-label', `${c.name}. ${c.address}. Show on map.`);
     card.innerHTML =
       `<div class="clinic-name">${esc(c.name)}</div>` +
-      `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>${esc(c.address)}</span></div>` +
-      `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg><span>${esc(c.phone)}</span></div>` +
+      (c.type ? `<div class="clinic-row clinic-type"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>${esc(c.type)}</span></div>` : '') +
+      `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><a class="addr-link" href="${mapsUrl(c)}" target="_blank" rel="noopener">${esc(c.address)}</a></div>` +
+      (c.phone ? `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg><span>${esc(c.phone)}</span></div>` : '') +
       `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>${esc(c.hours)}</span></div>` +
-      `<div class="clinic-doctors">${c.doctors.map(d => `<span class="doctor-chip">${esc(d)}</span>`).join('')}</div>` +
-      `<a class="maps-link" href="${mapsUrl(c)}" target="_blank" rel="noopener">` +
-        `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>` +
-        `Open in Google Maps</a>`;
+      `<div class="clinic-doctors">${c.doctors.map(d => `<span class="doctor-chip">${esc(d)}</span>`).join('')}</div>`;
     card.addEventListener('click', e => {
-      if (e.target.closest('.maps-link')) return;   // let the link work normally
+      if (e.target.closest('.addr-link')) return;   // let the address link open Maps normally
       selectClinic(c.id, true);
     });
     cardsEl.appendChild(card);
