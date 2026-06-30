@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <title>Physician Forum — Blue Angel Clinical Partners</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0A2558;
+      --blue:    #1565C0;
+      --blue-lt: #1E88E5;
+      --gold:    #C9A84C;
+      --gold-lt: #E8C96A;
+      --bg:      #F0F4FF;
+      --white:   #FFFFFF;
+      --text:    #0D1B3E;
+      --muted:   #6B7A99;
+      --border:  #D4E1F7;
+      --amber:   #D97706;
+      --amber-bg:#FEF3C7;
+      --card-sh: 0 4px 24px rgba(10,37,88,0.09);
+      --card-sh-hover: 0 8px 40px rgba(10,37,88,0.16);
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── TOP NAV (matches dashboard.html) ── */
+    nav {
+      background: linear-gradient(135deg, #061A42 0%, #0A2558 60%, #0E3A7A 100%);
+      color: white;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 64px;
+      box-shadow: 0 2px 16px rgba(10,37,88,0.28);
+      position: sticky; top: 0; z-index: 1100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: white; }
+    .nav-brand img { width: 180px; height: auto; flex-shrink: 0; display: block; filter: brightness(0) invert(1); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-practice-badge {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85);
+    }
+    .nav-role-badge {
+      background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 20px; padding: 5px 14px; font-size: 11px; font-weight: 700; color: var(--gold-lt);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .nav-signout {
+      background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7);
+      padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; transition: all 0.2s;
+    }
+    .nav-signout:hover { background: rgba(255,255,255,0.08); color: white; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: white; padding: 36px 40px 44px; position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: ''; position: absolute; right: -60px; top: -60px; width: 360px; height: 360px;
+      border-radius: 50%; background: rgba(255,255,255,0.04); pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; }
+    .hero-back {
+      display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.7);
+      text-decoration: none; font-size: 13px; margin-bottom: 14px;
+    }
+    .hero-back:hover { color: white; }
+    .hero-greeting {
+      font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
+      font-weight: 600; margin-bottom: 8px;
+    }
+    .hero-title { font-size: 30px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+    .hero-sub { font-size: 14px; color: rgba(255,255,255,0.6); }
+
+    /* ── MAIN ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 28px 32px 60px; }
+
+    /* Toolbar */
+    .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 22px; }
+    .toolbar .grow { flex: 1; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: linear-gradient(135deg, var(--navy), var(--blue)); color: #fff;
+      border: none; border-radius: 9px; padding: 10px 16px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: filter 0.2s;
+    }
+    .btn-primary:hover { filter: brightness(1.1); }
+    .btn-ghost {
+      background: none; border: 1px solid var(--border); color: var(--muted);
+      border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+    .search-wrap { position: relative; display: flex; align-items: center; }
+    .search-wrap svg { position: absolute; left: 11px; color: var(--muted); pointer-events: none; }
+    .search-input {
+      border: 1.5px solid var(--border); border-radius: 9px; padding: 9px 12px 9px 34px;
+      font-size: 13px; min-width: 200px; background: var(--white); color: var(--text);
+    }
+    .search-input:focus { outline: none; border-color: var(--blue-lt); }
+    .select {
+      border: 1.5px solid var(--border); border-radius: 9px; padding: 9px 12px;
+      font-size: 13px; background: var(--white); color: var(--text); cursor: pointer;
+    }
+    .seg { display: inline-flex; background: var(--white); border: 1.5px solid var(--border); border-radius: 9px; padding: 3px; }
+    .seg button {
+      border: none; background: none; padding: 6px 14px; font-size: 12px; font-weight: 700;
+      color: var(--muted); border-radius: 7px; cursor: pointer; transition: all 0.15s;
+    }
+    .seg button.active { background: var(--navy); color: #fff; }
+
+    /* Thread list */
+    .thread-list { display: flex; flex-direction: column; gap: 12px; }
+    .thread-card {
+      background: var(--white); border: 1.5px solid var(--border); border-left: 3px solid var(--border);
+      border-radius: 12px; padding: 16px 18px; cursor: pointer; box-shadow: var(--card-sh);
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s; text-align: left; width: 100%; font: inherit; color: inherit;
+    }
+    .thread-card:hover { box-shadow: var(--card-sh-hover); transform: translateY(-1px); }
+    .thread-card.is-new { border-left-color: var(--gold); }
+    .thread-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+    .thread-subject { font-size: 16px; font-weight: 700; color: var(--text); }
+    .thread-snippet {
+      font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 10px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .thread-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+    .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); }
+    .author-name { font-weight: 700; color: var(--navy); }
+    .author-wrap { display: inline-flex; align-items: center; gap: 6px; }
+    .author-name.is-me { color: var(--blue); }
+    .you-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--blue); background: rgba(21,101,192,0.12); border-radius: 20px; padding: 1px 7px;
+    }
+    .reply-delete {
+      margin-left: auto; background: none; border: none; color: #DC2626;
+      font-size: 12px; font-weight: 600; cursor: pointer; padding: 0;
+    }
+    .reply-delete:hover { text-decoration: underline; }
+    .post-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
+    .btn-danger { color: #DC2626; border-color: #F0C7C7; }
+    .btn-danger:hover { border-color: #DC2626; color: #DC2626; }
+    .post-archived-note { font-size: 12px; color: var(--muted); }
+    .reply-count { display: inline-flex; align-items: center; gap: 4px; }
+    .pill { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 20px; padding: 2px 8px; }
+    .pill-new { background: var(--amber-bg); color: var(--amber); }
+    .pill-archived { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+
+    .empty {
+      text-align: center; color: var(--muted); padding: 48px 20px;
+      border: 1.5px dashed var(--border); border-radius: 12px; background: var(--white); font-size: 14px;
+    }
+
+    /* Detail view */
+    .detail-back {
+      display: inline-flex; align-items: center; gap: 6px; background: none; border: none;
+      color: var(--blue); font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 16px;
+    }
+    .detail-back:hover { color: var(--navy); }
+    .post {
+      background: var(--white); border: 1.5px solid var(--border); border-radius: 12px;
+      padding: 22px 24px; box-shadow: var(--card-sh); margin-bottom: 18px;
+    }
+    .post-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .post-subject { font-size: 21px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+    .post-body { font-size: 14px; color: var(--text); line-height: 1.65; white-space: pre-wrap; }
+    .replies-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 4px 0 12px; }
+    .reply { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+    .reply-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .reply-body { font-size: 13px; color: var(--text); line-height: 1.6; white-space: pre-wrap; }
+    .reply-composer { margin-top: 18px; }
+    .input {
+      width: 100%; border: 1.5px solid var(--border); border-radius: 9px; padding: 11px 13px;
+      font: inherit; font-size: 13px; color: var(--text); background: var(--white); resize: vertical;
+    }
+    textarea.input { min-height: 88px; }
+    .input:focus { outline: none; border-color: var(--blue-lt); }
+
+    /* Modal */
+    .modal {
+      position: fixed; inset: 0; z-index: 2000; background: rgba(10,37,88,0.45);
+      display: none; align-items: flex-start; justify-content: center; padding: 60px 20px; overflow-y: auto;
+    }
+    .modal.open { display: flex; }
+    .modal-card { background: var(--white); border-radius: 16px; width: 100%; max-width: 560px; box-shadow: 0 20px 60px rgba(10,37,88,0.3); overflow: hidden; }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--border); }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+    .modal-close { background: none; border: none; cursor: pointer; color: var(--muted); }
+    .modal-body { padding: 20px 22px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .form-error { color: #DC2626; font-size: 12px; margin-bottom: 12px; display: none; }
+    .form-error.show { display: block; }
+    .modal-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 0 22px 20px; }
+
+    footer { text-align: center; padding: 24px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 700px) {
+      nav { padding: 0 16px; }
+      .hero { padding: 26px 20px 34px; }
+      main { padding: 22px 16px 40px; }
+      .search-input { min-width: 0; width: 100%; }
+      .search-wrap { flex: 1 1 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-brand" id="brand-link" href="dashboard.html">
+    <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel Clinical Partners logo" />
+  </a>
+  <div class="nav-right">
+    <span class="nav-practice-badge" id="nav-practice">—</span>
+    <span class="nav-role-badge" id="nav-role">—</span>
+    <button class="nav-signout" onclick="window.location.href='login.html'">Sign Out</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <a class="hero-back" id="back-link" href="dashboard.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to portal
+    </a>
+    <p class="hero-greeting">Physician Forum</p>
+    <h1 class="hero-title">Discuss cases &amp; share insights</h1>
+    <p class="hero-sub">A private board for Blue Angel physicians and staff across every practice.</p>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<main>
+  <!-- LIST VIEW -->
+  <div id="list-view">
+    <div class="toolbar">
+      <button class="btn-primary" onclick="openNewPost()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        New Post
+      </button>
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input class="search-input" id="search" type="search" placeholder="Search posts…" oninput="onFilterChange()" />
+      </div>
+      <select class="select" id="time-filter" onchange="onFilterChange()">
+        <option value="all" selected>All time</option>
+        <option value="7d">Past 7 days</option>
+        <option value="30d">Past 30 days</option>
+        <option value="6m">Past 6 months</option>
+        <option value="1y">Past year</option>
+      </select>
+      <div class="grow"></div>
+      <div class="seg" id="status-seg">
+        <button class="active" data-status="active" onclick="setStatus('active')">Active</button>
+        <button data-status="archived" onclick="setStatus('archived')">Archived</button>
+      </div>
+    </div>
+
+    <div class="thread-list" id="thread-list"></div>
+  </div>
+
+  <!-- DETAIL VIEW -->
+  <div id="detail-view" class="hidden"></div>
+</main>
+
+<!-- ── NEW POST MODAL ── -->
+<div class="modal" id="new-post-modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <span class="modal-title">New Post</span>
+      <button class="modal-close" onclick="closeNewPost()" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-error" id="np-error">Please add a subject line and a message.</div>
+      <div class="field">
+        <label for="np-subject">Subject line</label>
+        <input class="input" id="np-subject" type="text" maxlength="140" placeholder="e.g. Second opinion on a complex travel-medicine case" />
+      </div>
+      <div class="field">
+        <label for="np-body">Message</label>
+        <textarea class="input" id="np-body" placeholder="Share the question or case details you'd like input on…"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeNewPost()">Cancel</button>
+      <button class="btn-primary" onclick="submitNewPost()">Post</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2024 Blue Angel Clinical Partners &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp;
+  <a href="mailto:joseph@blueangelclinical.com" style="color:inherit">joseph@blueangelclinical.com</a>
+</footer>
+
+<script src="forum.js"></script>
+<script>
+  /* ── Identity + nav from shared URL params ── */
+  const params = new URLSearchParams(window.location.search);
+  const me = forumIdentity(params);
+  document.getElementById('nav-practice').textContent = me.practiceLabel;
+  document.getElementById('nav-role').textContent     = me.role === 'physician' ? 'Physician' : 'Staff';
+  const qp = new URLSearchParams({ practice: me.practice, role: me.role, email: me.email }).toString();
+  document.getElementById('brand-link').href = `dashboard.html?${qp}`;
+  document.getElementById('back-link').href  = `dashboard.html?${qp}`;
+
+  /* ── State ── */
+  let threads = loadForumThreads();
+  const state = { search: '', time: 'all', status: 'active' };
+  const TIME_RANGES = { '7d': 7, '30d': 30, '6m': 182, '1y': 365 }; // in days
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => (
+    { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
+  ));
+
+  // Render an author's name; highlight it in BACP blue + tag "You" when it's the signed-in user.
+  function authorHtml(name) {
+    const isMe = name === me.name;
+    return `<span class="author-wrap"><span class="author-name${isMe ? ' is-me' : ''}">${esc(name)}</span>${isMe ? '<span class="you-tag">You</span>' : ''}</span>`;
+  }
+
+  const listView   = document.getElementById('list-view');
+  const detailView = document.getElementById('detail-view');
+  const threadListEl = document.getElementById('thread-list');
+
+  /* ── Filtering + list render ── */
+  function visibleThreads() {
+    let items = threads.filter(t => state.status === 'archived' ? isThreadArchivedFor(t, me.accountKey) : !isThreadArchivedFor(t, me.accountKey));
+    if (state.time !== 'all') {
+      const cutoff = Date.now() - TIME_RANGES[state.time] * 86400000;
+      items = items.filter(t => forumThreadActivity(t) >= cutoff);
+    }
+    if (state.search.trim()) {
+      const q = state.search.trim().toLowerCase();
+      items = items.filter(t =>
+        t.subject.toLowerCase().includes(q) ||
+        t.body.toLowerCase().includes(q) ||
+        t.author.toLowerCase().includes(q) ||
+        (t.replies || []).some(r => r.body.toLowerCase().includes(q) || r.author.toLowerCase().includes(q))
+      );
+    }
+    items.sort((a, b) => forumThreadActivity(b) - forumThreadActivity(a));
+    return items;
+  }
+
+  function renderList() {
+    const items = visibleThreads();
+    if (!items.length) {
+      const msg = state.search.trim()
+        ? 'No posts match your search.'
+        : (state.status === 'archived' ? 'No archived posts yet.' : 'No posts yet. Start the first discussion with “New Post”.');
+      threadListEl.innerHTML = `<div class="empty">${esc(msg)}</div>`;
+      return;
+    }
+    threadListEl.innerHTML = items.map(t => {
+      const replyN = (t.replies || []).length;
+      const isNew = isThreadUnread(t, me.accountKey, me.name);
+      return `
+        <button class="thread-card ${isNew ? 'is-new' : ''}" onclick="openThread('${t.id}')">
+          <div class="thread-top">
+            <span class="thread-subject">${esc(t.subject)}</span>
+            ${isNew ? '<span class="pill pill-new">New</span>' : ''}
+            ${t.archived ? '<span class="pill pill-archived">Archived</span>' : ''}
+          </div>
+          <div class="thread-snippet">${esc(t.body)}</div>
+          <div class="thread-meta">
+            ${authorHtml(t.author)}
+            <span class="meta-dot"></span><span>${esc(t.practice)}</span>
+            <span class="meta-dot"></span><span>${esc(forumRelativeTime(t.createdAt))}</span>
+            <span class="meta-dot"></span>
+            <span class="reply-count">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              ${replyN} ${replyN === 1 ? 'reply' : 'replies'}
+            </span>
+          </div>
+        </button>`;
+    }).join('');
+  }
+
+  /* ── Detail render ── */
+  function openThread(id) {
+    const t = threads.find(x => x.id === id);
+    if (!t) return;
+    markThreadRead(me.accountKey, id);   // clears the gold "new" accent for this user, persistently
+    listView.classList.add('hidden');
+    detailView.classList.remove('hidden');
+    window.scrollTo(0, 0);
+
+    const replies = (t.replies || []).slice().sort((a, b) => a.createdAt - b.createdAt);
+    detailView.innerHTML = `
+      <button class="detail-back" onclick="showList()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All posts
+      </button>
+      <div class="post">
+        <div class="post-head">
+          <div>
+            <div class="post-subject">${esc(t.subject)}</div>
+            <div class="post-meta">
+              ${authorHtml(t.author)}
+              <span class="meta-dot"></span><span>${esc(t.practice)}</span>
+              <span class="meta-dot"></span><span>${esc(forumRelativeTime(t.createdAt))}</span>
+              ${t.archived ? '<span class="meta-dot"></span><span class="pill pill-archived">Archived</span>' : ''}
+            </div>
+          </div>
+          <div class="post-actions">
+            ${archiveButtonHtml(t)}
+            ${t.author === me.name ? `<button class="btn-ghost btn-danger" onclick="deleteThread('${t.id}')">Delete</button>` : ''}
+          </div>
+        </div>
+        <div class="post-body">${esc(t.body)}</div>
+      </div>
+
+      <p class="replies-label">${replies.length} ${replies.length === 1 ? 'Reply' : 'Replies'}</p>
+      <div id="reply-list">
+        ${replies.map(r => `
+          <div class="reply">
+            <div class="reply-meta">
+              ${authorHtml(r.author)}
+              <span class="meta-dot"></span><span>${esc(r.practice)}</span>
+              <span class="meta-dot"></span><span>${esc(forumRelativeTime(r.createdAt))}</span>
+              ${r.author === me.name ? `<button class="reply-delete" onclick="deleteReply('${t.id}','${r.id}')">Delete</button>` : ''}
+            </div>
+            <div class="reply-body">${esc(r.body)}</div>
+          </div>`).join('') || '<div class="empty">No replies yet — be the first to weigh in.</div>'}
+      </div>
+
+      <div class="reply-composer">
+        <textarea class="input" id="reply-body" placeholder="Write a reply…"></textarea>
+        <div style="margin-top:10px; display:flex; justify-content:flex-end;">
+          <button class="btn-primary" onclick="submitReply('${t.id}')">Post reply</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function showList() {
+    detailView.classList.add('hidden');
+    listView.classList.remove('hidden');
+    renderList();
+    window.scrollTo(0, 0);
+  }
+
+  /* ── Actions ── */
+  function submitReply(threadId) {
+    const ta = document.getElementById('reply-body');
+    const body = ta.value.trim();
+    if (!body) { ta.focus(); return; }
+    const t = threads.find(x => x.id === threadId);
+    if (!t) return;
+    t.replies = t.replies || [];
+    t.replies.push({
+      id: 'r' + Date.now(),
+      author: me.name, authorRole: me.role, practice: me.practiceLabel,
+      body, createdAt: Date.now()
+    });
+    saveForumThreads(threads);
+    openThread(threadId);
+  }
+
+  // Archive control reflects who you are: the author archives for everyone,
+  // anyone else hides it only for themselves.
+  function archiveButtonHtml(t) {
+    const amAuthor = t.author === me.name;
+    if (!isThreadArchivedFor(t, me.accountKey)) {
+      return `<button class="btn-ghost" onclick="archiveAction('${t.id}')">${amAuthor ? 'Archive' : 'Archive for me'}</button>`;
+    }
+    if (t.archived && amAuthor) return `<button class="btn-ghost" onclick="archiveAction('${t.id}')">Unarchive</button>`;
+    if (getForumHidden(me.accountKey).includes(t.id)) return `<button class="btn-ghost" onclick="archiveAction('${t.id}')">Unarchive</button>`;
+    return `<span class="post-archived-note">Archived by author</span>`;
+  }
+
+  function archiveAction(threadId) {
+    const t = threads.find(x => x.id === threadId);
+    if (!t) return;
+    const amAuthor = t.author === me.name;
+    if (!isThreadArchivedFor(t, me.accountKey)) {
+      if (amAuthor) { t.archived = true; saveForumThreads(threads); }   // resolved for everyone
+      else { addForumHidden(me.accountKey, t.id); }                     // hidden for me only
+    } else {
+      if (t.archived && amAuthor) { t.archived = false; saveForumThreads(threads); }
+      else if (getForumHidden(me.accountKey).includes(t.id)) { removeForumHidden(me.accountKey, t.id); }
+    }
+    showList();
+  }
+
+  // Delete a reply — only the person who wrote it sees the control, and we re-check ownership here.
+  function deleteReply(threadId, replyId) {
+    const t = threads.find(x => x.id === threadId);
+    if (!t) return;
+    if (!confirm('Delete your reply? This cannot be undone.')) return;
+    t.replies = (t.replies || []).filter(r => !(r.id === replyId && r.author === me.name));
+    saveForumThreads(threads);
+    openThread(threadId);
+  }
+
+  // Delete an entire thread — only its original author.
+  function deleteThread(threadId) {
+    const t = threads.find(x => x.id === threadId);
+    if (!t || t.author !== me.name) return;
+    if (!confirm('Delete this entire thread and all of its replies? This cannot be undone.')) return;
+    threads = threads.filter(x => x.id !== threadId);
+    saveForumThreads(threads);
+    showList();
+  }
+
+  /* ── New post modal ── */
+  const modal = document.getElementById('new-post-modal');
+  function openNewPost() {
+    document.getElementById('np-subject').value = '';
+    document.getElementById('np-body').value = '';
+    document.getElementById('np-error').classList.remove('show');
+    modal.classList.add('open');
+    document.getElementById('np-subject').focus();
+  }
+  function closeNewPost() { modal.classList.remove('open'); }
+  modal.addEventListener('click', e => { if (e.target === modal) closeNewPost(); });
+
+  function submitNewPost() {
+    const subject = document.getElementById('np-subject').value.trim();
+    const body    = document.getElementById('np-body').value.trim();
+    if (!subject || !body) { document.getElementById('np-error').classList.add('show'); return; }
+    const thread = {
+      id: 'p' + Date.now(),
+      subject, body,
+      author: me.name, authorRole: me.role, practice: me.practiceLabel,
+      createdAt: Date.now(), archived: false, replies: []
+    };
+    threads.unshift(thread);
+    saveForumThreads(threads);
+    closeNewPost();
+    state.status = 'active';
+    syncStatusSeg();
+    openThread(thread.id);
+  }
+
+  /* ── Filters ── */
+  function onFilterChange() {
+    state.search = document.getElementById('search').value;
+    state.time   = document.getElementById('time-filter').value;
+    renderList();
+  }
+  function setStatus(status) {
+    state.status = status;
+    syncStatusSeg();
+    renderList();
+  }
+  function syncStatusSeg() {
+    document.querySelectorAll('#status-seg button').forEach(b =>
+      b.classList.toggle('active', b.dataset.status === state.status));
+  }
+
+  /* ── Init ── */
+  renderList();
+  // Deep-link: open a specific thread when arriving from a notification.
+  const deepThread = params.get('thread');
+  if (deepThread && threads.some(t => t.id === deepThread)) openThread(deepThread);
+</script>
+</body>
+</html>

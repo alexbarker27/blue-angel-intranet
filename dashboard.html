@@ -107,6 +107,67 @@
     }
     .nav-signout:hover { background: rgba(255,255,255,0.08); color: white; }
 
+    /* notification bell */
+    .nav-bell {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      color: rgba(255,255,255,0.85);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .nav-bell:hover { background: rgba(255,255,255,0.16); color: white; }
+    .nav-bell-badge {
+      position: absolute; top: -5px; right: -5px;
+      min-width: 18px; height: 18px; padding: 0 5px;
+      background: #E11D48; color: white;
+      border: 2px solid var(--navy);
+      border-radius: 10px;
+      font-size: 10px; font-weight: 700; line-height: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-bell-badge.hidden { display: none; }
+
+    /* notifications dropdown */
+    .nav-notif { position: relative; }
+    .notif-panel {
+      position: absolute; top: calc(100% + 12px); right: 0;
+      width: 370px; max-height: 460px; overflow-y: auto;
+      background: var(--white); color: var(--text);
+      border: 1px solid var(--border); border-radius: 14px;
+      box-shadow: 0 18px 50px rgba(10,37,88,0.28);
+      z-index: 300;
+    }
+    .notif-panel.hidden { display: none; }
+    .notif-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: var(--white); border-radius: 14px 14px 0 0;
+    }
+    .notif-title { font-size: 14px; font-weight: 700; color: var(--text); }
+    .notif-showall { font-size: 12px; font-weight: 600; color: var(--blue); text-decoration: none; cursor: pointer; }
+    .notif-showall:hover { text-decoration: underline; }
+    .notif-list { padding: 6px; }
+    .notif-item {
+      display: flex; gap: 12px; align-items: flex-start; width: 100%;
+      padding: 11px 12px; border-radius: 10px; cursor: pointer;
+      background: none; border: none; font: inherit; text-align: left; transition: background 0.15s;
+    }
+    .notif-item:hover { background: var(--bg); }
+    .notif-icon {
+      width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--navy), var(--blue)); color: #fff;
+    }
+    .notif-body { flex: 1; min-width: 0; }
+    .notif-text { font-size: 13px; color: var(--text); line-height: 1.4; }
+    .notif-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .notif-time { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .notif-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 6px; }
+    .notif-empty { text-align: center; color: var(--muted); font-size: 13px; padding: 32px 16px; }
+
     /* ── HERO ── */
     .hero {
       background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
@@ -312,6 +373,19 @@
   <div class="nav-right">
     <span class="nav-practice-badge" id="nav-practice">—</span>
     <span class="nav-role-badge" id="nav-role">—</span>
+    <div class="nav-notif" id="nav-notif">
+      <button class="nav-bell" id="nav-bell" title="Notifications" aria-label="Notifications" onclick="toggleNotif(event)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <span class="nav-bell-badge hidden" id="nav-bell-badge">0</span>
+      </button>
+      <div class="notif-panel hidden" id="notif-panel">
+        <div class="notif-head">
+          <span class="notif-title">Notifications</span>
+          <a class="notif-showall" href="javascript:goToForum()">Open Forum</a>
+        </div>
+        <div class="notif-list" id="notif-list"></div>
+      </div>
+    </div>
     <button class="nav-signout" onclick="window.location.href='login.html'">Sign Out</button>
   </div>
 </nav>
@@ -375,16 +449,22 @@
     </div>
 
     <!-- Physician Forum -->
-    <div class="module-card soon">
-      <div class="card-icon gray">
+    <div class="module-card active" onclick="goToForum()">
+      <div class="card-icon blue">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
         </svg>
       </div>
       <div class="card-title">Physician Forum</div>
-      <p class="card-desc">Private discussion board for Blue Angel physicians to share clinical insights, case questions, and network announcements.</p>
+      <p class="card-desc">Private discussion board for Blue Angel physicians and staff to ask questions, share clinical insights, and get a colleague's second opinion.</p>
       <div class="card-footer">
-        <span class="coming-soon">Coming Soon</span>
+        <a class="card-cta" href="javascript:goToForum()">
+          Open Forum
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <span class="card-status-dot"></span>
       </div>
     </div>
 
@@ -478,6 +558,7 @@
   <a href="mailto:joseph@blueangelclinical.com" style="color:inherit">joseph@blueangelclinical.com</a>
 </footer>
 
+<script src="forum.js"></script>
 <script>
   // Pull URL params
   const params = new URLSearchParams(window.location.search);
@@ -529,6 +610,78 @@
     const p = new URLSearchParams({ practice, role, email });
     window.location.href = `clinic_map.html?${p}`;
   }
+
+  // Navigate to physician forum
+  function goToForum() {
+    const p = new URLSearchParams({ practice, role, email });
+    window.location.href = `physician_forum.html?${p}`;
+  }
+
+  // Open a specific forum thread from a notification.
+  function goToForumThread(threadId) {
+    const p = new URLSearchParams({ practice, role, email, thread: threadId });
+    window.location.href = `physician_forum.html?${p}`;
+  }
+
+  /* ── Notifications dropdown ──
+     Icons match each module's dashboard card icon. Today only the Physician
+     Forum feeds it; Coverage Requests and others append here once built. */
+  const NOTIF_ICONS = {
+    forum: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'
+  };
+  const escNotif = s => String(s).replace(/[&<>"']/g, c => (
+    { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
+  ));
+
+  function collectNotifications() {
+    let items = [];
+    if (typeof getForumNotifications === 'function') {
+      const forumMe = forumIdentity(params);
+      items = items.concat(getForumNotifications(forumMe.accountKey, forumMe.name));
+    }
+    // Future: items = items.concat(getCoverageNotifications(...)), etc.
+    items.sort((a, b) => b.ts - a.ts);
+    return items;
+  }
+
+  function renderNotifications() {
+    const items = collectNotifications();
+    const listEl = document.getElementById('notif-list');
+    const badge  = document.getElementById('nav-bell-badge');
+    if (!items.length) {
+      listEl.innerHTML = '<div class="notif-empty">You’re all caught up.</div>';
+      badge.classList.add('hidden');
+    } else {
+      listEl.innerHTML = items.map(it => `
+        <button class="notif-item" onclick="goToForumThread('${it.threadId}')">
+          <span class="notif-icon">${NOTIF_ICONS[it.module] || ''}</span>
+          <span class="notif-body">
+            <span class="notif-text"><strong>${escNotif(it.subject)}</strong></span>
+            <span class="notif-sub">${escNotif(it.text)} &middot; ${escNotif(it.practice)}</span>
+            <span class="notif-time">${forumRelativeTime(it.ts)}</span>
+          </span>
+          <span class="notif-dot"></span>
+        </button>`).join('');
+      badge.textContent = items.length > 9 ? '9+' : String(items.length);
+      badge.classList.remove('hidden');
+      document.getElementById('nav-bell').title = `${items.length} new notification${items.length === 1 ? '' : 's'}`;
+    }
+  }
+
+  function toggleNotif(e) {
+    e.stopPropagation();
+    document.getElementById('notif-panel').classList.toggle('hidden');
+  }
+
+  // Close the dropdown on any outside click.
+  document.addEventListener('click', (e) => {
+    const panel = document.getElementById('notif-panel');
+    if (!panel.classList.contains('hidden') && !document.getElementById('nav-notif').contains(e.target)) {
+      panel.classList.add('hidden');
+    }
+  });
+
+  renderNotifications();
 </script>
 </body>
 </html>
