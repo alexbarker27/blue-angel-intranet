@@ -177,6 +177,9 @@
     .clinic-type span { color: var(--navy); font-weight: 600; }
     .addr-link { color: var(--blue); text-decoration: none; font-weight: 600; }
     .addr-link:hover { text-decoration: underline; }
+    .site-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--blue); text-decoration: none; }
+    .site-link svg { color: var(--blue); }
+    .site-link:hover { text-decoration: underline; }
 
     footer {
       text-align: center; padding: 24px; font-size: 12px; color: var(--muted);
@@ -266,7 +269,8 @@
       doctors: ["Dr. Ulrike Sujansky"],
       coords: [37.5674610, -122.3271461],
       locationId: "san-mateo",
-      mapLabel: "Ulrike Sujansky, M.D."
+      mapLabel: "Ulrike Sujansky, M.D.",
+      website: "https://justintella.github.io/sujansky-website"
     },
     {
       id: "daniher-san-mateo",
@@ -278,7 +282,8 @@
       doctors: ["Dr. Amy Daniher"],
       coords: [37.5674610, -122.3271461],
       locationId: "san-mateo",
-      mapLabel: "Amy Daniher, M.D."
+      mapLabel: "Amy Daniher, M.D.",
+      website: "https://justintella.github.io/amy-daniher-website"
     },
     {
       id: "golden-gate-sf",
@@ -290,7 +295,8 @@
       doctors: ["Dr. Peter Coopersmith", "Dr. Carolyn Cooper", "Dr. Tom Ronay", "Dr. Leah Tessler"],
       coords: [37.7841, -122.4392],
       locationId: "golden-gate",
-      mapLabel: "Golden Gate Concierge Medicine"
+      mapLabel: "Golden Gate Concierge Medicine",
+      website: "https://www.ggconciergemedicine.com/"
     },
     {
       id: "pediatric-gems-la",
@@ -302,7 +308,8 @@
       doctors: ["Dr. Edmond Sarraf"],
       coords: [34.0760, -118.3772],
       locationId: "pediatric-gems",
-      mapLabel: "Pediatric Gems"
+      mapLabel: "Pediatric Gems",
+      website: "https://www.holisticpediatrician.com/"
     }
     // Add more clinics here as BACP acquires them. Practices that share an
     // address should share a locationId so they collapse to a single map pin.
@@ -354,9 +361,10 @@
       `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><a class="addr-link" href="${mapsUrl(c)}" target="_blank" rel="noopener">${esc(c.address)}</a></div>` +
       (c.phone ? `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg><span>${esc(c.phone)}</span></div>` : '') +
       `<div class="clinic-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>${esc(c.hours)}</span></div>` +
-      `<div class="clinic-doctors">${c.doctors.map(d => `<span class="doctor-chip">${esc(d)}</span>`).join('')}</div>`;
+      `<div class="clinic-doctors">${c.doctors.map(d => `<span class="doctor-chip">${esc(d)}</span>`).join('')}</div>` +
+      (c.website ? `<a class="site-link" href="${esc(c.website)}" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>Visit website</a>` : '');
     card.addEventListener('click', e => {
-      if (e.target.closest('.addr-link')) return;   // let the address link open Maps normally
+      if (e.target.closest('.addr-link') || e.target.closest('.site-link')) return;   // let links work normally
       selectClinic(c.id, true);
     });
     cardsEl.appendChild(card);
