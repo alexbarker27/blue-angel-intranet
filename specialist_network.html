@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <title>Specialist Network — Blue Angel Clinical Partners</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0A2558;
+      --blue:    #1565C0;
+      --blue-lt: #1E88E5;
+      --gold:    #C9A84C;
+      --gold-lt: #E8C96A;
+      --bg:      #F0F4FF;
+      --white:   #FFFFFF;
+      --text:    #0D1B3E;
+      --muted:   #6B7A99;
+      --border:  #D4E1F7;
+      --amber:   #D97706;
+      --amber-bg:#FEF3C7;
+      --card-sh: 0 4px 24px rgba(10,37,88,0.09);
+      --card-sh-hover: 0 8px 40px rgba(10,37,88,0.16);
+    }
+
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav {
+      background: linear-gradient(135deg, #061A42 0%, #0A2558 60%, #0E3A7A 100%);
+      color: white; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 64px; box-shadow: 0 2px 16px rgba(10,37,88,0.28);
+      position: sticky; top: 0; z-index: 1100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: white; }
+    .nav-brand img { width: 180px; height: auto; flex-shrink: 0; display: block; filter: brightness(0) invert(1); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-practice-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
+    .nav-role-badge { background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.35); border-radius: 20px; padding: 5px 14px; font-size: 11px; font-weight: 700; color: var(--gold-lt); text-transform: uppercase; letter-spacing: 0.08em; }
+    .nav-signout { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+    .nav-signout:hover { background: rgba(255,255,255,0.08); color: white; }
+
+    /* ── HERO ── */
+    .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: white; padding: 36px 40px 44px; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; right: -60px; top: -60px; width: 360px; height: 360px; border-radius: 50%; background: rgba(255,255,255,0.04); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; }
+    .hero-back { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; margin-bottom: 14px; }
+    .hero-back:hover { color: white; }
+    .hero-greeting { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+    .hero-title { font-size: 30px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+    .hero-sub { font-size: 14px; color: rgba(255,255,255,0.6); }
+
+    /* ── MAIN ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 28px 32px 60px; }
+
+    .view-tabs { display: inline-flex; background: var(--white); border: 1.5px solid var(--border); border-radius: 10px; padding: 4px; margin-bottom: 20px; }
+    .view-tab { display: inline-flex; align-items: center; gap: 7px; border: none; background: none; padding: 8px 16px; border-radius: 7px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+    .view-tab.active { background: var(--navy); color: #fff; }
+    .tab-count { font-size: 11px; font-weight: 700; background: #E11D48; color: #fff; border-radius: 10px; padding: 1px 7px; }
+    .view-tab.active .tab-count { background: rgba(255,255,255,0.25); }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 18px; }
+    .toolbar .grow { flex: 1; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, var(--navy), var(--blue)); color: #fff; border: none; border-radius: 9px; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: filter 0.2s; }
+    .btn-primary:hover { filter: brightness(1.1); }
+    .btn-ghost { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+    .search-wrap { position: relative; display: flex; align-items: center; }
+    .search-wrap svg { position: absolute; left: 11px; color: var(--muted); pointer-events: none; }
+    .search-input { border: 1.5px solid var(--border); border-radius: 9px; padding: 9px 12px 9px 34px; font-size: 13px; min-width: 180px; background: var(--white); color: var(--text); }
+    .search-input:focus { outline: none; border-color: var(--blue-lt); }
+    .select { border: 1.5px solid var(--border); border-radius: 9px; padding: 9px 12px; font-size: 13px; background: var(--white); color: var(--text); cursor: pointer; max-width: 200px; }
+
+    /* lock banner */
+    .lock-banner { display: flex; gap: 18px; align-items: center; background: linear-gradient(135deg, var(--navy), var(--blue)); color: #fff; border-radius: 16px; padding: 22px 24px; margin-bottom: 24px; }
+    .lock-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .lock-text { flex: 1; min-width: 0; }
+    .lock-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+    .lock-sub { font-size: 13px; color: rgba(255,255,255,0.82); margin-bottom: 12px; }
+    .lock-progress { height: 8px; border-radius: 6px; background: rgba(255,255,255,0.2); overflow: hidden; max-width: 320px; }
+    .lock-progress > span { display: block; height: 100%; background: var(--gold); border-radius: 6px; transition: width 0.3s; }
+    .lock-banner .btn-primary { background: #fff; color: var(--navy); flex-shrink: 0; }
+    .lock-banner .btn-primary:hover { filter: none; opacity: 0.92; }
+
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 6px 0 14px; }
+
+    /* specialist grid */
+    .spec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .spec-card { background: var(--white); border: 1.5px solid var(--border); border-left: 3px solid var(--border); border-radius: 12px; padding: 18px; box-shadow: var(--card-sh); display: flex; flex-direction: column; gap: 9px; transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s; }
+    .spec-card:hover { box-shadow: var(--card-sh-hover); transform: translateY(-1px); border-left-color: var(--blue-lt); }
+    .spec-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .spec-name { font-size: 16px; font-weight: 700; color: var(--text); }
+    .spec-pill { font-size: 11px; font-weight: 700; color: var(--navy); background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; white-space: nowrap; }
+    .spec-row { display: flex; gap: 7px; align-items: center; font-size: 13px; color: var(--muted); }
+    .spec-row svg { flex-shrink: 0; color: var(--blue); }
+    .spec-notes { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .spec-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .spec-owner { font-size: 12px; color: var(--muted); }
+    .spec-owner strong { color: var(--navy); }
+    .mine-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue); background: rgba(21,101,192,0.12); border-radius: 20px; padding: 2px 9px; }
+    .link-danger { background: none; border: none; color: #DC2626; font-size: 12px; font-weight: 600; cursor: pointer; padding: 0; }
+    .link-danger:hover { text-decoration: underline; }
+
+    /* requests */
+    .req-item { background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px 18px; box-shadow: var(--card-sh); margin-bottom: 12px; }
+    .req-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    .req-from { font-weight: 700; color: var(--navy); }
+    .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); }
+    .req-re { font-size: 13px; color: var(--text); margin-bottom: 10px; }
+    .req-re strong { color: var(--navy); }
+    .req-msg { font-size: 13px; color: var(--text); line-height: 1.6; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 12px 14px; white-space: pre-wrap; }
+    .req-foot { display: flex; justify-content: flex-end; margin-top: 10px; }
+    .req-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+    .status-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 20px; padding: 2px 9px; }
+    .status-pending { background: var(--amber-bg); color: var(--amber); }
+    .status-fulfilled { background: #DCFCE7; color: #15803D; }
+    .status-dismissed { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+    .btn-success { color: #15803D; border-color: #BBF7D0; }
+    .btn-success:hover { border-color: #15803D; color: #15803D; }
+
+    .empty { text-align: center; color: var(--muted); padding: 44px 20px; border: 1.5px dashed var(--border); border-radius: 12px; background: var(--white); font-size: 14px; }
+
+    /* modal */
+    .modal { position: fixed; inset: 0; z-index: 2000; background: rgba(10,37,88,0.45); display: none; align-items: flex-start; justify-content: center; padding: 56px 20px; overflow-y: auto; }
+    .modal.open { display: flex; }
+    .modal-card { background: var(--white); border-radius: 16px; width: 100%; max-width: 540px; box-shadow: 0 20px 60px rgba(10,37,88,0.3); overflow: hidden; }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--border); }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+    .modal-close { background: none; border: none; cursor: pointer; color: var(--muted); }
+    .modal-body { padding: 20px 22px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .form-error { color: #DC2626; font-size: 12px; margin-bottom: 12px; display: none; }
+    .form-error.show { display: block; }
+    .modal-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 0 22px 20px; }
+    .input { width: 100%; border: 1.5px solid var(--border); border-radius: 9px; padding: 11px 13px; font: inherit; font-size: 13px; color: var(--text); background: var(--white); resize: vertical; }
+    textarea.input { min-height: 96px; }
+    .input:focus { outline: none; border-color: var(--blue-lt); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .spec-detail { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+    .spec-detail .spec-name { margin-bottom: 6px; }
+    .no-contact { font-size: 12px; color: var(--muted); margin-top: 10px; display: flex; gap: 6px; align-items: flex-start; }
+    .no-contact svg { flex-shrink: 0; margin-top: 1px; }
+
+    footer { text-align: center; padding: 24px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 760px) { .spec-grid { grid-template-columns: 1fr; } .two-col { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) { nav { padding: 0 16px; } .hero { padding: 26px 20px 34px; } main { padding: 22px 16px 40px; } .search-wrap { flex: 1 1 100%; } .search-input { min-width: 0; width: 100%; } .lock-banner { flex-wrap: wrap; } }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-brand" id="brand-link" href="dashboard.html">
+    <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel Clinical Partners logo" />
+  </a>
+  <div class="nav-right">
+    <span class="nav-practice-badge" id="nav-practice">—</span>
+    <span class="nav-role-badge" id="nav-role">—</span>
+    <button class="nav-signout" onclick="window.location.href='login.html'">Sign Out</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <a class="hero-back" id="back-link" href="dashboard.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to portal
+    </a>
+    <p class="hero-greeting">Specialist Network</p>
+    <h1 class="hero-title">Find a trusted specialist</h1>
+    <p class="hero-sub">A shared directory of specialists across the Blue Angel network. Reach out through the physician who holds the relationship.</p>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<main>
+  <div class="view-tabs">
+    <button class="view-tab active" id="tab-directory" onclick="setView('directory')">Directory</button>
+    <button class="view-tab" id="tab-requests" onclick="setView('requests')">
+      Requests <span class="tab-count hidden" id="req-count">0</span>
+    </button>
+    <button class="view-tab" id="tab-sent" onclick="setView('sent')">
+      Sent <span class="tab-count hidden" id="sent-count">0</span>
+    </button>
+  </div>
+
+  <!-- DIRECTORY VIEW -->
+  <div id="directory-view">
+    <div class="toolbar" id="dir-toolbar">
+      <button class="btn-primary" id="add-btn" onclick="openAdd()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        Add Specialist
+      </button>
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input class="search-input" id="search" type="search" placeholder="Search specialists…" oninput="onFilter()" />
+      </div>
+      <select class="select" id="f-specialty" onchange="onFilter()"></select>
+      <select class="select" id="f-location" onchange="onFilter()"></select>
+      <select class="select" id="f-owner" onchange="onFilter()"></select>
+    </div>
+
+    <div id="lock-area"></div>
+    <div id="dir-body"></div>
+  </div>
+
+  <!-- REQUESTS VIEW (incoming to me) -->
+  <div id="requests-view" class="hidden">
+    <p class="section-label">Referral requests sent to you</p>
+    <div id="req-list"></div>
+  </div>
+
+  <!-- SENT VIEW (outgoing from me) -->
+  <div id="sent-view" class="hidden">
+    <p class="section-label">Referral requests you've sent</p>
+    <div id="sent-list"></div>
+  </div>
+</main>
+
+<!-- ── ADD SPECIALIST MODAL ── -->
+<div class="modal" id="add-modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <span class="modal-title">Add a specialist</span>
+      <button class="modal-close" onclick="closeAdd()" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-error" id="add-error">Please fill in the specialist's name, specialty, and location.</div>
+      <div class="field"><label for="a-name">Specialist name</label><input class="input" id="a-name" type="text" maxlength="80" placeholder="e.g. Dr. Jane Smith" /></div>
+      <div class="two-col">
+        <div class="field"><label for="a-specialty">Specialty</label><input class="input" id="a-specialty" type="text" maxlength="60" placeholder="e.g. Cardiology" /></div>
+        <div class="field"><label for="a-location">Location</label><input class="input" id="a-location" type="text" maxlength="80" placeholder="e.g. San Francisco, CA" /></div>
+      </div>
+      <div class="field"><label for="a-notes">Notes <span style="color:var(--muted);font-weight:400">(optional — focus areas, how you know them)</span></label><textarea class="input" id="a-notes" maxlength="400" placeholder="What they're great for, subspecialties, turnaround…"></textarea></div>
+      <p class="no-contact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> Don't add contact info — colleagues reach this specialist by requesting an intro through you.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeAdd()">Cancel</button>
+      <button class="btn-primary" onclick="submitAdd()">Add to network</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── REFERRAL REQUEST MODAL ── -->
+<div class="modal" id="req-modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <span class="modal-title">Request a referral</span>
+      <button class="modal-close" onclick="closeReq()" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body" id="req-modal-body"><!-- filled by JS --></div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeReq()">Cancel</button>
+      <button class="btn-primary" onclick="submitReq()">Send request</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2024 Blue Angel Clinical Partners &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp;
+  <a href="mailto:joseph@blueangelclinical.com" style="color:inherit">joseph@blueangelclinical.com</a>
+</footer>
+
+<script src="forum.js"></script>
+<script src="specialists.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const me = forumIdentity(params);
+  document.getElementById('nav-practice').textContent = me.practiceLabel;
+  document.getElementById('nav-role').textContent     = me.role === 'physician' ? 'Physician' : 'Staff';
+  const qp = new URLSearchParams({ practice: me.practice, role: me.role, email: me.email }).toString();
+  document.getElementById('brand-link').href = `dashboard.html?${qp}`;
+  document.getElementById('back-link').href  = `dashboard.html?${qp}`;
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+  let view = params.get('view') === 'requests' ? 'requests' : 'directory';
+  const state = { search: '', specialty: 'all', location: 'all', owner: 'all' };
+  let pendingReqSpecialistId = null;
+
+  const isPhysician = me.role === 'physician';
+  function unlocked() { return isSpecialistNetworkUnlocked(me.accountKey, me.role); }
+
+  /* ── Directory ── */
+  function baseVisibleSet() {
+    let list = loadSpecialists();
+    if (isPhysician && !unlocked()) list = list.filter(s => s.ownerKey === me.accountKey);
+    return list;
+  }
+
+  function filteredSpecialists() {
+    let list = baseVisibleSet();
+    if (state.specialty !== 'all') list = list.filter(s => s.specialty === state.specialty);
+    if (state.location !== 'all')  list = list.filter(s => s.location === state.location);
+    if (state.owner !== 'all')     list = list.filter(s => s.owner === state.owner);
+    if (state.search.trim()) {
+      const q = state.search.trim().toLowerCase();
+      list = list.filter(s => [s.name, s.specialty, s.location, s.owner, s.notes].join(' ').toLowerCase().includes(q));
+    }
+    list.sort((a, b) => a.name.localeCompare(b.name));
+    return list;
+  }
+
+  function fillSelect(id, label, values) {
+    const el = document.getElementById(id);
+    const cur = el.value || 'all';
+    el.innerHTML = `<option value="all">${label}</option>` + values.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+    el.value = values.includes(cur) ? cur : 'all';
+  }
+  function refreshFilters() {
+    const base = baseVisibleSet();
+    const uniq = arr => [...new Set(arr)].sort();
+    fillSelect('f-specialty', 'All specialties', uniq(base.map(s => s.specialty)));
+    fillSelect('f-location',  'All locations',   uniq(base.map(s => s.location)));
+    fillSelect('f-owner',     'All physicians',  uniq(base.map(s => s.owner)));
+  }
+
+  function specCardHtml(s) {
+    const mine = s.ownerKey === me.accountKey;
+    let foot;
+    if (mine) {
+      foot = `<span class="mine-tag">Your relationship</span><button class="link-danger" onclick="deleteMine('${s.id}')">Remove</button>`;
+    } else if (isPhysician) {
+      const action = hasPendingRequest(me.accountKey, s.id)
+        ? `<span class="status-badge status-pending">Request pending</span>`
+        : `<button class="btn-ghost" onclick="openReq('${s.id}')">Request referral</button>`;
+      foot = `<span class="spec-owner">Held by <strong>${esc(s.owner)}</strong></span>${action}`;
+    } else {
+      foot = `<span class="spec-owner">Held by <strong>${esc(s.owner)}</strong></span>`;
+    }
+    return `
+      <div class="spec-card">
+        <div class="spec-top">
+          <span class="spec-name">${esc(s.name)}</span>
+          <span class="spec-pill">${esc(s.specialty)}</span>
+        </div>
+        <div class="spec-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>${esc(s.location)}</span>
+        </div>
+        ${s.notes ? `<div class="spec-notes">${esc(s.notes)}</div>` : ''}
+        <div class="spec-foot">${foot}</div>
+      </div>`;
+  }
+
+  function renderDirectory() {
+    refreshFilters();
+    const lockArea = document.getElementById('lock-area');
+    const body = document.getElementById('dir-body');
+
+    // Add button is physician-only (only physicians own relationships).
+    document.getElementById('add-btn').style.display = isPhysician ? '' : 'none';
+
+    if (isPhysician && !unlocked()) {
+      const count = specialistContributionCount(me.accountKey);
+      const pct = Math.min(100, Math.round(count / SPECIALIST_CONTRIB_REQUIRED * 100));
+      lockArea.innerHTML = `
+        <div class="lock-banner">
+          <div class="lock-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <div class="lock-text">
+            <div class="lock-title">Unlock the Specialist Network</div>
+            <div class="lock-sub">Contribute ${SPECIALIST_CONTRIB_REQUIRED} specialist relationships to view the full network. You've added <strong>${count} of ${SPECIALIST_CONTRIB_REQUIRED}</strong>.</div>
+            <div class="lock-progress"><span style="width:${pct}%"></span></div>
+          </div>
+          <button class="btn-primary" onclick="openAdd()">Add a specialist</button>
+        </div>`;
+    } else {
+      lockArea.innerHTML = '';
+    }
+
+    const list = filteredSpecialists();
+    const heading = (isPhysician && !unlocked()) ? `<p class="section-label">Your contributions (${list.length})</p>` : `<p class="section-label">${list.length} specialist${list.length === 1 ? '' : 's'}</p>`;
+    if (!list.length) {
+      const msg = (isPhysician && !unlocked())
+        ? 'You haven’t added any specialists yet. Add your first with the button above.'
+        : 'No specialists match your filters.';
+      body.innerHTML = heading + `<div class="empty">${msg}</div>`;
+      return;
+    }
+    body.innerHTML = heading + `<div class="spec-grid">${list.map(specCardHtml).join('')}</div>`;
+  }
+
+  /* ── Requests (incoming to me) ── */
+  function renderRequests() {
+    const reqs = getIncomingReferrals(me.accountKey);
+    const listEl = document.getElementById('req-list');
+    if (!reqs.length) {
+      listEl.innerHTML = '<div class="empty">No referral requests yet. When a colleague requests an intro to one of your specialists, it shows up here.</div>';
+    } else {
+      listEl.innerHTML = reqs.map(r => {
+        const actions = r.status === 'pending'
+          ? `<div class="req-actions">
+               <button class="btn-ghost" onclick="dismissReq('${r.id}')">Dismiss</button>
+               <button class="btn-ghost btn-success" onclick="fulfillReq('${r.id}')">Mark fulfilled</button>
+             </div>`
+          : '';
+        return `
+        <div class="req-item">
+          <div class="req-meta">
+            <span class="req-from">${esc(r.fromName)}</span>
+            <span class="meta-dot"></span><span>${esc(r.fromPractice)}</span>
+            <span class="meta-dot"></span><span>${esc(forumRelativeTime(r.createdAt))}</span>
+            <span class="meta-dot"></span>${statusBadge(r.status)}
+          </div>
+          <div class="req-re">Requesting an intro to <strong>${esc(r.specialistName)}</strong> (${esc(r.specialty)})</div>
+          <div class="req-msg">${esc(r.message)}</div>
+          ${actions}
+        </div>`;
+      }).join('');
+    }
+    // Opening this view clears the owner's "new request" bell notifications.
+    markIncomingRead(me.accountKey);
+    updateTabBadges();
+  }
+
+  function renderSent() {
+    const reqs = getOutgoingReferrals(me.accountKey);
+    const listEl = document.getElementById('sent-list');
+    if (!reqs.length) {
+      listEl.innerHTML = '<div class="empty">You haven’t sent any referral requests yet.</div>';
+    } else {
+      listEl.innerHTML = reqs.map(r => `
+        <div class="req-item">
+          <div class="req-meta">
+            <span>To <span class="req-from">${esc(r.toName)}</span></span>
+            <span class="meta-dot"></span><span>${esc(forumRelativeTime(r.createdAt))}</span>
+            <span class="meta-dot"></span>${statusBadge(r.status)}
+          </div>
+          <div class="req-re">Intro to <strong>${esc(r.specialistName)}</strong> (${esc(r.specialty)})</div>
+          <div class="req-msg">${esc(r.message)}</div>
+        </div>`).join('');
+    }
+    // Opening the Sent view clears status-update notifications for the requester.
+    markOutgoingSeen(me.accountKey);
+    updateTabBadges();
+  }
+
+  function statusBadge(status) {
+    if (status === 'fulfilled') return '<span class="status-badge status-fulfilled">Fulfilled</span>';
+    if (status === 'dismissed') return '<span class="status-badge status-dismissed">Dismissed</span>';
+    return '<span class="status-badge status-pending">Pending</span>';
+  }
+
+  function fulfillReq(id) {
+    setReferralStatus(id, me.accountKey, 'fulfilled');
+    renderRequests();
+  }
+  function dismissReq(id) {
+    if (!confirm('Dismiss this request? The requesting physician will be notified it was declined.')) return;
+    setReferralStatus(id, me.accountKey, 'dismissed');
+    renderRequests();
+  }
+
+  function updateTabBadges() {
+    const reqUnread  = getIncomingReferrals(me.accountKey).filter(r => !r.ownerRead).length;
+    const sentUnread = getOutgoingReferrals(me.accountKey).filter(r => r.status !== 'pending' && !r.requesterRead).length;
+    setTabBadge('req-count',  view === 'requests' ? 0 : reqUnread);
+    setTabBadge('sent-count', view === 'sent'     ? 0 : sentUnread);
+  }
+  function setTabBadge(id, n) {
+    const b = document.getElementById(id);
+    if (n > 0) { b.textContent = n; b.classList.remove('hidden'); }
+    else b.classList.add('hidden');
+  }
+
+  /* ── View switching ── */
+  function setView(v) {
+    view = v;
+    ['directory', 'requests', 'sent'].forEach(name => {
+      document.getElementById('tab-' + name).classList.toggle('active', name === v);
+      document.getElementById(name + '-view').classList.toggle('hidden', name !== v);
+    });
+    if (v === 'directory') renderDirectory();
+    else if (v === 'requests') renderRequests();
+    else renderSent();
+    updateTabBadges();
+    window.scrollTo(0, 0);
+  }
+
+  /* ── Filters ── */
+  function onFilter() {
+    state.search    = document.getElementById('search').value;
+    state.specialty = document.getElementById('f-specialty').value;
+    state.location  = document.getElementById('f-location').value;
+    state.owner     = document.getElementById('f-owner').value;
+    renderDirectory();
+  }
+
+  /* ── Add specialist ── */
+  const addModal = document.getElementById('add-modal');
+  function openAdd() {
+    if (!isPhysician) return;
+    ['a-name','a-specialty','a-location','a-notes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('add-error').classList.remove('show');
+    addModal.classList.add('open');
+    document.getElementById('a-name').focus();
+  }
+  function closeAdd() { addModal.classList.remove('open'); }
+  addModal.addEventListener('click', e => { if (e.target === addModal) closeAdd(); });
+
+  function submitAdd() {
+    const name = document.getElementById('a-name').value.trim();
+    const specialty = document.getElementById('a-specialty').value.trim();
+    const location = document.getElementById('a-location').value.trim();
+    const notes = document.getElementById('a-notes').value.trim();
+    if (!name || !specialty || !location) { document.getElementById('add-error').classList.add('show'); return; }
+    addSpecialist({ name, specialty, location, notes, owner: me.name, ownerKey: me.accountKey, ownerPractice: me.practiceLabel });
+    closeAdd();
+    renderDirectory();
+  }
+
+  function deleteMine(id) {
+    if (!confirm('Remove this specialist from the network? This lowers your contribution count and may re-lock the network.')) return;
+    saveSpecialists(loadSpecialists().filter(s => !(s.id === id && s.ownerKey === me.accountKey)));
+    renderDirectory();
+  }
+
+  /* ── Referral request ── */
+  const reqModal = document.getElementById('req-modal');
+  function openReq(specialistId) {
+    if (!isPhysician) return;
+    const s = loadSpecialists().find(x => x.id === specialistId);
+    if (!s) return;
+    pendingReqSpecialistId = specialistId;
+    document.getElementById('req-modal-body').innerHTML = `
+      <div class="spec-detail">
+        <div class="spec-name">${esc(s.name)}</div>
+        <div class="spec-row" style="margin-bottom:4px"><span class="spec-pill">${esc(s.specialty)}</span></div>
+        <div class="spec-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>${esc(s.location)}</span></div>
+        <div class="spec-owner" style="margin-top:6px">Relationship held by <strong>${esc(s.owner)}</strong> · ${esc(s.ownerPractice)}</div>
+        <p class="no-contact"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> Contact info isn't shared — ${esc(s.owner)} will receive your request and connect you.</p>
+      </div>
+      <div class="form-error" id="req-error">Please add a short message for ${esc(s.owner)}.</div>
+      <div class="field">
+        <label for="r-message">Message to ${esc(s.owner)}</label>
+        <textarea class="input" id="r-message" placeholder="Why you'd like an intro — the patient need, timing, and any context…"></textarea>
+      </div>`;
+    reqModal.classList.add('open');
+    document.getElementById('r-message').focus();
+  }
+  function closeReq() { reqModal.classList.remove('open'); pendingReqSpecialistId = null; }
+  reqModal.addEventListener('click', e => { if (e.target === reqModal) closeReq(); });
+
+  function submitReq() {
+    const msg = document.getElementById('r-message').value.trim();
+    if (!msg) { document.getElementById('req-error').classList.add('show'); return; }
+    const req = submitReferralRequest({
+      specialistId: pendingReqSpecialistId,
+      fromKey: me.accountKey, fromName: me.name, fromPractice: me.practiceLabel,
+      message: msg
+    });
+    closeReq();
+    renderDirectory();
+    if (req) alert('Your referral request was sent to ' + req.toName + '. They’ll see it in their notifications.');
+  }
+
+  /* ── Init ── */
+  setView(view);
+</script>
+</body>
+</html>
