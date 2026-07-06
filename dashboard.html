@@ -507,17 +507,23 @@
     </div>
 
     <!-- Ancillary Services -->
-    <div class="module-card soon">
-      <div class="card-icon gray">
+    <div class="module-card active" onclick="goToAncillary()">
+      <div class="card-icon blue">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="4" y="3" width="16" height="18" rx="2"/>
           <path d="M9 8h6M9 12h6M9 16h4"/>
         </svg>
       </div>
       <div class="card-title">Ancillary Services</div>
-      <p class="card-desc">Lab, imaging, and support service coordination across the Blue Angel network.</p>
+      <p class="card-desc">Vetted partner services across the network — concierge nursing, genetic testing, travel medicine, and labs/imaging.</p>
       <div class="card-footer">
-        <span class="coming-soon">Coming Soon</span>
+        <a class="card-cta" href="javascript:goToAncillary()">
+          Open Services
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <span class="card-status-dot"></span>
       </div>
     </div>
 
@@ -628,6 +634,12 @@
   function goToSpecialist() {
     const p = new URLSearchParams({ practice, role, email });
     window.location.href = `specialist_network.html?${p}`;
+  }
+
+  // Navigate to ancillary services.
+  function goToAncillary() {
+    const p = new URLSearchParams({ practice, role, email });
+    window.location.href = `ancillary_services.html?${p}`;
   }
 
   // Route a notification to its module's page.

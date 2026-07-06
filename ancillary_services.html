@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <title>Ancillary Services — Blue Angel Clinical Partners</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0A2558;
+      --blue:    #1565C0;
+      --blue-lt: #1E88E5;
+      --gold:    #C9A84C;
+      --gold-lt: #E8C96A;
+      --bg:      #F0F4FF;
+      --white:   #FFFFFF;
+      --text:    #0D1B3E;
+      --muted:   #6B7A99;
+      --border:  #D4E1F7;
+      --card-sh: 0 4px 24px rgba(10,37,88,0.09);
+      --card-sh-hover: 0 8px 40px rgba(10,37,88,0.16);
+    }
+
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav {
+      background: linear-gradient(135deg, #061A42 0%, #0A2558 60%, #0E3A7A 100%);
+      color: white; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 64px; box-shadow: 0 2px 16px rgba(10,37,88,0.28);
+      position: sticky; top: 0; z-index: 1100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: white; }
+    .nav-brand img { width: 180px; height: auto; flex-shrink: 0; display: block; filter: brightness(0) invert(1); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-practice-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
+    .nav-role-badge { background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.35); border-radius: 20px; padding: 5px 14px; font-size: 11px; font-weight: 700; color: var(--gold-lt); text-transform: uppercase; letter-spacing: 0.08em; }
+    .nav-signout { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+    .nav-signout:hover { background: rgba(255,255,255,0.08); color: white; }
+
+    /* ── HERO ── */
+    .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: white; padding: 36px 40px 44px; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; right: -60px; top: -60px; width: 360px; height: 360px; border-radius: 50%; background: rgba(255,255,255,0.04); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; }
+    .hero-back { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; margin-bottom: 14px; }
+    .hero-back:hover { color: white; }
+    .hero-greeting { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+    .hero-title { font-size: 30px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+    .hero-sub { font-size: 14px; color: rgba(255,255,255,0.6); }
+
+    /* ── MAIN ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 32px 32px 60px; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+
+    .partner-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .partner-card {
+      background: var(--white); border-radius: 16px; padding: 24px;
+      box-shadow: var(--card-sh); border: 1.5px solid var(--border);
+      display: flex; flex-direction: column; transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .partner-card:hover { box-shadow: var(--card-sh-hover); transform: translateY(-2px); }
+    .partner-icon {
+      width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--navy), var(--blue)); color: #fff;
+    }
+    .partner-category { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+    .partner-name { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .partner-desc { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; }
+    .partner-link {
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 18px;
+      font-size: 13px; font-weight: 600; color: var(--blue); text-decoration: none; align-self: flex-start;
+    }
+    .partner-link:hover { text-decoration: underline; }
+
+    .future-note {
+      display: flex; gap: 14px; align-items: flex-start; margin-top: 28px;
+      background: var(--white); border: 1.5px dashed var(--border); border-radius: 14px; padding: 18px 20px;
+    }
+    .future-note svg { color: var(--blue); flex-shrink: 0; margin-top: 1px; }
+    .future-note strong { color: var(--text); }
+    .future-note p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    footer { text-align: center; padding: 24px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 20px; }
+
+    @media (max-width: 760px) { .partner-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) { nav { padding: 0 16px; } .hero { padding: 26px 20px 34px; } main { padding: 24px 16px 40px; } }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-brand" id="brand-link" href="dashboard.html">
+    <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel Clinical Partners logo" />
+  </a>
+  <div class="nav-right">
+    <span class="nav-practice-badge" id="nav-practice">—</span>
+    <span class="nav-role-badge" id="nav-role">—</span>
+    <button class="nav-signout" onclick="window.location.href='login.html'">Sign Out</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <a class="hero-back" id="back-link" href="dashboard.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to portal
+    </a>
+    <p class="hero-greeting">Ancillary Services</p>
+    <h1 class="hero-title">Partner services</h1>
+    <p class="hero-sub">Vetted third-party partners across the Blue Angel network.</p>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<main>
+  <p class="section-label">Current partnerships</p>
+  <div class="partner-grid" id="partner-grid"></div>
+
+  <div class="future-note">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <p><strong>Coming soon:</strong> on-demand booking for BACP's own nursing, phlebotomy, and aesthetics staff — request a provider and pick from their live availability, right here.</p>
+  </div>
+</main>
+
+<footer>
+  &copy; 2024 Blue Angel Clinical Partners &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp;
+  <a href="mailto:joseph@blueangelclinical.com" style="color:inherit">joseph@blueangelclinical.com</a>
+</footer>
+
+<script>
+  /* Carry the login context through to the nav + back link. */
+  const params = new URLSearchParams(window.location.search);
+  const practice = params.get('practice') || 'sujansky';
+  const role     = params.get('role')     || 'physician';
+  const email    = params.get('email')    || '';
+  const practiceNames = {
+    sujansky: 'Sujansky Concierge Medicine',
+    daniher:  'Daniher Concierge Medicine',
+    both:     'Blue Angel Combined Staff Workspace',
+    other:    'Your Practice',
+  };
+  document.getElementById('nav-practice').textContent = role === 'staff' ? 'Blue Angel Combined Staff Workspace' : (practiceNames[practice] || 'Your Practice');
+  document.getElementById('nav-role').textContent     = role === 'physician' ? 'Physician' : 'Staff';
+  const qp = new URLSearchParams({ practice, role, email }).toString();
+  document.getElementById('brand-link').href = `dashboard.html?${qp}`;
+  document.getElementById('back-link').href  = `dashboard.html?${qp}`;
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+  /* ── Partnerships — add an entry here as new ones come on board. ── */
+  const partners = [
+    {
+      category: 'Concierge Nursing', name: 'Luminate', url: 'https://www.beluminated.com/',
+      desc: 'Concierge nursing support that can be arranged for your patients.',
+      icon: '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>'
+    },
+    {
+      category: 'Genetic Testing', name: 'OpenDNA', url: 'https://www.open-dna.com/',
+      desc: 'Genetic testing and analysis to support personalized care.',
+      icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'
+    },
+    {
+      category: 'Travel Medicine', name: 'TravelCare', url: 'https://travelcare.com/',
+      desc: 'Travel medicine services and pre-trip consultations.',
+      icon: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>'
+    },
+    {
+      category: 'Labs / Imaging', name: 'SimonMed', url: 'https://simonmed.com/',
+      desc: 'Laboratory testing and diagnostic imaging.',
+      icon: '<path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/>'
+    }
+  ];
+
+  document.getElementById('partner-grid').innerHTML = partners.map(p => `
+    <div class="partner-card">
+      <div class="partner-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p.icon}</svg></div>
+      <div class="partner-category">${esc(p.category)}</div>
+      <div class="partner-name">${esc(p.name)}</div>
+      <p class="partner-desc">${esc(p.desc)}</p>
+      <a class="partner-link" href="${esc(p.url)}" target="_blank" rel="noopener">
+        Visit website
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+    </div>`).join('');
+</script>
+</body>
+</html>
