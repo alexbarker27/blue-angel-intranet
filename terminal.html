@@ -30,69 +30,35 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
 
-    /* ─── SHARED NAV ─── */
-    .top-nav {
+    /* ── TOP NAV (matches the other module pages) ── */
+    nav {
       background: linear-gradient(135deg, #061A42 0%, #0A2558 60%, #0E3A7A 100%);
-      color: white; display: flex; align-items: center;
-      justify-content: space-between; padding: 0 28px;
-      height: 60px; box-shadow: 0 2px 16px rgba(10,37,88,0.28);
-      flex-shrink: 0;
+      color: white; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 64px; box-shadow: 0 2px 16px rgba(10,37,88,0.28);
+      position: sticky; top: 0; z-index: 1100;
     }
-    .nav-left { display: flex; align-items: center; gap: 14px; }
-    .nav-back-btn {
-      display: flex; align-items: center; gap: 6px;
-      color: rgba(255,255,255,0.65); font-size: 13px; background: none;
-      border: 1px solid rgba(255,255,255,0.15); padding: 5px 12px;
-      border-radius: 7px; cursor: pointer; transition: all 0.2s;
-    }
-    .nav-back-btn:hover { background: rgba(255,255,255,0.08); color: white; }
-    .nav-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.15); }
-    .nav-page-title {
-      font-size: 14px; font-weight: 600;
-      display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.85);
-    }
-    .live-dot {
-      width: 7px; height: 7px; border-radius: 50%; background: #22C55E;
-      animation: pulse-dot 2s infinite;
-    }
-    @keyframes pulse-dot {
-      0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
-      50%      { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
-    }
-    .nav-right { display: flex; align-items: center; gap: 12px; }
-    .nav-badge {
-      border-radius: 20px; padding: 4px 13px; font-size: 12px; font-weight: 600;
-    }
-    .nav-badge.practice {
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.85);
-    }
-    .nav-signout {
-      background: none; border: 1px solid rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.65); padding: 5px 12px;
-      border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s;
-    }
+    .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: white; }
+    .nav-brand img { width: 180px; height: auto; flex-shrink: 0; display: block; filter: brightness(0) invert(1); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-practice-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
+    .nav-role-badge { background: rgba(201,168,76,0.2); border: 1px solid rgba(201,168,76,0.35); border-radius: 20px; padding: 5px 14px; font-size: 11px; font-weight: 700; color: var(--gold-lt); text-transform: uppercase; letter-spacing: 0.08em; }
+    .nav-signout { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); padding: 6px 14px; border-radius: 7px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
     .nav-signout:hover { background: rgba(255,255,255,0.08); color: white; }
 
-    /* ─── TERMINAL ─── */
-    .terminal-body { display: flex; flex: 1; overflow: hidden; }
-    .term-content { flex: 1; overflow-y: auto; padding: 28px 40px 60px; max-width: 900px; margin: 0 auto; width: 100%; }
+    /* ── HERO ── */
+    .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: white; padding: 36px 40px 44px; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; right: -60px; top: -60px; width: 360px; height: 360px; border-radius: 50%; background: rgba(255,255,255,0.04); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; }
+    .hero-back { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; margin-bottom: 14px; }
+    .hero-back:hover { color: white; }
+    .hero-greeting { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+    .hero-title { font-size: 30px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+    .hero-sub { font-size: 14px; color: rgba(255,255,255,0.6); }
 
-    .practice-banner {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 24px; padding-bottom: 20px;
-      border-bottom: 1.5px solid var(--border);
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .pb-left {}
-    .pb-eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-    .pb-name { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-    .pb-sub { font-size: 13px; color: var(--muted); }
+    /* ─── TERMINAL ─── */
+    main { max-width: 1000px; margin: 0 auto; padding: 28px 0 60px; }
 
     /* Quick access */
     .qa-label {
@@ -141,9 +107,9 @@
     }
 
     @media (max-width: 640px) {
-      .top-nav { padding: 0 16px; }
-      .term-content { padding: 20px 16px 40px; }
-      .pb-name { font-size: 18px; }
+      nav { padding: 0 16px; }
+      .hero { padding: 26px 20px 34px; }
+      main { padding: 22px 16px 40px; }
     }
     @media (max-width: 500px) { .qa-grid { grid-template-columns: 1fr; } }
   </style>
@@ -151,25 +117,34 @@
 <body>
 
 <!-- ── NAV ── -->
-<nav class="top-nav">
-  <div class="nav-left">
-    <button class="nav-back-btn" onclick="goDashboard()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Dashboard
-    </button>
-    <span class="nav-divider"></span>
-    <span class="nav-page-title"><span class="live-dot"></span>Practice Terminal</span>
-  </div>
+<nav>
+  <a class="nav-brand" id="brand-link" href="dashboard.html">
+    <img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel Clinical Partners logo" />
+  </a>
   <div class="nav-right">
-    <span class="nav-badge practice" id="term-nav-practice">—</span>
+    <span class="nav-practice-badge" id="nav-practice">—</span>
+    <span class="nav-role-badge" id="nav-role">—</span>
     <button class="nav-signout" onclick="window.location.href='login.html'">Sign Out</button>
   </div>
 </nav>
 
-<!-- ── TERMINAL BODY ── -->
-<div class="terminal-body">
-  <div class="term-content" id="term-content"></div>
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <a class="hero-back" id="back-link" href="dashboard.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to portal
+    </a>
+    <p class="hero-greeting">Practice Terminal</p>
+    <h1 class="hero-title" id="hero-title">—</h1>
+    <p class="hero-sub" id="hero-sub">—</p>
+  </div>
 </div>
+
+<!-- ── TERMINAL BODY ── -->
+<main>
+  <div class="term-content" id="term-content"></div>
+</main>
 
 <script>
   /* ─── Context from URL params (login → dashboard → terminal) ─── */
@@ -224,26 +199,24 @@
   const practiceData = {
     both: {
       name: 'Blue Angel Combined Staff Workspace', physician: 'Shawna Guzman',
-      website: '#', intakeForm: '#', intakeFormEmbed: '#',
+      intakeForm: '#', intakeFormEmbed: '#',
       sharedLinks: SHARED_LINKS,
     },
     sujansky: {
       name: 'Sujansky Concierge Medicine', physician: 'Dr. Ulrike Sujansky, M.D.',
-      website: 'https://justintella.github.io/sujansky-website',
       intakeForm: 'https://docs.google.com/forms/d/1CjDjCbpK6AecdjbDdutRAC8AzS55gnCRkfhyyx1YU8I/viewform',
       intakeFormEmbed: 'https://docs.google.com/forms/d/1CjDjCbpK6AecdjbDdutRAC8AzS55gnCRkfhyyx1YU8I/viewform?embedded=true',
       sharedLinks: SHARED_LINKS,
     },
     daniher: {
       name: 'Daniher Concierge Medicine', physician: 'Dr. Amy Daniher, M.D.',
-      website: 'https://justintella.github.io/amy-daniher-website',
       intakeForm: 'https://forms.gle/q84xUoohi6vbAKqZA',
       intakeFormEmbed: 'https://forms.gle/q84xUoohi6vbAKqZA',
       sharedLinks: SHARED_LINKS,
     },
     other: {
       name: 'Your Practice', physician: 'Physician',
-      website: '#', intakeForm: '#', intakeFormEmbed: '#',
+      intakeForm: '#', intakeFormEmbed: '#',
     },
   };
 
@@ -309,8 +282,8 @@
       title: 'Patient Hub',
       sub: 'Travel kit hub — all patients',
       scope: 'both',
-      url: 'https://justintella.github.io/blue-angel-intranet/patient_hub.html',
-      embedUrl: 'https://justintella.github.io/blue-angel-intranet/patient_hub.html',
+      url: 'patient_hub.html',
+      embedUrl: 'patient_hub.html',
       iconBg: '#FFF1F2',
       iconStroke: '#E11D48',
       iconPath: '<path d="M3 9h18v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path d="M3 9l2-4h14l2 4"/><path d="M12 13v4M10 15h4"/>',
@@ -328,17 +301,12 @@
     });
     const sections = [...new Set(visibleLinks.map(link => link.section))];
 
-    document.getElementById('term-nav-practice').textContent = pd.name;
+    document.getElementById('nav-practice').textContent = pd.name;
+    document.getElementById('nav-role').textContent = currentRole === 'staff' ? 'Staff' : 'Physician';
+    document.getElementById('hero-title').textContent = pd.name;
+    document.getElementById('hero-sub').textContent = `${pd.physician} · San Mateo, CA`;
 
     document.getElementById('term-content').innerHTML = `
-      <div class="practice-banner">
-        <div class="pb-left">
-          <p class="pb-eyebrow">Blue Angel Clinical Partners</p>
-          <h2 class="pb-name">${pd.name}</h2>
-          <p class="pb-sub">${pd.physician} &middot; San Mateo, CA</p>
-        </div>
-      </div>
-
       ${sections.map(section => `
         <p class="qa-label">${section}</p>
         <div class="qa-grid" style="margin-bottom:20px">
@@ -396,11 +364,10 @@
     document.getElementById('wf-iframe').src = '';
   }
 
-  /* ─── Back to dashboard (preserve context) ─── */
-  function goDashboard() {
-    const p = new URLSearchParams({ practice: qsPractice, role: qsRole, email: qsEmail });
-    window.location.href = `dashboard.html?${p}`;
-  }
+  /* ─── Back to dashboard (preserve context) on the logo + hero link ─── */
+  const qp = new URLSearchParams({ practice: qsPractice, role: qsRole, email: qsEmail }).toString();
+  document.getElementById('brand-link').href = `dashboard.html?${qp}`;
+  document.getElementById('back-link').href  = `dashboard.html?${qp}`;
 
   populateTerminal();
 </script>
