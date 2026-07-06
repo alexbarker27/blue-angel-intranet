@@ -492,17 +492,23 @@
     </div>
 
     <!-- Coverage Requests -->
-    <div class="module-card soon">
-      <div class="card-icon gray">
+    <div class="module-card active" onclick="goToCoverage()">
+      <div class="card-icon blue">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/>
           <polyline points="12 6 12 12 16 14"/>
         </svg>
       </div>
       <div class="card-title">Coverage Requests</div>
-      <p class="card-desc">Schedule and manage physician call coverage requests across the network.</p>
+      <p class="card-desc">Request coverage with a full prep plan and files, or pick up a colleague's request across the network.</p>
       <div class="card-footer">
-        <span class="coming-soon">Coming Soon</span>
+        <a class="card-cta" href="javascript:goToCoverage()">
+          Open Requests
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <span class="card-status-dot"></span>
       </div>
     </div>
 
@@ -572,6 +578,7 @@
 
 <script src="forum.js"></script>
 <script src="specialists.js"></script>
+<script src="coverage.js"></script>
 <script>
   // Pull URL params
   const params = new URLSearchParams(window.location.search);
@@ -642,11 +649,18 @@
     window.location.href = `ancillary_services.html?${p}`;
   }
 
+  // Navigate to coverage requests.
+  function goToCoverage() {
+    const p = new URLSearchParams({ practice, role, email });
+    window.location.href = `coverage_requests.html?${p}`;
+  }
+
   // Route a notification to its module's page.
   function notifHref(it) {
     const base = new URLSearchParams({ practice, role, email });
     if (it.module === 'forum')      { base.set('thread', it.threadId); return `physician_forum.html?${base}`; }
     if (it.module === 'specialist') { base.set('view', it.spView || 'requests'); return `specialist_network.html?${base}`; }
+    if (it.module === 'coverage')   { base.set('req', it.covId); return `coverage_requests.html?${base}`; }
     return '#';
   }
   function openNotif(href) { window.location.href = href; }
@@ -656,7 +670,8 @@
      Specialist Network feed it today; future modules append the same way. */
   const NOTIF_ICONS = {
     forum: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>',
-    specialist: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>'
+    specialist: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>',
+    coverage: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
   };
   const escNotif = s => String(s).replace(/[&<>"']/g, c => (
     { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
@@ -671,7 +686,9 @@
     if (typeof getSpecialistNotifications === 'function') {
       items = items.concat(getSpecialistNotifications(meId.accountKey, meId.name));
     }
-    // Future modules (Coverage Requests, etc.) append here the same way.
+    if (typeof getCoverageNotifications === 'function') {
+      items = items.concat(getCoverageNotifications(meId.accountKey, meId.name));
+    }
     items.sort((a, b) => b.ts - a.ts);
     return items;
   }

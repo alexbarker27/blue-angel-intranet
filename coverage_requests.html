@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <title>Coverage Requests — Blue Angel Clinical Partners</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:#0A2558; --blue:#1565C0; --blue-lt:#1E88E5; --gold:#C9A84C; --gold-lt:#E8C96A;
+      --bg:#F0F4FF; --white:#FFFFFF; --text:#0D1B3E; --muted:#6B7A99; --border:#D4E1F7;
+      --amber:#D97706; --amber-bg:#FEF3C7; --card-sh:0 4px 24px rgba(10,37,88,0.09); --card-sh-hover:0 8px 40px rgba(10,37,88,0.16);
+    }
+    body { font-family:'Segoe UI', system-ui, -apple-system, sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+    nav { background:linear-gradient(135deg,#061A42 0%,#0A2558 60%,#0E3A7A 100%); color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 32px; height:64px; box-shadow:0 2px 16px rgba(10,37,88,0.28); position:sticky; top:0; z-index:1100; }
+    .nav-brand { display:flex; align-items:center; gap:14px; text-decoration:none; color:#fff; }
+    .nav-brand img { width:180px; height:auto; display:block; filter:brightness(0) invert(1); }
+    .nav-right { display:flex; align-items:center; gap:20px; }
+    .nav-practice-badge { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:5px 14px; font-size:12px; font-weight:600; color:rgba(255,255,255,0.85); }
+    .nav-role-badge { background:rgba(201,168,76,0.2); border:1px solid rgba(201,168,76,0.35); border-radius:20px; padding:5px 14px; font-size:11px; font-weight:700; color:var(--gold-lt); text-transform:uppercase; letter-spacing:0.08em; }
+    .nav-signout { background:none; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7); padding:6px 14px; border-radius:7px; font-size:12px; cursor:pointer; transition:all .2s; }
+    .nav-signout:hover { background:rgba(255,255,255,0.08); color:#fff; }
+
+    .hero { background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%); color:#fff; padding:36px 40px 44px; position:relative; overflow:hidden; }
+    .hero::after { content:''; position:absolute; right:-60px; top:-60px; width:360px; height:360px; border-radius:50%; background:rgba(255,255,255,0.04); }
+    .hero-inner { position:relative; z-index:1; max-width:1000px; margin:0 auto; }
+    .hero-back { display:inline-flex; align-items:center; gap:6px; color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; margin-bottom:14px; }
+    .hero-back:hover { color:#fff; }
+    .hero-greeting { font-size:13px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:8px; }
+    .hero-title { font-size:30px; font-weight:700; line-height:1.2; margin-bottom:8px; }
+    .hero-sub { font-size:14px; color:rgba(255,255,255,0.6); }
+
+    main { max-width:1000px; margin:0 auto; padding:28px 32px 60px; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:22px; }
+    .toolbar .grow { flex:1; }
+    .btn-primary { display:inline-flex; align-items:center; gap:7px; background:linear-gradient(135deg,var(--navy),var(--blue)); color:#fff; border:none; border-radius:9px; padding:10px 16px; font-size:13px; font-weight:600; cursor:pointer; transition:filter .2s; }
+    .btn-primary:hover { filter:brightness(1.1); }
+    .btn-ghost { background:none; border:1px solid var(--border); color:var(--muted); border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer; transition:all .15s; }
+    .btn-ghost:hover { border-color:var(--blue); color:var(--blue); }
+    .btn-success { color:#15803D; border-color:#BBF7D0; }
+    .btn-success:hover { border-color:#15803D; color:#15803D; }
+    .search-wrap { position:relative; display:flex; align-items:center; }
+    .search-wrap svg { position:absolute; left:11px; color:var(--muted); pointer-events:none; }
+    .search-input { border:1.5px solid var(--border); border-radius:9px; padding:9px 12px 9px 34px; font-size:13px; min-width:200px; background:var(--white); color:var(--text); }
+    .search-input:focus { outline:none; border-color:var(--blue-lt); }
+    .select { border:1.5px solid var(--border); border-radius:9px; padding:9px 12px; font-size:13px; background:var(--white); color:var(--text); cursor:pointer; }
+
+    .req-list { display:flex; flex-direction:column; gap:12px; }
+    .req-card { background:var(--white); border:1.5px solid var(--border); border-left:3px solid var(--border); border-radius:12px; padding:16px 18px; cursor:pointer; box-shadow:var(--card-sh); transition:box-shadow .2s, transform .2s, border-color .2s; text-align:left; width:100%; font:inherit; color:inherit; }
+    .req-card:hover { box-shadow:var(--card-sh-hover); transform:translateY(-1px); }
+    .req-card.is-new { border-left-color:var(--gold); }
+    .req-top { display:flex; align-items:center; gap:10px; margin-bottom:6px; flex-wrap:wrap; }
+    .req-title { font-size:16px; font-weight:700; color:var(--text); }
+    .req-snippet { font-size:13px; color:var(--muted); line-height:1.5; margin-bottom:10px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .req-meta { display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:12px; color:var(--muted); }
+    .meta-dot { width:3px; height:3px; border-radius:50%; background:var(--border); }
+    .author-name { font-weight:700; color:var(--navy); }
+    .chip-count { display:inline-flex; align-items:center; gap:4px; }
+
+    .status-badge { font-size:10px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; border-radius:20px; padding:2px 9px; }
+    .status-open { background:var(--amber-bg); color:var(--amber); }
+    .status-covered { background:#DCFCE7; color:#15803D; }
+    .status-closed { background:var(--bg); color:var(--muted); border:1px solid var(--border); }
+    .pill { font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; border-radius:20px; padding:2px 8px; }
+    .pill-new { background:var(--amber-bg); color:var(--amber); }
+
+    .empty { text-align:center; color:var(--muted); padding:44px 20px; border:1.5px dashed var(--border); border-radius:12px; background:var(--white); font-size:14px; }
+
+    /* detail */
+    .detail-back { display:inline-flex; align-items:center; gap:6px; background:none; border:none; color:var(--blue); font-size:13px; font-weight:600; cursor:pointer; margin-bottom:16px; }
+    .detail-back:hover { color:var(--navy); }
+    .post { background:var(--white); border:1.5px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--card-sh); margin-bottom:18px; }
+    .post-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:12px; flex-wrap:wrap; }
+    .post-title { font-size:21px; font-weight:700; color:var(--text); margin-bottom:8px; }
+    .post-meta { display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:12px; color:var(--muted); }
+    .post-actions { display:flex; gap:8px; flex-shrink:0; align-items:center; flex-wrap:wrap; }
+    .cov-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin:18px 0 8px; }
+    .post-body { font-size:14px; color:var(--text); line-height:1.65; white-space:pre-wrap; }
+
+    .attach-list { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+    .attach-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--blue); text-decoration:none; background:var(--bg); border:1px solid var(--border); border-radius:9px; padding:9px 12px; width:fit-content; max-width:100%; }
+    .attach-link:hover { border-color:var(--blue); }
+    .attach-link svg { flex-shrink:0; }
+    .attach-size { color:var(--muted); font-weight:400; }
+
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .chip { display:inline-flex; align-items:center; gap:7px; font-size:12px; color:var(--text); background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:4px 6px 4px 11px; }
+    .chip button { background:none; border:none; cursor:pointer; color:var(--muted); font-size:15px; line-height:1; padding:0 3px; }
+    .chip button:hover { color:#DC2626; }
+    .attach-btn { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--blue); background:none; border:1px dashed var(--border); border-radius:8px; padding:7px 12px; cursor:pointer; }
+    .attach-btn:hover { border-color:var(--blue); }
+
+    .replies-label { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin:4px 0 12px; }
+    .reply { background:var(--white); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:10px; }
+    .reply-meta { display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:12px; color:var(--muted); margin-bottom:6px; }
+    .reply-body { font-size:13px; color:var(--text); line-height:1.6; white-space:pre-wrap; }
+    .reply-composer { margin-top:18px; }
+    .input { width:100%; border:1.5px solid var(--border); border-radius:9px; padding:11px 13px; font:inherit; font-size:13px; color:var(--text); background:var(--white); resize:vertical; }
+    textarea.input { min-height:84px; }
+    .input:focus { outline:none; border-color:var(--blue-lt); }
+
+    /* modal */
+    .modal { position:fixed; inset:0; z-index:2000; background:rgba(10,37,88,0.45); display:none; align-items:flex-start; justify-content:center; padding:50px 20px; overflow-y:auto; }
+    .modal.open { display:flex; }
+    .modal-card { background:var(--white); border-radius:16px; width:100%; max-width:600px; box-shadow:0 20px 60px rgba(10,37,88,0.3); overflow:hidden; }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid var(--border); }
+    .modal-title { font-size:16px; font-weight:700; color:var(--text); }
+    .modal-close { background:none; border:none; cursor:pointer; color:var(--muted); }
+    .modal-body { padding:20px 22px; }
+    .field { margin-bottom:16px; }
+    .field label { display:block; font-size:12px; font-weight:700; color:var(--text); margin-bottom:6px; }
+    .field .hint { color:var(--muted); font-weight:400; }
+    .form-error { color:#DC2626; font-size:12px; margin-bottom:12px; display:none; }
+    .form-error.show { display:block; }
+    .modal-foot { display:flex; justify-content:flex-end; gap:10px; padding:0 22px 20px; }
+
+    footer { text-align:center; padding:24px; font-size:12px; color:var(--muted); border-top:1px solid var(--border); margin-top:20px; }
+    .hidden { display:none !important; }
+    @media (max-width:700px){ nav{padding:0 16px;} .hero{padding:26px 20px 34px;} main{padding:22px 16px 40px;} .search-wrap{flex:1 1 100%;} .search-input{min-width:0;width:100%;} }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" id="brand-link" href="dashboard.html"><img src="7e3352e27a31fc8d5b0aa8d5ae9036a8.webp" alt="Blue Angel Clinical Partners logo" /></a>
+  <div class="nav-right">
+    <span class="nav-practice-badge" id="nav-practice">—</span>
+    <span class="nav-role-badge" id="nav-role">—</span>
+    <button class="nav-signout" onclick="window.location.href='login.html'">Sign Out</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <a class="hero-back" id="back-link" href="dashboard.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to portal</a>
+    <p class="hero-greeting">Coverage Requests</p>
+    <h1 class="hero-title">Request &amp; offer coverage</h1>
+    <p class="hero-sub">Post a coverage need with a full prep plan and any files. Colleagues can pick it up and coordinate here.</p>
+  </div>
+</div>
+
+<main>
+  <!-- LIST VIEW -->
+  <div id="list-view">
+    <div class="toolbar">
+      <button class="btn-primary" onclick="openNew()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> New Request</button>
+      <div class="search-wrap"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input class="search-input" id="search" type="search" placeholder="Search coverage requests…" oninput="onFilter()" /></div>
+      <select class="select" id="status-filter" onchange="onFilter()">
+        <option value="open" selected>Open</option>
+        <option value="covered">Covered</option>
+        <option value="closed">Closed</option>
+        <option value="all">All statuses</option>
+      </select>
+    </div>
+    <div class="req-list" id="req-list"></div>
+  </div>
+
+  <!-- DETAIL VIEW -->
+  <div id="detail-view" class="hidden"></div>
+</main>
+
+<!-- NEW REQUEST MODAL -->
+<div class="modal" id="new-modal">
+  <div class="modal-card">
+    <div class="modal-head"><span class="modal-title">New coverage request</span><button class="modal-close" onclick="closeNew()" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-error" id="new-error">Please add a title, a timeframe, and a prep plan.</div>
+      <div class="field"><label for="n-title">Title</label><input class="input" id="n-title" type="text" maxlength="140" placeholder="e.g. Coverage needed — Thursday PM clinic" /></div>
+      <div class="field"><label for="n-time">Timeframe</label><input class="input" id="n-time" type="text" maxlength="120" placeholder="e.g. Thursday, 1–5pm · Jul 18" /></div>
+      <div class="field"><label for="n-plan">Prep plan <span class="hint">— what the covering person needs to know and do</span></label><textarea class="input" id="n-plan" style="min-height:150px" placeholder="Patients/tasks to cover, where records live, protocols, who to contact…"></textarea></div>
+      <div class="field">
+        <label>Attachments <span class="hint">(optional — up to ~1 MB each)</span></label>
+        <button type="button" class="attach-btn" onclick="document.getElementById('n-files').click()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg> Attach files</button>
+        <input type="file" id="n-files" multiple style="display:none" onchange="onFilePick(this, 'new')" />
+        <div class="chips" id="n-chips"></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn-ghost" onclick="closeNew()">Cancel</button><button class="btn-primary" onclick="submitNew()">Post request</button></div>
+  </div>
+</div>
+
+<footer>&copy; 2024 Blue Angel Clinical Partners &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="mailto:joseph@blueangelclinical.com" style="color:inherit">joseph@blueangelclinical.com</a></footer>
+
+<script src="forum.js"></script>
+<script src="coverage.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const me = forumIdentity(params);
+  document.getElementById('nav-practice').textContent = me.practiceLabel;
+  document.getElementById('nav-role').textContent = me.role === 'physician' ? 'Physician' : 'Staff';
+  const qp = new URLSearchParams({ practice: me.practice, role: me.role, email: me.email }).toString();
+  document.getElementById('brand-link').href = `dashboard.html?${qp}`;
+  document.getElementById('back-link').href = `dashboard.html?${qp}`;
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  const fmtSize = b => b < 1024 ? b + ' B' : (b < 1048576 ? (b/1024).toFixed(0) + ' KB' : (b/1048576).toFixed(1) + ' MB');
+  const PAPERCLIP = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>';
+
+  const state = { search: '', status: 'open' };
+  const listView = document.getElementById('list-view');
+  const detailView = document.getElementById('detail-view');
+
+  function statusBadge(s) {
+    return `<span class="status-badge status-${s}">${s.charAt(0).toUpperCase() + s.slice(1)}</span>`;
+  }
+  function attachDownloads(atts) {
+    if (!atts || !atts.length) return '';
+    return `<div class="attach-list">${atts.map(a => `<a class="attach-link" href="${a.dataUrl}" download="${esc(a.name)}">${PAPERCLIP}<span>${esc(a.name)}</span><span class="attach-size">${fmtSize(a.size)}</span></a>`).join('')}</div>`;
+  }
+
+  /* ── Attachment picking (base64 in localStorage; capped for the prototype) ── */
+  let pending = { new: [], reply: [] };
+  function onFilePick(input, target) {
+    Array.from(input.files).forEach(file => {
+      if (file.size > COVERAGE_MAX_FILE) { alert(`"${file.name}" is ${fmtSize(file.size)} — over the ~1 MB prototype limit. It wasn't attached.`); return; }
+      const reader = new FileReader();
+      reader.onload = e => { pending[target].push({ id: 'at' + Date.now() + Math.random().toString(36).slice(2,6), name: file.name, type: file.type, size: file.size, dataUrl: e.target.result }); renderChips(target); };
+      reader.readAsDataURL(file);
+    });
+    input.value = '';
+  }
+  function renderChips(target) {
+    const el = document.getElementById(target === 'new' ? 'n-chips' : 'r-chips');
+    if (!el) return;
+    el.innerHTML = pending[target].map(a => `<span class="chip">${PAPERCLIP}${esc(a.name)} <span class="attach-size">${fmtSize(a.size)}</span><button onclick="removePending('${target}','${a.id}')" aria-label="Remove">&times;</button></span>`).join('');
+  }
+  function removePending(target, id) { pending[target] = pending[target].filter(a => a.id !== id); renderChips(target); }
+
+  /* ── List ── */
+  function visibleRequests() {
+    let list = loadCoverage();
+    if (state.status !== 'all') list = list.filter(r => r.status === state.status);
+    if (state.search.trim()) {
+      const q = state.search.trim().toLowerCase();
+      list = list.filter(r => [r.title, r.prepPlan, r.requesterName, r.timeframe].join(' ').toLowerCase().includes(q));
+    }
+    list.sort((a, b) => coverageActivity(b) - coverageActivity(a));
+    return list;
+  }
+  function renderList() {
+    const items = visibleRequests();
+    const el = document.getElementById('req-list');
+    if (!items.length) {
+      const msg = state.search.trim() ? 'No requests match your search.' : (state.status === 'open' ? 'No open coverage requests. Post one with “New Request”.' : `No ${state.status} requests.`);
+      el.innerHTML = `<div class="empty">${esc(msg)}</div>`;
+      return;
+    }
+    el.innerHTML = items.map(r => {
+      const isNew = isCoverageUnread(r, me.accountKey, me.name);
+      const atN = (r.attachments || []).length, rpN = (r.responses || []).length;
+      return `
+      <button class="req-card ${isNew ? 'is-new' : ''}" onclick="openRequest('${r.id}')">
+        <div class="req-top"><span class="req-title">${esc(r.title)}</span>${statusBadge(r.status)}${isNew ? '<span class="pill pill-new">New</span>' : ''}</div>
+        <div class="req-snippet">${esc(r.prepPlan)}</div>
+        <div class="req-meta">
+          <span class="author-name">${esc(r.requesterName)}</span>
+          <span class="meta-dot"></span><span>${esc(r.practice)}</span>
+          <span class="meta-dot"></span><span>${esc(r.timeframe)}</span>
+          <span class="meta-dot"></span><span>${esc(forumRelativeTime(r.createdAt))}</span>
+          ${atN ? `<span class="meta-dot"></span><span class="chip-count">${PAPERCLIP}${atN}</span>` : ''}
+          <span class="meta-dot"></span><span class="chip-count"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>${rpN}</span>
+        </div>
+      </button>`;
+    }).join('');
+  }
+
+  /* ── Detail ── */
+  function coverageActionsHtml(r) {
+    const amRequester = r.requesterKey === me.accountKey;
+    const amCoverer = r.coveredByKey === me.accountKey;
+    const btns = [];
+    if (r.status === 'open' && !amRequester) btns.push(`<button class="btn-ghost btn-success" onclick="doCover('${r.id}')">I'll cover this</button>`);
+    if (r.status === 'covered' && amCoverer) btns.push(`<button class="btn-ghost" onclick="doRelease('${r.id}')">Release</button>`);
+    if (amRequester && (r.status === 'open' || r.status === 'covered')) btns.push(`<button class="btn-ghost" onclick="doStatus('${r.id}','closed')">Close</button>`);
+    if (amRequester && r.status === 'closed') btns.push(`<button class="btn-ghost" onclick="doStatus('${r.id}','open')">Reopen</button>`);
+    if (amRequester) btns.push(`<button class="btn-ghost" style="color:#DC2626;border-color:#F0C7C7" onclick="doDelete('${r.id}')">Delete</button>`);
+    return btns.join('');
+  }
+
+  function openRequest(id) {
+    const r = loadCoverage().find(x => x.id === id);
+    if (!r) return;
+    markCoverageRead(me.accountKey, id);
+    pending.reply = [];
+    listView.classList.add('hidden');
+    detailView.classList.remove('hidden');
+    window.scrollTo(0, 0);
+    const replies = (r.responses || []).slice().sort((a, b) => a.createdAt - b.createdAt);
+    const coveredLine = r.status === 'covered' && r.coveredByName ? `<span class="meta-dot"></span><span>Covered by <strong>${esc(r.coveredByName)}</strong></span>` : '';
+    detailView.innerHTML = `
+      <button class="detail-back" onclick="showList()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> All requests</button>
+      <div class="post">
+        <div class="post-head">
+          <div>
+            <div class="post-title">${esc(r.title)}</div>
+            <div class="post-meta">
+              <span class="author-name">${esc(r.requesterName)}</span>
+              <span class="meta-dot"></span><span>${esc(r.practice)}</span>
+              <span class="meta-dot"></span><span>${esc(r.timeframe)}</span>
+              <span class="meta-dot"></span><span>${esc(forumRelativeTime(r.createdAt))}</span>
+              <span class="meta-dot"></span>${statusBadge(r.status)}${coveredLine}
+            </div>
+          </div>
+          <div class="post-actions">${coverageActionsHtml(r)}</div>
+        </div>
+        <p class="cov-label">Prep plan</p>
+        <div class="post-body">${esc(r.prepPlan)}</div>
+        ${(r.attachments && r.attachments.length) ? `<p class="cov-label">Attachments</p>${attachDownloads(r.attachments)}` : ''}
+      </div>
+
+      <p class="replies-label">${replies.length} ${replies.length === 1 ? 'Response' : 'Responses'}</p>
+      <div id="reply-list">
+        ${replies.map(rp => `
+          <div class="reply">
+            <div class="reply-meta"><span class="author-name">${esc(rp.author)}</span><span class="meta-dot"></span><span>${esc(rp.practice)}</span><span class="meta-dot"></span><span>${esc(forumRelativeTime(rp.createdAt))}</span></div>
+            <div class="reply-body">${esc(rp.body)}</div>
+            ${attachDownloads(rp.attachments)}
+          </div>`).join('') || '<div class="empty">No responses yet — reply to coordinate.</div>'}
+      </div>
+
+      <div class="reply-composer">
+        <textarea class="input" id="reply-body" placeholder="Reply or share coverage details…"></textarea>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px; flex-wrap:wrap;">
+          <button type="button" class="attach-btn" onclick="document.getElementById('r-files').click()">${PAPERCLIP} Attach files</button>
+          <button class="btn-primary" onclick="submitReply('${r.id}')">Post response</button>
+        </div>
+        <input type="file" id="r-files" multiple style="display:none" onchange="onFilePick(this, 'reply')" />
+        <div class="chips" id="r-chips"></div>
+      </div>`;
+  }
+  function showList() { detailView.classList.add('hidden'); listView.classList.remove('hidden'); renderList(); window.scrollTo(0, 0); }
+
+  /* ── Actions ── */
+  function doCover(id) { claimCoverage(id, me.name, me.accountKey); openRequest(id); }
+  function doRelease(id) { releaseCoverage(id); openRequest(id); }
+  function doStatus(id, s) { setCoverageStatus(id, s); openRequest(id); }
+  function doDelete(id) {
+    if (!confirm('Delete this coverage request? This cannot be undone.')) return;
+    deleteCoverageRequest(id, me.accountKey);
+    showList();
+  }
+  function submitReply(id) {
+    const ta = document.getElementById('reply-body');
+    const body = ta.value.trim();
+    if (!body && !pending.reply.length) { ta.focus(); return; }
+    const ok = addCoverageResponse(id, { author: me.name, authorKey: me.accountKey, authorRole: me.role, practice: me.practiceLabel, body, attachments: pending.reply.slice() });
+    if (!ok) { alert('Could not save — attachments may exceed this prototype’s storage limit.'); return; }
+    pending.reply = [];
+    openRequest(id);
+  }
+
+  /* ── New request modal ── */
+  const modal = document.getElementById('new-modal');
+  function openNew() {
+    document.getElementById('n-title').value = '';
+    document.getElementById('n-time').value = '';
+    document.getElementById('n-plan').value = '';
+    document.getElementById('new-error').classList.remove('show');
+    pending.new = []; renderChips('new');
+    modal.classList.add('open');
+    document.getElementById('n-title').focus();
+  }
+  function closeNew() { modal.classList.remove('open'); }
+  modal.addEventListener('click', e => { if (e.target === modal) closeNew(); });
+  function submitNew() {
+    const title = document.getElementById('n-title').value.trim();
+    const timeframe = document.getElementById('n-time').value.trim();
+    const prepPlan = document.getElementById('n-plan').value.trim();
+    if (!title || !timeframe || !prepPlan) { document.getElementById('new-error').classList.add('show'); return; }
+    const created = submitCoverageRequest({
+      title, timeframe, prepPlan,
+      requesterName: me.name, requesterKey: me.accountKey, requesterRole: me.role, practice: me.practiceLabel,
+      attachments: pending.new.slice()
+    });
+    if (!created) { alert('Could not save — attachments may exceed this prototype’s storage limit.'); return; }
+    pending.new = [];
+    closeNew();
+    openRequest(created.id);
+  }
+
+  /* ── Filters ── */
+  function onFilter() {
+    state.search = document.getElementById('search').value;
+    state.status = document.getElementById('status-filter').value;
+    renderList();
+  }
+
+  /* ── Init ── */
+  renderList();
+  const deep = params.get('req');
+  if (deep && loadCoverage().some(r => r.id === deep)) openRequest(deep);
+</script>
+</body>
+</html>
