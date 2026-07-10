@@ -121,13 +121,10 @@
       background: #E8EDF5;
     }
     #map { position: absolute; inset: 0; width: 100%; height: 100%; }
-    /* Tighten Google's InfoWindow — trim the default top buffer + padding */
-    .gm-style .gm-style-iw-c { padding: 10px 14px 12px !important; border-radius: 12px; box-shadow: 0 6px 22px rgba(10,37,88,0.18); }
+    /* On-brand Google InfoWindow — uniform padding; default header is disabled
+       in JS, and we render our own compact close button inside the content. */
+    .gm-style .gm-style-iw-c { padding: 12px !important; border-radius: 12px; box-shadow: 0 6px 22px rgba(10,37,88,0.18); }
     .gm-style .gm-style-iw-d { overflow: hidden !important; padding: 0 !important; }
-    .gm-style .gm-style-iw-ch { padding-top: 0 !important; min-height: 0 !important; }
-    .gm-style .gm-style-iw-chr { height: auto !important; }
-    /* keep the close (X) button tight to the corner */
-    .gm-style .gm-style-iw-chr > button { width: 26px !important; height: 26px !important; margin: 0 !important; }
 
     /* Loading shimmer overlay */
     .map-loading {
@@ -358,11 +355,14 @@
 
   function infoHtmlFor(loc) {
     const first = clinics.find(c => c.id === loc.firstId);
-    return `<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:230px">
+    return `<div style="position:relative;font-family:'Segoe UI',system-ui,sans-serif;max-width:240px;padding-right:14px">
+      <button onclick="closeInfo()" aria-label="Close" style="position:absolute;top:-3px;right:-4px;border:none;background:none;cursor:pointer;color:#8593AC;font-size:15px;line-height:1;padding:2px">&times;</button>
       <div style="font-weight:700;color:#0A2558;margin-bottom:3px">${esc(loc.labels.join(' & '))}</div>
       <div style="font-size:12px;color:#6B7A99">${esc(first ? first.address : '')}</div>
     </div>`;
   }
+  function closeInfo() { if (infoWindow) infoWindow.close(); }
+  window.closeInfo = closeInfo;
 
   function initMap() {
     const g = google.maps;
@@ -370,7 +370,7 @@
       zoom: 6, center: { lat: 37.4, lng: -120 },
       mapTypeControl: false, streetViewControl: false, gestureHandling: 'greedy'
     });
-    infoWindow = new g.InfoWindow();
+    infoWindow = new g.InfoWindow({ headerDisabled: true });
     const bounds = new g.LatLngBounds();
     Object.entries(locations).forEach(([key, loc]) => {
       const pos = { lat: loc.coords[0], lng: loc.coords[1] };
