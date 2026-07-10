@@ -120,7 +120,9 @@
       height: var(--map-h);
       background: #E8EDF5;
     }
-    #map-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    #map { position: absolute; inset: 0; width: 100%; height: 100%; }
+    /* On-brand Google InfoWindow text */
+    .gm-style .gm-style-iw-c { border-radius: 12px; }
 
     /* Loading shimmer overlay */
     .map-loading {
@@ -227,10 +229,9 @@
 <!-- ── MAIN ── -->
 <main>
   <div class="map-layout">
-    <!-- MAP (free Google Maps embed — no API key; shows the selected clinic) -->
+    <!-- MAP (Google Maps JavaScript API — all locations at once, labeled pins) -->
     <div class="map-wrap">
-      <iframe id="map-frame" title="Map of the selected clinic location"
-              loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div id="map" role="application" aria-label="Map of all Blue Angel Clinical Partners locations"></div>
       <div class="map-loading" id="map-loading">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
         Loading map…
@@ -254,9 +255,9 @@
   /* ──────────────────────────────────────────────────────────────
      CLINIC DATA — add one entry per acquired clinic.
      Only public info (type, address, phone, hours, doctors). Never patient data.
-     The Google Maps embed geocodes the `address` string automatically,
-     so no coordinates are needed — just keep the address accurate.
-     Sujansky and Daniher are two separate practices that share an address.
+     Each clinic needs `coords` [lat, lng] for its map pin and a `locationId`,
+     so practices that share an address collapse to one labeled pin
+     (Sujansky & Daniher). `mapLabel` is the name shown on that pin.
      ────────────────────────────────────────────────────────────── */
   const clinics = [
     {
@@ -335,15 +336,53 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => (
     { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
   ));
-  // Coordinates give a clean single pin (no address/suite label on the marker).
-  const embedUrl = c => `https://maps.google.com/maps?q=${c.coords[0]},${c.coords[1]}&z=15&output=embed`;
-  const mapsUrl  = c => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.address)}`;
+  const mapsUrl = c => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.address)}`;
+  const loadingEl = document.getElementById('map-loading');
 
-  const frame      = document.getElementById('map-frame');
-  const loadingEl  = document.getElementById('map-loading');
-  frame.addEventListener('load', () => loadingEl.classList.add('hidden'));
-  // Safety net: hide the shimmer even if the iframe load event is slow/blocked.
-  setTimeout(() => loadingEl.classList.add('hidden'), 5000);
+  /* ── Group clinics into map locations so practices that share an address
+       (Sujansky & Daniher) collapse to one labeled pin. ── */
+  const locations = {};
+  clinics.forEach(c => {
+    if (!locations[c.locationId]) locations[c.locationId] = { coords: c.coords, labels: [], firstId: c.id };
+    locations[c.locationId].labels.push(c.mapLabel || c.name);
+  });
+
+  /* ── Google Maps (JavaScript API). initMap runs once the API script loads. ── */
+  let map = null, infoWindow = null;
+  const markerByLocation = {};
+
+  function infoHtmlFor(loc) {
+    const first = clinics.find(c => c.id === loc.firstId);
+    return `<div style="font-family:'Segoe UI',system-ui,sans-serif;max-width:230px">
+      <div style="font-weight:700;color:#0A2558;margin-bottom:3px">${esc(loc.labels.join(' & '))}</div>
+      <div style="font-size:12px;color:#6B7A99">${esc(first ? first.address : '')}</div>
+    </div>`;
+  }
+
+  function initMap() {
+    const g = google.maps;
+    map = new g.Map(document.getElementById('map'), {
+      zoom: 6, center: { lat: 37.4, lng: -120 },
+      mapTypeControl: false, streetViewControl: false, gestureHandling: 'greedy'
+    });
+    infoWindow = new g.InfoWindow();
+    const bounds = new g.LatLngBounds();
+    Object.entries(locations).forEach(([key, loc]) => {
+      const pos = { lat: loc.coords[0], lng: loc.coords[1] };
+      const marker = new g.Marker({ position: pos, map, title: loc.labels.join(' & ') });
+      const html = infoHtmlFor(loc);
+      marker.addListener('click', () => { infoWindow.setContent(html); infoWindow.open(map, marker); });
+      markerByLocation[key] = { marker, html };
+      bounds.extend(pos);
+    });
+    map.fitBounds(bounds, 64);
+    // Don't over-zoom when the pins happen to be close together.
+    g.event.addListenerOnce(map, 'idle', () => { if (map.getZoom() > 12) map.setZoom(12); });
+    loadingEl.classList.add('hidden');
+  }
+  window.initMap = initMap;
+  // Safety net: hide the shimmer if the API is slow or blocked.
+  setTimeout(() => loadingEl.classList.add('hidden'), 8000);
 
   /* ── Build the clinic list cards ── */
   const cardsEl = document.getElementById('clinic-cards');
@@ -371,21 +410,25 @@
     cardById[c.id] = card;
   });
 
-  /* ── Select a clinic: highlight its card + point the map at it ── */
+  /* ── Select a clinic: highlight its card + focus the map on its pin ── */
   function selectClinic(id, fromCard) {
     Object.values(cardById).forEach(el => el.classList.remove('selected'));
     const card = cardById[id];
     if (card) card.classList.add('selected');
     const c = clinics.find(x => x.id === id);
-    if (c) {
-      loadingEl.classList.remove('hidden');
-      frame.src = embedUrl(c);
+    if (c && map) {
+      map.panTo({ lat: c.coords[0], lng: c.coords[1] });
+      map.setZoom(14);
+      const loc = markerByLocation[c.locationId];
+      if (loc) { infoWindow.setContent(loc.html); infoWindow.open(map, loc.marker); }
     }
     if (fromCard && card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  /* ── Initial view: first clinic ── */
-  if (clinics.length) selectClinic(clinics[0].id, false);
+  /* ── Initial: highlight the first clinic's card but keep all pins in view. ── */
+  if (clinics.length && cardById[clinics[0].id]) cardById[clinics[0].id].classList.add('selected');
 </script>
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxi9UyfzLbYO5N9PWyxoRo5kjN7riVM_o&callback=initMap"></script>
 </body>
 </html>
